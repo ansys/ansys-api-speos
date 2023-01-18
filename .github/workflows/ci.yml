@@ -31,7 +31,6 @@ jobs:
         run: |
           mkdir tmp
           cd tmp
-          python -c "import ansys.api.speos.v1; print('Sucessfully imported ansys.api.speos.v1')"
           python -c "from ansys.api.speos import __version__; print(__version__)"
       - name: Upload packages
         uses: actions/upload-artifact@v2
