@@ -31,8 +31,8 @@ jobs:
         run: |
           mkdir tmp
           cd tmp
-          python -c "import {{ cookiecutter._dot_package_name_no_ver }}.v{{ cookiecutter.api_version }}; print('Sucessfully imported {{ cookiecutter._dot_package_name_no_ver }}.v{{ cookiecutter.api_version }}')"
-          python -c "from {{ cookiecutter._dot_package_name_no_ver }}.v{{ cookiecutter.api_version }} import __version__; print(__version__)"
+          python -c "import ansys.api.speos.v1; print('Sucessfully imported ansys.api.speos.v1')"
+          python -c "from ansys.api.speos import __version__; print(__version__)"
       - name: Upload packages
         uses: actions/upload-artifact@v2
         with:
