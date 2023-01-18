@@ -1,0 +1,41 @@
+// (c) 2022 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package ansys.api.speos.xmp.v1;
+
+// service to manage xmp file
+service XmpFileService_Mono {
+
+	/*! @brief Create Xmp file Info
+	@param[in] FileName The Path to the Xmp file.*/
+	rpc CreateXMPFileInfo(FileName) returns (google.protobuf.Empty) {}
+	/*! @brief Build Relative Standard Error accessor  Xmp file*/
+	rpc BuildMapRelativeStandardError(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+	/*! @brief Get Value Relative Standard Error file*/
+	rpc GetValueRelativeStandardError(Coordinate2d) returns (Value) {}
+	/*! @brief Get Nb pixel X Relative Standard Error file*/
+	rpc GetNbPixelXRelativeStandardError(google.protobuf.Empty) returns (Pixel) {}
+	/*! @brief Get Nb pixel Y Relative Standard Error file*/
+	rpc GetNbPixelYRelativeStandardError(google.protobuf.Empty) returns (Pixel) {}
+	/*! @brief Export Xmp File Relative Standard Error*/
+	rpc ExportXmpFileRelativeStandardError(FileName) returns (google.protobuf.Empty) {}
+}
+
+message FileName {
+	string file_name = 1;
+}
+
+message Value {
+	float value = 1;
+}
+
+message Pixel {
+	uint32  nb_pixel = 1;
+}
+
+message Coordinate2d {
+	uint32 pixel_x = 1;
+	uint32 pixel_y = 2;
+}

@@ -1,0 +1,162 @@
+// (c) 2022 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.bsdf.v1.AnisotropicSpeosBsdf;
+
+import "google/protobuf/empty.proto";
+
+service AnisotropicBsdfService
+{
+	// serialization for native *.anisotropicbsdf files
+	rpc Load(FileName) returns (google.protobuf.Empty) {}
+	rpc Save(FileName) returns (google.protobuf.Empty) {}
+
+	// to and from AnisoptropicSpeosBsdf.AnisotropicBsdfData
+	rpc Import(AnisotropicBsdfData) returns (google.protobuf.Empty) {}
+	rpc Export(google.protobuf.Empty) returns (AnisotropicBsdfData) {}
+
+	// to and from serialized AnisoptropicSpeosBsdf.AnisotropicBsdfData
+	rpc ImportFile(FileName) returns (google.protobuf.Empty) {}
+	rpc ExportFile(FileName) returns (google.protobuf.Empty) {}
+
+	// interpolation enhancement for specular
+	rpc GenerateSpecularInterpolationEnhancementData(RefractiveIndices) returns (google.protobuf.Empty) {}
+	rpc GetSpecularInterpolationEnhancementData(google.protobuf.Empty) returns (SpecularInterpolationEnhancementData) {}
+	rpc SetSpecularInterpolationEnhancementData(SpecularInterpolationEnhancementData) returns (google.protobuf.Empty) {}
+
+	// interpolation enhancement for retro reflection
+	rpc GenerateRetroReflectionInterpolationEnhancementData(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+	rpc GetRetroReflectionInterpolationEnhancementData(google.protobuf.Empty) returns (InterpolationEnhancementData) {}
+	rpc SetRetroReflectionInterpolationEnhancementData(InterpolationEnhancementData) returns (google.protobuf.Empty) {}
+
+	// white specular
+	rpc EnableWhiteSpecular(Wavelength) returns (google.protobuf.Empty) {}
+	rpc DisableWhiteSpecular(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+
+	// spectrum import
+	rpc ImportReflectionSpectrum(SpectrumImport) returns (google.protobuf.Empty) {}
+	rpc ImportTransmissionSpectrum(SpectrumImport) returns (google.protobuf.Empty) {}
+
+	// constant absorption
+	rpc FreezeAbsorptionReflectionTransmissionCoefficients(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+
+	// export to conoscopic map
+	rpc ExportToConoscopicMap(ConoscopicMap) returns (google.protobuf.Empty) {}
+}
+
+message AnisotropicBsdfData
+{
+	string description = 1;
+
+	message Double3
+	{
+		// direction cosines:
+		double x = 1;
+		double y = 2;
+		double z = 3;
+	}
+
+	Double3 anisotropy_vector = 2;
+
+	message Bsdf
+	{
+		// spectrum information
+		double spectrum_incidence = 1;	// radians in [0, pi/2]
+		double spectrum_anisotropy = 2;	// radians in [0, 2*pi]
+
+		message WavelengthCoefficientPair
+		{
+			double wavelength = 1;	// nanometers
+			double coefficient = 2;	// in [0, 1] interval
+		}
+
+		repeated WavelengthCoefficientPair spectrum = 3;
+
+		message AnisotropicSample
+		{
+			double anisotropic_sample = 1; // radians in [0, pi/2] or [0, pi] or [0, 2*pi]
+			
+			message IncidenceSample
+			{
+				double incidence_sample = 1; // radians in [0, pi/2]
+
+				// intensity diagram
+				repeated double theta_samples = 2;	// radians in [0, pi/2] for reflection // radians in [pi/2, pi] for transmission
+				repeated double phi_samples = 3;	// radians in [0, 2*pi]
+				repeated double bsdf_cos_theta = 4;	// 1/steradians
+				double integral = 5;				// reflection/transmission coefficient
+			}
+
+			repeated IncidenceSample incidence_samples = 2;
+		}
+
+		repeated AnisotropicSample anisotropic_samples = 4;
+	}
+
+	Bsdf reflection = 3;
+	Bsdf transmission = 4;
+}
+
+message FileName
+{
+	string file_name = 1;
+}
+
+message RefractiveIndices
+{
+	double refractive_index_1 = 1;
+	double refractive_index_2 = 2;
+}
+
+message InterpolationEnhancementData
+{
+	message AnisotropicSample
+	{
+		message ConeData
+		{
+			double cone_half_angle = 1;	// radians in [0, pi/2]
+			double cone_height = 2;		// value >= 0
+		}
+
+		repeated ConeData incidence_samples = 1;
+	}
+
+	repeated AnisotropicSample anisotropic_samples = 1;
+}
+
+message SpecularInterpolationEnhancementData
+{
+	InterpolationEnhancementData reflection = 1;
+	InterpolationEnhancementData transmission = 2;
+	double refractive_index_1 = 3;
+	double refractive_index_2 = 4;
+}
+
+message Wavelength
+{
+	double wavelength = 1;	// in nanometers
+}
+
+message SpectrumImport
+{
+	double incidence_angle = 1;		// radians in [0, pi/2]
+	double anisotropy_angle = 2;	// radians in [0, 2*pi]
+	string file_name = 3;
+}
+
+message ConoscopicMap
+{
+	string output_file_name = 1;	// *.xmp
+	double wavelength = 2;			// nanometers
+	double anisotropic_angle = 3;	// radians in [0, 2*pi]
+	
+	enum BsdfSide
+	{
+		UNKNOWN = 0;
+		REFLECTION = 1;
+		TRANSMISSION = 2;
+	}
+
+	BsdfSide side = 4;
+	int32 resolution = 5;
+}

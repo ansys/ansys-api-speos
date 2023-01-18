@@ -1,0 +1,101 @@
+// (c) 2022 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.bsdf.v1.SpectralSpeosBsdf;
+
+import "google/protobuf/empty.proto";
+
+service SpectralBsdfService
+{
+	// serialization for native *.brdf files
+	rpc Load(FileName) returns (google.protobuf.Empty) {}
+	rpc Save(FileName) returns (google.protobuf.Empty) {}
+
+	// to and from SpectralSpeosBsdf.SpectralBsdfData
+	rpc Import(SpectralBsdfData) returns (google.protobuf.Empty) {}
+	rpc Export(google.protobuf.Empty) returns (SpectralBsdfData) {}
+
+	// to and from serialized SpectralSpeosBsdf.SpectralBsdfData
+	rpc ImportFile(FileName) returns (google.protobuf.Empty) {}
+	rpc ExportFile(FileName) returns (google.protobuf.Empty) {}
+
+	// interpolation enhancement for specular
+	rpc GenerateSpecularInterpolationEnhancementData(RefractiveIndices) returns (google.protobuf.Empty) {}
+	rpc GetSpecularInterpolationEnhancementData(google.protobuf.Empty) returns (SpecularInterpolationEnhancementData) {}
+	rpc SetSpecularInterpolationEnhancementData(SpecularInterpolationEnhancementData) returns (google.protobuf.Empty) {}
+
+	// export to conoscopic map
+	rpc ExportToConoscopicMap(ConoscopicMap) returns (google.protobuf.Empty) {}
+}
+
+message SpectralBsdfData
+{
+	string description = 1;
+
+	repeated double incidence_samples = 2;	// radians in [0, pi/2]
+	repeated double wavelength_samples = 3;	// nanometers
+
+	message WavelengthIncidence
+	{
+		message Diagram
+		{
+			repeated double theta_samples = 1;	// radians in [0, pi/2]
+			repeated double phi_samples = 2;	// radians in [0, 2*pi]
+			repeated double bsdf_cos_theta = 3;	// 1/steradians
+			double integral = 4;				// reflection/transmission coefficient in [0, 1] interval
+		}
+
+		Diagram reflection = 1;
+		Diagram transmission = 2;
+	}
+
+	repeated WavelengthIncidence wavelength_incidence_samples = 4;
+}
+
+message FileName
+{
+	string file_name = 1;
+}
+
+message RefractiveIndices
+{
+	double refractive_index_1 = 1;
+	double refractive_index_2 = 2;
+}
+
+message SpecularInterpolationEnhancementData
+{
+	message WavelengthIncidence
+	{
+		message ConeData
+		{
+			double cone_half_angle = 1;	// radians in [0, pi/2]
+			double cone_height = 2;		// value >= 0
+		}
+
+		ConeData reflection = 1;
+		ConeData transmission = 2; 
+	}
+
+	int32 incidence_nb = 1;
+	int32 wavelength_nb = 2;
+	double refractive_index_1 = 3;
+	double refractive_index_2 = 4;
+	repeated WavelengthIncidence wavelength_incidence_samples = 5;
+}
+
+message ConoscopicMap
+{
+	string output_file_name = 1;	// *.xmp
+	double wavelength = 2;			// nanometers
+
+	enum BsdfSide
+	{
+		UNKNOWN = 0;
+		REFLECTION = 1;
+		TRANSMISSION = 2;
+	}
+
+	BsdfSide side = 3;
+	int32 resolution = 4;
+}

@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package ansys.api.speos.LTF.v1;
+
+import "google/protobuf/empty.proto";
+
+service LightTransferFunctionService {
+
+    // Serialization for *.OPTDistortion files
+    rpc Load(Filename) returns (google.protobuf.Empty) {}
+    rpc Save(Filename) returns (google.protobuf.Empty) {}
+
+    // Import/Export of LightTransferDataDistribution
+    rpc Import(SpectralLightTransferDataDistribution) returns (google.protobuf.Empty) {}
+    rpc Export(google.protobuf.Empty) returns (SpectralLightTransferDataDistribution) {}
+}
+
+message Filename {
+    string filename = 1;
+}
+
+message Point2d {
+	double x = 1;
+	double y = 2;
+}
+
+message Point3d {
+	double x = 1;
+	double y = 2;
+	double z = 3;
+}
+
+message Vector3d {
+	double x = 1;
+	double y = 2;
+	double z = 3;
+}
+
+// the sensor sampling type :
+// symmetric = polar coordinates
+// asymmetric = cartesian coordinates 
+enum SensorSamplingType {
+    SYMMETRIC = 0; 
+    ASYMMETRIC = 1;
+}
+
+enum PupilSurfaceType {
+    POINT = 0;
+    DISK = 1;
+    ELLIPSE = 2;
+    POLYGON = 3;
+}
+
+message PupilSurfaceDisk {
+    double radius = 1;
+}
+
+message PupilSurfaceEllipse {
+    double alpha = 1;
+    double semi_major_axis = 2;
+    double semi_minor_axis = 3;
+}
+
+message PupilSurfacePolygon {
+    int32 nb_points = 1;
+    repeated Point2d points = 2;
+}
+
+message LightTransferData {
+    message PupilSurface {
+        PupilSurfaceDisk disk = 1;
+        PupilSurfaceEllipse ellipse = 2;
+        PupilSurfacePolygon polygon = 3;
+    }
+    
+    Vector3d object_direction = 1;
+    Point3d start_point = 2;
+    double emissivity = 3;
+    double focus_distance = 4;
+    double divergence_X = 5;
+    double divergence_Y = 6;
+    PupilSurface pupil_surface = 7;
+}
+
+message LightTransferDataDistribution{
+    repeated LightTransferData data = 1;
+}
+
+message SpectralLightTransferDataDistribution {
+    repeated double wavelength_samples = 1;
+    SensorSamplingType sensor_sampling_type = 2;
+    repeated double sensor_samples_X = 3;
+    repeated double sensor_samples_Y = 4;
+    PupilSurfaceType pupil_surface_type = 5;
+    repeated LightTransferDataDistribution ltf_samples = 6;
+}

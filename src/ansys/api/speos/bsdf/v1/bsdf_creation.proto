@@ -1,0 +1,50 @@
+// (c) 2022 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.bsdf.v1.SpeosBsdfCreation;
+
+import "google/protobuf/empty.proto";
+
+service BsdfCreationService
+{
+	// create a bsdf180 file
+	rpc BuildBsdf180(Bsdf180InputData) returns (google.protobuf.Empty) {}
+
+	// create spectral bsdf file
+	rpc BuildSpectralBsdf(SpectralBsdfInputData) returns (google.protobuf.Empty) {}
+
+	// build anisotropic bsdf file
+	rpc BuildAnisotropicBsdf(AnisotropicBsdfInputData) returns (google.protobuf.Empty) {}
+}
+
+message Bsdf180InputData
+{
+	string input_front_bsdf_file_name = 1;		// *.coated *.brdf *.anisotropicbsdf *.scattering
+	string input_opposite_bsdf_file_name = 2;	// *.coated *.brdf *.anisotropicbsdf *.scattering
+	string output_file_name = 3;				// *.bsdf180
+}
+
+message SpectralBsdfInputData
+{
+	message Sample
+	{
+		double wavelength = 1;	// nanometers
+		string file_name = 2;	// *.anisotropicbsdf
+	}
+
+	repeated Sample input_anisotropic_samples = 1;
+	string output_file_name = 2;	// *.brdf
+}
+
+message AnisotropicBsdfInputData
+{
+	message Sample
+	{
+		double anisotropic_angle = 1;	// radians in [0, 2*pi]
+		string file_name = 2;			// *.anisotropicbsdf
+	}
+
+	repeated Sample input_anisotropic_bsdf_samples = 1;
+	bool fix_disparity = 2;
+	string output_file_name = 3;	// *.anisotropicbsdf
+}

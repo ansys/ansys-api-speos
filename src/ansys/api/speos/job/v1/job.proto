@@ -1,0 +1,146 @@
+// (c) 2022 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+import "ansys/api/speos/file/v1/file_transfer.proto";
+import "google/protobuf/duration.proto";
+
+package ansys.api.speos.job.v1;
+
+// Service for speos jobs manager
+service SpeosJobsManager {
+	//! @brief SpeosJob creation from a SpeosSimulation
+	//	@param[in] simu_guid: The SpeosSimulation's guid from the SpeosSimulationsManager.
+	//	@returns guid: The SpeosJob's guid from the SpeosJobsManager.
+	rpc Create(Create_Request) returns (Create_Response) {}
+
+	//! @brief SpeosJob Deletion
+	//	@param[in] guid: SpeosJob's guid in the SpeosJobsManager.
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+
+	//! @brief List all SpeosJobs in SpeosJobsManager
+	//	@returns guids: list of all SpeosJobs guids in SpeosJobsManager.
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+enum Job_Type {
+	CPU = 0;
+	GPU = 1;
+}
+
+message Create_Request {
+	string simu_guid = 1;
+	Job_Type job_type = 2;
+}
+message Create_Response {
+	string guid = 1;
+}
+
+message Delete_Request {
+	string guid = 1;
+}
+message Delete_Response {}
+
+message List_Request {}
+message List_Response {
+	repeated string guids = 1;
+}
+
+
+// Service to handle a speos job
+service SpeosJob {
+	//! @brief Get the state of a SpeosJob
+	//	@param[in] guid: The SpeosJob's guid from the SpeosJobsManager.
+	//	@returns state: current SpeosJob's state
+	rpc GetState(GetState_Request) returns (GetState_Response) {}
+	
+	//! @brief Start a SpeosJob
+	//	@param[in] guid: The SpeosJob's guid from the SpeosJobsManager.
+	rpc Start(Start_Request) returns (Start_Response) {}
+
+	//! @brief Stop a SpeosJob
+	//	@param[in] guid: The SpeosJob's guid from the SpeosJobsManager.
+	rpc Stop(Stop_Request) returns (Stop_Response) {}
+
+	//! @brief Get error of a SpeosJob
+	//	@param[in] guid: The SpeosJob's guid from the SpeosJobsManager.
+	//	@returns SpeosJob's error
+	rpc GetError(GetError_Request) returns (GetError_Response) {}
+
+	//! @brief Get results of a SpeosJob
+	//	@param[in] guid: The SpeosJob's guid from the SpeosJobsManager.
+	//	@returns results: list of SpeosJob results
+	//  path if user is on same machine as server
+	//  if not, results are uploaded to server's file system and Upload_Response is returned
+	rpc GetResults(GetResults_Request) returns (GetResults_Response) {}
+
+	//! @brief Get information about a SpeosJob
+	//	@param[in] guid: The SpeosJob's guid from the SpeosJobsManager.
+	//	@returns different data like progress, elapsed time, remaining time...
+	rpc GetInformation(GetInformation_Request) returns (GetInformation_Response) {}
+}
+
+enum Job_State {
+	QUEUED = 0;
+	RUNNING = 1;
+	PAUSED = 2;
+	STOPPED = 3;
+	FINISHED = 4;
+	IN_ERROR = 5;
+}
+
+message GetState_Request {
+	string guid = 1;
+}
+message GetState_Response {
+	Job_State state = 1;
+}
+
+message Start_Request {
+	string guid = 1;
+}
+message Start_Response {}
+
+message Stop_Request {
+	string guid = 1;
+}
+message Stop_Response {}
+
+message GetError_Request {
+	string guid = 1;
+}
+message GetError_Response {
+	string name = 1;
+	string category = 2;
+	int32 severity = 3;
+	string request = 4;
+	string diagnostic = 5;
+	string advice = 6;
+	string error_file = 7;
+	int32 error_line = 8;
+}
+
+message GetResults_Request {
+	string guid = 1;
+}
+message GetResults_Response {
+	repeated Result results = 1;
+}
+
+message Result {
+	oneof result {
+		string path = 1; // result path on the server
+		ansys.api.speos.file.v1.Upload_Response upload_response = 2; // result uploaded to server's file system -> returns Upload_Response
+	}
+}
+
+message GetInformation_Request {
+	string guid = 1;
+}
+message GetInformation_Response {
+	string title = 1;
+	string name = 2;
+	string infos = 3;
+	double progress = 4;
+	google.protobuf.Duration elapsed_time = 5;
+	google.protobuf.Duration remaining_time = 6;
+}
