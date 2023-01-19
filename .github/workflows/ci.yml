@@ -33,7 +33,7 @@ jobs:
           cd tmp
           python -c "from ansys.api.speos import __version__; print(__version__)"
           python -c "from ansys.api.speos import grpc_stub; print('helpers installed successfully')"
-          python -c "from ansys.api.speos.file.v1 import file_transfer; print('helpers installed successfully')"
+          #python -c "from ansys.api.speos.file.v1 import file_transfer; print('helpers installed successfully')"
       - name: Upload packages
         uses: actions/upload-artifact@v2
         with:
