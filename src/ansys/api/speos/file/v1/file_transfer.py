@@ -103,7 +103,7 @@ def upload_folder(
     folder_path: str,
     main_file_name: str,
     reserved_main_file_uri: str = "",
-) -> list[file_transfer__v1__pb2.Upload_Response]:
+) -> [file_transfer__v1__pb2.Upload_Response]:
     """Upload several files to a server.
 
     Parameters
@@ -237,7 +237,7 @@ def download_folder(
     file_transfer_service_stub: file_transfer__v1__pb2_grpc.FileTransferServiceStub,
     main_file_uri: str,
     download_location: str,
-) -> list[file_transfer__v1__pb2.Download_Response]:
+) -> [file_transfer__v1__pb2.Download_Response]:
     """Download several files from a server.
 
     Parameters
