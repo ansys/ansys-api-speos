@@ -13,9 +13,6 @@ installed with:
 pip install ansys-api-speos
 ```
 
-Otherwise, see the
-
-
 #### Build
 
 To build the gRPC packages, run:
@@ -29,11 +26,6 @@ This will create both the source distribution containing just the protofiles
 along with the wheel containing the protofiles and build Python interface
 files.
 
-Note that the interface files are identical regardless of the version of Python
-used to generate them, but the last pre-built wheel for ``grpcio~=1.17`` was
-Python 3.7, so to improve your build time, use Python 3.7 when building the
-wheel.
-
 
 #### Manual Deployment
 
@@ -45,7 +37,6 @@ twine upload dist/*
 ```
 
 Note that this is automatically done through CI/CD.
-
 
 #### Automatic Deployment
 
