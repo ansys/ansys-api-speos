@@ -1,4 +1,4 @@
-// (c) 2022 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
 package ansys.api.speos.bsdf.v1.SpeosBsdfCreation;
