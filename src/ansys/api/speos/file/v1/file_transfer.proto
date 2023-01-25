@@ -1,0 +1,79 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "google/protobuf/duration.proto";
+
+package ansys.api.speos.file.v1;
+
+// service to transfer a file
+service FileTransferService {
+    // Reserve a file item on the server - the uri reserved will be given in Reserve_Response
+    rpc Reserve(Reserve_Request) returns (Reserve_Response) {}
+    // Upload a file on the server 
+    // Mandatory Client's Metadata:
+    // key: "file-name" - value: file name
+    // key: "file-size" - value: size of the file in bytes
+    rpc Upload(stream Chunk) returns (Upload_Response) {}
+    // Download a file from the server
+    // Server's' Initial Metadata:
+    // key: "file-name" - value: file name
+    // key: "file-size" - value: size of the file in bytes
+    rpc Download(Download_Request) returns (stream Chunk) {}
+    // Delete a file on the server
+    rpc Delete(Delete_Request) returns (Delete_Response) {}
+    // Add file dependencies to a file
+    rpc AddDependencies(AddDependencies_Request) returns (AddDependencies_Response) {}
+    // List a file's dependencies
+    rpc ListDependencies(ListDependencies_Request) returns (ListDependencies_Response) {}
+}
+
+message Reserve_Request {}
+message Reserve_Response {
+    string uri = 1;
+}
+
+message FileSystemItemInformation {
+    string uri = 1;
+    string file_name = 2;
+    uint64 file_size = 3;
+}
+
+message Chunk {
+    bytes binary = 1;
+    int64 size = 2;
+}
+
+message Upload_Response {
+    FileSystemItemInformation info = 1;
+    google.protobuf.Duration upload_duration = 2;
+}
+
+message Download_Request {
+    string uri = 1;
+}
+
+message Delete_Request {
+    string uri = 1;
+}
+message Delete_Response {
+}
+
+message AddDependencies_Request {
+    string uri = 1;
+    repeated string dependency_uris = 2;
+}
+message AddDependencies_Response {
+}
+
+message ListDependencies_Request {
+    string uri = 1;
+}
+message ListDependencies_Response {
+    repeated FileSystemItemInformation dependency_infos = 1;
+}
+
+// Used in File Transfer helpers
+message Download_Response {
+    FileSystemItemInformation info = 1;
+    google.protobuf.Duration download_duration = 2;
+}

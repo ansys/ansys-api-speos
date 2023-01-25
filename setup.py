@@ -14,7 +14,7 @@ with open(os.path.join(HERE, "README.md"), encoding="utf-8") as f:
 
 product = "speos"
 library = ""
-package_info = ["ansys", "api", product, library, "v0"]
+package_info = ["ansys", "api", product, library, ""]
 with open(os.path.join(HERE, "src", "ansys", "api", product, library, "VERSION"), encoding="utf-8") as f:
     version = f.read().strip()
 
@@ -34,8 +34,8 @@ if __name__ == "__main__":
         long_description_content_type='text/markdown',
         url=f"https://github.com/ansys/{package_name}",
         license="MIT",
-        python_requires=">=3.7",
-        install_requires=["grpcio~=1.17", "protobuf~=3.19"],
+        python_requires=">=3.8",
+        install_requires=["grpcio~=1.48", "protobuf~=3.20"],
         package_dir = {"": "src"},
         packages=setuptools.find_namespace_packages("src", include=("ansys.*",)),
         package_data={

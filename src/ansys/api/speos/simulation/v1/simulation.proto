@@ -1,0 +1,70 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.simulation.v1;
+
+// service to manage speos system
+service SpeosSimulationsManager {
+	/*! @brief Allocate System*/
+	rpc Create(Create_Request) returns (Create_Response) {}
+
+	/*! @brief System Deallocation*/
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+
+	/*! @brief List all simulations in manager
+	@param[out] guids: list of all systems guids in manager */
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+message Create_Request {}
+message Create_Response {
+	string guid = 1;
+}
+
+message Delete_Request {
+	string guid = 1;
+}
+message Delete_Response {}
+
+message List_Request {}
+message List_Response {
+	repeated string guids = 1;
+}
+
+
+// Low level service to manage speos system
+service SpeosSimulation {
+	/*! @brief System load from file
+	@param[in] guid: The guid to the system in the manager.
+	@param[in] input_file_path: The Path to the .speos file - or uri to the .speos file uploaded to server.*/
+	rpc Load(Load_Request) returns (Load_Response) {}
+
+	/*! @brief Save simulation
+	@param[in] guid: The guid to the system in the manager.
+	@param[in] input_folder_path: The Path to the folder where the .speos file will be saved - or uri of a reserved file item on the server.*/
+	rpc Save(Save_Request) returns (Save_Response) {}
+
+	/*! @brief Get Name of the simulation
+	@param[in] guid: The guid to the system in the manager.
+	@param[out] name: The name of the Speos simulation.*/
+	rpc GetName(GetName_Request) returns (GetName_Response) {}
+}
+
+message Load_Request {
+	string guid = 1;
+	string input_file_path = 2;
+}
+message Load_Response {}
+
+message Save_Request {
+	string guid = 1;
+	string input_folder_path = 2;
+}
+message Save_Response {}
+
+message GetName_Request {
+	string guid = 1;
+}
+message GetName_Response {
+	string name = 1;
+}

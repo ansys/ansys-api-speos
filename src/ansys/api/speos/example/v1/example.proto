@@ -1,0 +1,19 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package ansys.api.speos.example.v1;
+
+service Example {
+	rpc Test1(Test1Request) returns (google.protobuf.Empty) {}
+	rpc Test2(google.protobuf.Empty) returns (Test2Response) {}
+}
+
+message Test1Request {
+	string string1 = 1;
+}
+
+message Test2Response {
+	int64 int2 = 1;	
+}
