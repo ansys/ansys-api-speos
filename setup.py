@@ -15,7 +15,7 @@ with open(os.path.join(HERE, "README.md"), encoding="utf-8") as f:
 product = "speos"
 library = ""
 package_info = ["ansys", "api", product, library, ""]
-with open(os.path.join(HERE, "src", "ansys", "api", product, library, "VERSION"), encoding="utf-8") as f:
+with open(os.path.join(HERE, "src", "py", "utils", "ansys", "api", product, library, "VERSION"), encoding="utf-8") as f:
     version = f.read().strip()
 
 package_name = "ansys-api-speos"
