@@ -5,7 +5,7 @@ from datetime import datetime
 
 import setuptools
 
-from ansys.tools.protoc_helper import CMDCLASS_OVERRIDE
+from ansys.tools.protoc_helper import create_cmdclass_override
 
 # Get the long description from the README file
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -36,8 +36,8 @@ if __name__ == "__main__":
         license="MIT",
         python_requires=">=3.8",
         install_requires=["grpcio~=1.48", "protobuf~=3.20"],
-        package_dir = {"": "src"},
-        packages=setuptools.find_namespace_packages("src", include=("ansys.*",)),
+        package_dir = {"": "src/py/utils"},
+        packages=setuptools.find_namespace_packages("src/py/utils", include=("ansys.*",)),
         package_data={
             "": ["*.proto", "*.pyi", "py.typed", "VERSION"],
         },
@@ -46,5 +46,5 @@ if __name__ == "__main__":
                 f"{dot_package_name}={dot_package_name}"
             ],
         },
-        cmdclass=CMDCLASS_OVERRIDE
+        cmdclass=create_cmdclass_override(protos_directory="src")
     )
