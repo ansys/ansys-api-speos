@@ -46,5 +46,5 @@ if __name__ == "__main__":
                 f"{dot_package_name}={dot_package_name}"
             ],
         },
-        cmdclass=create_cmdclass_override(protos_directory="src/protos")
+        cmdclass=create_cmdclass_override(proto_directories=["src/protos"])
     )
