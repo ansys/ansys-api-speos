@@ -84,4 +84,3 @@ jobs:
           files: |
             ./**/*.whl
             ./**/*.tar.gz
-            ./**/*.pdf
