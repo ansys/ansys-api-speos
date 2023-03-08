@@ -49,12 +49,22 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10
+          python-version: "3.10"
 
       - uses: actions/download-artifact@v2
 
       - name: Display structure of downloaded files
         run: ls -R
+
+      - name: Upload to Private PyPI
+        run: |
+          pip install twine
+          twine upload --skip-existing ./**/*.whl
+          twine upload --skip-existing ./**/*.tar.gz
+        env:
+          TWINE_USERNAME: PAT
+          TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }} 
+          TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       # uncomment the following section to permit upload to public PyPI
 
@@ -74,4 +84,3 @@ jobs:
           files: |
             ./**/*.whl
             ./**/*.tar.gz
-            ./**/*.pdf
