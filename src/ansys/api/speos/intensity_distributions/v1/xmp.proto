@@ -1,0 +1,48 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "ansys/api/speos/intensity_distributions/v1/extended_map_template.proto";
+import "ansys/api/speos/intensity_distributions/v1/spectral_map_template.proto";
+
+package ansys.api.speos.intensity_distributions.v1.xmp;
+
+// service to manage XMP files
+service XmpIntensityService {
+	// Load XMP intensity distributions from file
+	rpc Load(Load_Request) returns (Load_Response) {}
+	// Save XMP intensity distributions to file
+	rpc Save(Save_Request) returns (Save_Response) {}
+
+	// import XmpDistribution to COptisMap
+	rpc Import(XmpDistribution) returns (Import_Response) {}
+	// export COPtisMap to XmpDistribution
+	rpc Export(Export_Request) returns (XmpDistribution) {}
+}
+
+// xmp map definition
+message XmpDistribution {
+	oneof map {
+		ExtendedMap extended_map = 1;
+		SpectralMap spectral_map = 2;
+	}
+}
+
+message Load_Request {
+	string file_uri = 1;
+}
+
+message Load_Response {
+}
+
+message Save_Request {
+	string file_uri = 1;
+}
+
+message Save_Response {
+}
+
+message Import_Response {
+}
+
+message Export_Request {
+}

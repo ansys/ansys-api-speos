@@ -1,0 +1,77 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "ansys/api/speos/simulation/v1/common.proto";
+
+package ansys.api.speos.simulation.v1;
+
+// Ray file types available
+enum EnumRayFileType {
+	RayFileNone = 0; // Generates no ray file.
+	RayFileClassic = 1; // Generates a ray file without polarization data.
+	RayFilePolarization = 2; // Generates a ray file with the polarization data for each ray.
+	RayFileTM25 = 3; // Generates a .tm25ray file with polarization data for each ray.
+	RayFileTM25NoPolarization = 4; // Generates a .tm25ray file without polarization data.
+}
+
+enum EnumSCAFilteringType {
+	LastImpact = 0;
+	IntersectedOneTime = 1;
+}
+enum EnumSequenceType {
+	Geometries = 0;
+	Faces = 1;
+}
+
+// Includes the simulation's results in one layer.
+message LayerTypeNone {}
+// Includes one layer per active source in the result.
+message LayerTypeSource {}
+// Includes one layer per surface selected in the result.
+message LayerTypeFace {
+	EnumSCAFilteringType sca_filtering_mode = 1;
+}
+// Includes one layer per sequence in the result.
+message LayerTypeSequence {
+	uint32 maximum_nb_of_sequence = 1;
+	EnumSequenceType define_sequence_per = 2;
+}
+// Includes one layer per Stokes parameter using the polarization parameter.
+message LayerTypePolarization {}
+// Include one layer per range of incident angles.
+message LayerTypeIncidenceAngle {
+	uint32 sampling = 1;
+}
+
+
+message CameraSensorProperties {
+	CoordinateSystem sensor_position = 1; // Position of the sensor
+	string trajectory_file_uri = 2; // Trajectory file, used to define the position and orientations of the Camera sensor in time.
+	oneof layer_type {
+		LayerTypeNone layer_type_none = 3; // Layer type : None
+		LayerTypeSource layer_type_source = 4; // Layer type : Source
+	}
+}
+
+message IrradianceSensorProperties {
+	CoordinateSystem sensor_position = 1; // Position of the sensor
+	EnumRayFileType ray_file_type = 2; // Choose type of ray file generated after the simulation.
+	oneof layer_type {
+		LayerTypeNone layer_type_none = 3; // Layer type : None
+		LayerTypeSource layer_type_source = 4; // Layer type : Source
+		LayerTypeFace layer_type_face = 5; // Layer type : Face
+		LayerTypeSequence layer_type_sequence = 6; // Layer type : Sequence
+		LayerTypePolarization layer_type_polarization = 7; // Layer type : Polarization
+		LayerTypeIncidenceAngle layer_type_incidence_angle = 8; // Layer type : Incidence angle
+	}
+}
+
+message RadianceSensorProperties {
+	CoordinateSystem sensor_position = 1; // Position of the sensor
+	oneof layer_type {
+		LayerTypeNone layer_type_none = 2; // Layer type : None
+		LayerTypeSource layer_type_source = 3; // Layer type : Source
+		LayerTypeFace layer_type_face = 4; // Layer type : Face
+		LayerTypeSequence layer_type_sequence = 5; // Layer type : Sequence
+	}
+}

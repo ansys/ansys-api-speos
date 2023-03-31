@@ -1,0 +1,44 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.sensor.v1;
+
+// Integration made orthogonally with the sensor plan.
+message IlluminanceTypePlanar {
+	repeated double integration_direction = 1; // integration_direction : x, y, z (by default: 0, 0, -1)
+}
+message IlluminanceTypeRadial {}
+message IlluminanceTypeHemispherical {}
+message IlluminanceTypeCylindrical {}
+message IlluminanceTypeSemiCylindrical {
+	repeated double integration_direction = 1; // integration_direction : x, y, z (by default: 0, 0, -1)
+}
+
+// Spectral excursion to use for simulation
+message WavelengthsRange {
+	double w_start = 1; // Defines the minimum wavelength. (nm)
+	double w_end = 2; // Defines the maximum wavelength. (nm)
+	uint32 w_sampling = 3; // Defines the number of wavelength to be taken into account between the minimum and minimum wavelengths set.
+}
+// Dimensions of the sensor
+message SensorDimensions {
+	double x_start = 1; // (mm)
+	double x_end = 2; // (mm)
+	uint32 x_sampling = 3; // Corresponds to the number of pixels of the XMP map.
+	double y_start = 4; // (mm)
+	double y_end = 5; // (mm)
+	uint32 y_sampling = 6; // Corresponds to the number of pixels of the XMP map.
+}
+
+// The sensor considers the visible spectrum and gets the results in lm/m2 or lx.
+message SensorTypePhotometric {}
+// Color results without any spectral data or layer separation (in lx or W//m2).
+message SensorTypeColorimetric {
+	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+}
+// The sensor considers the entire spectrum and gets the results in W/m2.
+message SensorTypeRadiometric {}
+// Color results and spectral data separated by wavelength (in lx or W/m2).
+message SensorTypeSpectral {
+	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+}

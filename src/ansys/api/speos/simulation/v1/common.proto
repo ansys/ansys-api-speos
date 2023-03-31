@@ -1,0 +1,12 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.simulation.v1;
+
+
+message CoordinateSystem {
+	repeated double origin = 1; // origin : x, y, z
+	repeated double x_vector = 2; // x_vector : x, y, z
+	repeated double y_vector = 3; // y_vector : x, y, z
+	repeated double z_vector = 4; // z_vector : x, y, z
+}

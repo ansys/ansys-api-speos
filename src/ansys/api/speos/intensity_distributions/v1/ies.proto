@@ -1,0 +1,62 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.intensity_distributions.v1.ies;
+
+// service to manage IES files
+service IesIntensityService {
+	// serialization for native files
+	rpc Load(Load_Request) returns (Load_Response) {}
+	rpc Save(Save_Request) returns (Save_Response) {}
+
+	// import export of IesIntensityDistribution to CIES
+	rpc Import(IesIntensityDistribution) returns (Import_Response) {}
+	rpc Export(Export_Request) returns (IesIntensityDistribution) {}
+}
+
+message IesIntensityDistribution {
+	int32 norme_version = 1;
+	repeated string key_words = 2;
+	int32 unit = 3;
+	int32 nb_vertical_angle = 4;
+	int32 nb_horizontal_angle = 5;
+	int32 tilt_type = 6;
+	int32 tilt_geometry = 7;
+	int32 nb_lamp = 8;
+	int32 photo_type = 9;
+	double lumen_lamp = 10;
+	double multiplier = 11;
+	double width = 12;
+	double length = 13;
+	double height = 14;
+	double ballast = 15;
+	double future_use = 16;
+	double input_watt = 17;
+	repeated double vertical_angle = 18;
+	repeated double horizontal_angle = 19;
+	repeated double candela_value = 20;
+	repeated double tilt_angle = 21;
+	repeated double tilt_mult_factor = 22;
+	double local_vert = 23;
+	int32 tilt_nb_pair_angle = 24;
+}
+
+message Load_Request {
+	string file_uri = 1;
+}
+
+message Save_Request {
+	string file_uri = 1;
+}
+
+message Load_Response {
+}
+
+message Save_Response {
+}
+
+message Import_Response {
+}
+
+message Export_Request {
+}

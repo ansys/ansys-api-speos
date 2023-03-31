@@ -2,12 +2,24 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 package ansys.api.speos.example.v1;
 
-service Example {
-	rpc Test1(Test1Request) returns (google.protobuf.Empty) {}
-	rpc Test2(google.protobuf.Empty) returns (Test2Response) {}
+// Example service
+service ExampleService {
+	// First service named Test1
+	rpc Test1(Test1Request) returns (google.protobuf.Empty) {} // End of line doc
+	// Second service named Test1
+	rpc Test2(google.protobuf.Empty) returns (Test2Response) {} // Another end of line doc
+	// A service with incoming stream
+	rpc TestInStream(stream Test1Request) returns (google.protobuf.Empty) {}
+	// A service with outcoming stream
+	rpc TestOutStream(google.protobuf.Empty) returns (stream Test2Response) {}
+	// Last service with bidirectional stream
+	rpc TestBiStream(stream Test1Request) returns (stream Test2Response) {}
 }
 
 message Test1Request {
@@ -17,3 +29,66 @@ message Test1Request {
 message Test2Response {
 	int64 int2 = 1;	
 }
+
+enum TestEnum {
+  A = 0;
+  B = 1;
+  C = 2;
+}
+
+// Message with all kind of field
+message TestAllFields {
+	double mydouble = 1; // double element
+	float myfloat = 2; // float element
+	int32 myint32 = 3; // int32 element
+	int64 myint64 = 4; // int64 element
+	uint32 myuint32 = 5; // uint32 element
+	uint64 myuint64 = 6; // uint64 element
+	sint32 mysint32 = 7; // sint32 element
+	sint64 mysint64 = 8; // sint64 element
+	fixed32 myfixed32 = 9; // fixed32 element
+	fixed64 myfixed64 = 10; // fixed64 element
+	sfixed32 mysfixed32 = 11; // sfixed32 element
+	sfixed64 mysfixed64 = 12; // sfixed64 element
+	bool mybool = 13; // bool element
+	string mystring = 14; // string element
+	bytes mybytes = 15; // bytes element
+	TestEnum myenum = 16; // TestEnum element
+	Test1Request myTest1Request = 17; // Test1Request element
+}
+
+// Message with all kind of field repeated
+message TestAllFieldsRepeated {
+	repeated double mydoubles = 1; // double element
+	repeated float myfloats = 2; // float element
+	repeated int32 myint32s = 3; // int32 element
+	repeated int64 myint64s = 4; // int64 element
+	repeated uint32 myuint32s = 5; // uint32 element
+	repeated uint64 myuint64s = 6; // uint64 element
+	repeated sint32 mysint32s = 7; // sint32 element
+	repeated sint64 mysint64s = 8; // sint64 element
+	repeated fixed32 myfixed32s = 9; // fixed32 element
+	repeated fixed64 myfixed64s = 10; // fixed64 element
+	repeated sfixed32 mysfixed32s = 11; // sfixed32 element
+	repeated sfixed64 mysfixed64s = 12; // sfixed64 element
+	repeated bool mybools = 13; // bool element
+	repeated string mystrings = 14; // string element
+	repeated bytes mybytess = 15; // bytes element
+	repeated TestEnum myenums = 16; // TestEnum element
+	repeated Test1Request myTest1Requests = 17; // Test1Request element
+}
+
+// Message with all kind of field repeated
+message TestAllFieldsExtended {
+	map<string, double> myMap = 1; // double map element
+	map<string, Test1Request> myMapMess = 2; // message map element
+	google.protobuf.Any myAny = 4; // any element
+	oneof myOneOf { // Oneof element
+		string name = 5; // name string option
+		Test1Request message = 6; // message option
+	}
+	google.protobuf.Timestamp myTimestamp = 7; // timestamp element
+	google.protobuf.Duration myDuration = 8; // duration element
+	google.protobuf.Empty myEmpty = 9; // empty element
+}
+

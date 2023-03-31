@@ -1,34 +1,69 @@
 // (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
+import "ansys/api/speos/simulation/v1/sensor_properties.proto";
+
 package ansys.api.speos.simulation.v1;
 
-// service to manage speos system
-service SpeosSimulationsManager {
-	/*! @brief Allocate System*/
+// Service to manage a simulation
+service SimulationsManager {
+	// Create a Simulation
 	rpc Create(Create_Request) returns (Create_Response) {}
-
-	/*! @brief System Deallocation*/
+	// Read a Simulation
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a Simulation
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a Simulation
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
-
-	/*! @brief List all simulations in manager
-	@param[out] guids: list of all systems guids in manager */
+	// List all Simulations in manager
 	rpc List(List_Request) returns (List_Response) {}
 }
 
-message Create_Request {}
-message Create_Response {
-	string guid = 1;
+// Complete sensor information : its name, template via guid, and properties (position, layer separation, ...)
+message Sensor {
+	string name = 1; // Sensor name
+	string guid = 2; // SensorTemplate guid in SensorTemplates Manager
+	string result_file_name = 3; // Result file name without extention. Result files of the sensor will be based on this name.
+	oneof properties {
+		CameraSensorProperties camera_sensor_properties = 4;
+		IrradianceSensorProperties irradiance_sensor_properties = 5;
+		RadianceSensorProperties radiance_sensor_properties = 6;
+	}
 }
 
+// Simulation definition
+message Simulation {
+	repeated Sensor sensors = 1; // Sensors present in the simulation
+}
+
+// Request to create a Simulation in SimulationsManager
+message Create_Request {}
+message Create_Response {
+	string guid = 1; // Guid of the Simulation created in SimulationsManager
+}
+// Request to read a Simulation in SimulationsManager
+message Read_Request {
+	string guid = 1; // Guid of the Simulation to be read
+}
+message Read_Response {
+	Simulation simulation = 1; // Simulation corresponding to the guid given in Read_Request
+}
+// Request to update a Simulation in SimulationsManager
+message Update_Request {
+	string guid = 1; // Guid of the Simulation to be updated
+	Simulation simulation = 2; // Simulation that will be use for the update
+}
+message Update_Response {
+}
+// Request to delete a Simulation in SimulationsManager
 message Delete_Request {
-	string guid = 1;
+	string guid = 1; // Guid of the Simulation to be deleted
 }
 message Delete_Response {}
 
 message List_Request {}
 message List_Response {
-	repeated string guids = 1;
+	repeated string guids = 1; // Guids of the Simulations in SimulationsManager
 }
 
 
@@ -68,3 +103,4 @@ message GetName_Request {
 message GetName_Response {
 	string name = 1;
 }
+
