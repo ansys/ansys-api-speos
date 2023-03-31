@@ -1,0 +1,21 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "ansys/api/speos/intensity_distributions/v1/base_map_template.proto";
+
+package ansys.api.speos.intensity_distributions.v1.xmp;
+
+message Values {
+	message Layers {
+		message ys {
+			repeated double x = 1; // x samples of the map
+		}
+		repeated ys y = 1; // y samples of the map
+	}
+	repeated Layers layer = 1; // map layers
+}
+
+message ExtendedMap {
+	Map base_data = 1;
+	Values value = 2;
+}

@@ -1,0 +1,87 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "ansys/api/speos/sensor/v1/common.proto";
+
+package ansys.api.speos.sensor.v1;
+
+enum EnumSensorCameraPNGBits {
+	PNG_08 = 0;
+	PNG_10 = 1;
+	PNG_12 = 2;
+	PNG_16 = 3;
+}
+
+// Simulation results are available in color according to the White Balance mode.
+message SensorCameraColorModeColor {
+	string red_spectrum_file_uri = 1;
+	string green_spectrum_file_uri = 2;
+	string blue_spectrum_file_uri = 3;
+}
+// Simulation results are available in grey scale.
+message SensorCameraColorModeMonochromatic {
+	string spectrum_file_uri = 1;
+}
+
+// The spectral transmittance of the optical system and the spectral sensitivity for each channel are applied to the detected spectral image before the conversion in a three channel results. This method is referred to as the basic conversion.
+message SensorCameraBalanceModeNone {}
+// The grey world assumption states that the content of the image is grey on average. This method converts spectral results in a three channel results with the basic conversion. Then it computes and applies coefficients to the red, green and blue images to make sure their averages are equal.
+message SensorCameraBalanceModeGreyworld {}
+// In addition to the basic treatment, it allows you to apply your own coefficients to the red, green, blue images.
+message SensorCameraBalanceModeUserwhite {
+	double red_gain = 1;
+	double green_gain = 2;
+	double blue_gain = 3;
+}
+// Spectral results are converted in a three channels result. Then a post-treatment is realized to take the distortion induced by the display devices into account. With this method, displayed results are similar to what the camera really gets.
+message SensorCameraBalanceModeDisplay {
+	string red_display_file_uri = 1;
+	string green_display_file_uri = 2;
+	string blue_display_file_uri = 3;
+}
+
+// Simplified version of the Camera Sensor definition parameters
+message SensorCameraModeGeometric {}
+// Allows to set every Camera Sensor parameters, including the photometric definition parameters
+message SensorCameraModePhotometric {
+	double acquisition_integration = 1;
+	double acquisition_lag_time = 2;
+
+	string transmittance_file_uri = 3; // Amount of light of the source that passes through the lens and reaches the sensor. The transmittance is expressed in a .spectrum file.
+
+	float gamma_correction = 4; // Compensation of the curve before the display on the screen.
+	EnumSensorCameraPNGBits png_bits = 5; // Choose between 8, 10, 12 and 16-bit.
+
+	oneof color_mode {
+		SensorCameraColorModeColor color_mode_color = 6; // Color mode : Color
+		SensorCameraColorModeMonochromatic color_mode_monochromatic = 7; // Color mode : Monochromatic
+	}
+
+	oneof balance_mode {
+		SensorCameraBalanceModeNone balance_mode_none = 8; // Balance mode : None
+		SensorCameraBalanceModeGreyworld balance_mode_greyworld = 9; // Balance mode : Greyworld
+		SensorCameraBalanceModeUserwhite balance_mode_userwhite = 10; // Balance mode : Userwhite
+		SensorCameraBalanceModeDisplay balance_mode_display = 11; // Balance mode : Display
+	}
+
+	WavelengthsRange wavelengths_range = 12; // Spectral excursion to use for simulation
+}
+
+message CameraSensorTemplate {
+	string sensor_name = 1; // Name of the sensor
+
+	oneof sensor_mode {
+		SensorCameraModeGeometric sensor_mode_geometric = 2; // Sensor mode : Geometric
+		SensorCameraModePhotometric sensor_mode_photometric = 3; // Sensor mode : Photometric
+	}
+
+	double focal_length = 4; // Distance between the center of the optical system and the focus. (mm)
+	double imager_distance = 5; // The imager is located at the focal point. The Imager distance has no impact on the result.
+	double f_number = 6; // F-number represent the aperture of the front lens. F number has no impact on the result.
+	string distorsion_file_uri = 7; // Optical aberration that deforms and bend straight lines. The distortion is expressed in a .OPTDistortion file.
+
+	uint32 horz_pixel = 8; // Defines the horizontal pixels number corresponding to the camera resolution.
+	uint32 vert_pixel = 9; // Defines the vertical pixels number corresponding to the camera resolution.
+	double width = 10; // Defines the sensor's width.
+	double height = 11; // Defines the sensor's height.
+}

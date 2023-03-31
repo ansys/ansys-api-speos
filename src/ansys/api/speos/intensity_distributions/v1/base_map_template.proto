@@ -1,0 +1,142 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.intensity_distributions.v1.xmp;
+
+enum ValueTypes {
+	OptisValueTypeIrradiance = 0;
+	OptisValueTypeIntensity = 1;
+	OptisValueTypeRadiance = 2;
+	OptisValueTypeVisual = 3;
+	OptisValueTypeSel = 4;
+	OptisValueTypeLaserPhase = 5;
+	OptisValueTypeLaserPhasePlane = 6;
+	OptisValueTypeDirectionalIrradiance = 7;
+	OptisValueTypeGain = 8;
+	OptisValueTypeWaveFront = 9;
+	OptisValueTypeFTM = 10;
+	OptisValueTypeRP = 11;
+	OptisValueTypePowerDensity = 12;
+	OptisValueTypePopulation = 13;
+	OptisValueTypeTemperature = 14;
+	OptisValueTypeAngle = 15;
+	OptisValueTypeCurvature = 16;
+	OptisValueTypeCurvatureProduct = 17;
+	OptisValueTypePercentage = 18;
+	OptisValueTypeUnknown = 19;
+	OptisValueTypeRefractivePower = 20;
+	OptisValueTypeFlyThrough = 21;
+	OptisValueTypeColorimetricError = 22;
+	OptisValueTypeConoscopicRadiance = 23;
+	OptisValueTypeSNR = 24;
+	OptisValueTypeSNRIntensity = 25;
+	OptisValueTypeSNRDirectionalIrradiance = 26;
+	OptisValueTypePrecision = 27;
+	OptisValueTypePrecisionIntensity = 28;
+	OptisValueTypePrecisionDirectionalIrradiance = 29;
+	OptisValueTypeDistance = 30;
+	OptisValueTypeEyeSensorRadiance = 31;
+	OptisValueTypeSphericalProbabilityDensity = 32;
+	OptisValueTypeRSE = 33;
+	OptisValueTypeRSEIntensity = 34;
+	OptisValueTypeExposure = 35;
+}
+
+enum IntensityTypes {
+	OptisIntensityOptis = 0;
+	OptisIntensitySAETypeA = 1;
+	OptisIntensitySAETypeB = 2;
+	OptisIntensityConoscopic = 3;
+}
+
+enum UnitTypes {
+	OptisUnitTypeRadiometric = 0;
+	OptisUnitTypePhotometric = 1;
+	OptisUnitTypeGain = 2;
+	OptisUnitTypeUnknown = 3;
+	OptisUnitTypeFTM = 4;
+	OptisUnitTypeDegree = 5;
+	OptisUnitTypeInverseMeter = 6;
+	OptisUnitTypeInverseSquareMeter = 7;
+	OptisUnitTypePercent = 8;
+	OptisUnitTypeDiopter = 9;
+	OptisUnitTypeMeter = 10;
+	OptisUnitTypeInverseSteradian = 11;
+}
+
+enum CIEStandard {
+	CIE_STANDARD_UNKNOWN = 0;
+	CIE_STANDARD_1931 = 1;
+	CIE_STANDARD_1964 = 2;
+}
+
+enum CoordinateUnits {
+	OptisUnitDefault = 0;
+	OptisUnitMillimetre = 1;
+	OptisUnitDegree = 2;
+	OptisUnitRadian = 3;
+	OptisUnitFeet = 4;
+	OptisUnitMicrometre = 5;
+	OptisUnitNanometre = 6;
+	OptisUnitMetre = 7;
+	OptisUnitPercent = 8;
+	OptisUnitdB = 9;
+	OptisUnitInvertMillimetre = 10;
+	OptisUnitNoUnit = 11;
+	OptisUnitWave = 12;
+}
+
+enum MapTypes {
+	OptisMapTypeBasic = 0;
+	OptisMapTypeLaser = 1;
+	OptisMapTypeSpectral = 2;
+	OptisMapTypeExtended = 3;
+	OptisMapTypeUnknown = 4;
+	OptisMapTypeGainMatrix = 5;
+	OptisMapTypeRays = 6;
+	OptisMapTypeFTM = 7;
+	OptisMapTypeOptisVR = 8;
+	OptisMapType3D = 9;
+}
+
+enum LayerTypes {
+	OptisMapLayerTypeNone = 0;
+	OptisMapLayerTypeSource = 1;
+	OptisMapLayerTypeSurface = 2;
+	OptisMapLayerTypeError = 3;
+	OptisMapLayerTypeSequence = 4;
+	OptisMapLayerTypePolarization = 5;
+	OptisMapLayerTypeIncidenceAngle = 6;
+}
+
+message LayerData {
+	string layer_name = 1;
+	double initial_source_power = 2;
+	double initial_source_power_watt = 3;
+	double initial_source_power_lumen = 4;
+	repeated double wavelength = 5;
+	repeated double value = 6;
+}
+
+message Map {
+	int32 x_nb = 1; // number of x samples
+	int32 y_nb = 2; // number of y samples
+	int32 layer_nb = 3; // number of layers
+	double x_min = 4;
+	double x_max = 5;
+	double y_min = 6;
+	double y_max = 7;
+	double precision = 8;
+	ValueTypes value_type = 9;
+	IntensityTypes intensity_type = 10;
+	UnitTypes unit_type = 11;
+	CIEStandard colorimetric_standard = 12;
+	CoordinateUnits coordinate_unit = 13;
+	MapTypes map_type = 14;
+	LayerTypes layer_type = 15;
+	repeated LayerData layer = 16;
+	bool is_finite_distance = 17;
+	double finite_difference_sensor_radius = 18;
+	bool detector_extent = 19;
+	double rad_angular_resolution_radius = 20;
+}

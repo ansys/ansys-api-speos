@@ -1,0 +1,54 @@
+// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "ansys/api/speos/intensity_distributions/v1/base_map_template.proto";
+
+package ansys.api.speos.intensity_distributions.v1.xmp;
+
+message SpectralValues {
+	message Layers {
+		message Wavelengths {
+			message ys {
+				repeated float x = 1;  // x samples of the map
+			}
+			repeated ys y = 1; // y samples of the map
+		}
+		repeated Wavelengths wavelength = 1; // wavelength
+	}
+	repeated Layers layer = 1; // map layer
+}
+
+message ColorValues {
+	message Layers {
+		message ys {
+			message xs {
+				float color_x = 1;
+				float color_y = 2;
+				float color_z = 3;
+				float radio = 4;
+			}
+			repeated xs x = 1; // x samples of the map
+		}
+		repeated ys y = 1;  // y samples of the map
+	}
+	repeated Layers layer = 1; // map layer
+}
+
+message Depth {
+	message ys {
+		repeated float x = 1; // x samples of the map
+	}
+	repeated ys y = 1; // y samples of the map
+}
+
+message SpectralMap {
+	Map base_data = 1;
+	int32 wavelength_nb = 2;
+	double wavelength_min = 3;
+	double wavelength_max = 4;
+	SpectralValues spectral_value = 5; // spectral values
+	ColorValues color_value = 6; // colorimetric and radiometric data
+	Depth depth_value = 7;
+	bool spectral_data_loaded = 8; // spectral data is not always loaded unless explicitly specified
+	bool depth_data_loaded = 9; // depth data not always filled out
+}
