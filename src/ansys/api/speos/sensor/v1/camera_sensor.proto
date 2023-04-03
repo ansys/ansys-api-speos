@@ -1,4 +1,4 @@
-// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/common.proto";
@@ -68,7 +68,7 @@ message SensorCameraModePhotometric {
 }
 
 message CameraSensorTemplate {
-	string sensor_name = 1; // Name of the sensor
+	string sensor_name = 1; // Deprecated - use instead SensorTemplate.name
 
 	oneof sensor_mode {
 		SensorCameraModeGeometric sensor_mode_geometric = 2; // Sensor mode : Geometric

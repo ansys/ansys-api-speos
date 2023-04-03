@@ -1,4 +1,4 @@
-// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "ansys/api/speos/simulation/v1/sensor_properties.proto";
@@ -33,6 +33,8 @@ message Sensor {
 
 // Simulation definition
 message Simulation {
+	string name = 2; // Simulation name
+	string guid = 3; // SimulationTemplate guid in SimulationTemplates Manager
 	repeated Sensor sensors = 1; // Sensors present in the simulation
 }
 
@@ -51,7 +53,7 @@ message Read_Response {
 // Request to update a Simulation in SimulationsManager
 message Update_Request {
 	string guid = 1; // Guid of the Simulation to be updated
-	Simulation simulation = 2; // Simulation that will be use for the update
+	Simulation simulation = 2; // Simulation that will be used for the update
 }
 message Update_Response {
 }
