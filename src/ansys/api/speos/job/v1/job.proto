@@ -1,7 +1,8 @@
-// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "ansys/api/speos/file/v1/file_transfer.proto";
+import "ansys/api/speos/job/v1/simulation_properties.proto";
 import "google/protobuf/duration.proto";
 
 package ansys.api.speos.job.v1;
@@ -27,12 +28,23 @@ enum Job_Type {
 	GPU = 1;
 }
 
+message Job {
+	string simu_guid = 1; // Guid of the Simulation in SimulationsManager
+	Job_Type job_type = 2; // Type of the job : CPU, GPU, ...
+	oneof simu_properties {
+		DirectMCSimulationProperties direct_mc_simulation_properties = 3; // Properties to be filled for simulation based on DirectMCSimulationTemplate
+		InverseMCSimulationProperties inverse_mc_simulation_properties = 4; // Properties to be filled for simulation based on InverseMCSimulationTemplate 
+	}
+}
+
+// Request to create a Job in SpeosJobsManager
 message Create_Request {
-	string simu_guid = 1;
-	Job_Type job_type = 2;
+	string simu_guid = 1; // Deprecated - use instead job.simu_guid
+	Job_Type job_type = 2; // Deprecated - use instead job.job_type
+	Job job = 3; // Job characteristics
 }
 message Create_Response {
-	string guid = 1;
+	string guid = 1; // Guid of the Job created in SpeosJobsManager
 }
 
 message Delete_Request {
@@ -119,18 +131,17 @@ message GetError_Response {
 	int32 error_line = 8;
 }
 
-message GetResults_Request {
-	string guid = 1;
-}
-message GetResults_Response {
-	repeated Result results = 1;
-}
-
 message Result {
 	oneof result {
 		string path = 1; // result path on the server
 		ansys.api.speos.file.v1.Upload_Response upload_response = 2; // result uploaded to server's file system -> returns Upload_Response
 	}
+}
+message GetResults_Request {
+	string guid = 1;
+}
+message GetResults_Response {
+	repeated Result results = 1;
 }
 
 message GetInformation_Request {

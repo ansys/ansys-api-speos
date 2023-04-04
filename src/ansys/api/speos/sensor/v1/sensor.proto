@@ -1,4 +1,4 @@
-// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/camera_sensor.proto";
@@ -23,6 +23,8 @@ service SensorTemplatesManager {
 
 // Sensor template with its basic characteristics
 message SensorTemplate {
+	string name = 4; // SensorTemplate name
+	string description = 5; // SensorTemplate description
 	oneof sensor_template {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
@@ -47,7 +49,7 @@ message Read_Response {
 // Request to update a SensorTemplate in SensorTemplatesManager
 message Update_Request {
 	string guid = 1; // Guid of the SensorTemplate to be updated
-	SensorTemplate sensor_template = 2; // SensorTemplate that will be use for the update
+	SensorTemplate sensor_template = 2; // SensorTemplate that will be used for the update
 }
 message Update_Response {
 }

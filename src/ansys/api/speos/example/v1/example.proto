@@ -1,4 +1,4 @@
-// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
@@ -55,6 +55,27 @@ message TestAllFields {
 	bytes mybytes = 15; // bytes element
 	TestEnum myenum = 16; // TestEnum element
 	Test1Request myTest1Request = 17; // Test1Request element
+}
+
+// Message with all kind of field optional
+message TestAllFieldsOptional {
+	optional double mydouble = 1; // double element
+	optional float myfloat = 2; // float element
+	optional int32 myint32 = 3; // int32 element
+	optional int64 myint64 = 4; // int64 element
+	optional uint32 myuint32 = 5; // uint32 element
+	optional uint64 myuint64 = 6; // uint64 element
+	optional sint32 mysint32 = 7; // sint32 element
+	optional sint64 mysint64 = 8; // sint64 element
+	optional fixed32 myfixed32 = 9; // fixed32 element
+	optional fixed64 myfixed64 = 10; // fixed64 element
+	optional sfixed32 mysfixed32 = 11; // sfixed32 element
+	optional sfixed64 mysfixed64 = 12; // sfixed64 element
+	optional bool mybool = 13; // bool element
+	optional string mystring = 14; // string element
+	optional bytes mybytes = 15; // bytes element
+	optional TestEnum myenum = 16; // TestEnum element
+	optional Test1Request myTest1Request = 17; // Test1Request element
 }
 
 // Message with all kind of field repeated

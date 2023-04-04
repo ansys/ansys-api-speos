@@ -1,4 +1,4 @@
-// (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";

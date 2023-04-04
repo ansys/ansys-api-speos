@@ -1,0 +1,77 @@
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.spectrum.v1;
+
+service SpectrumsManager {
+	// Create a Spectrum
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a Spectrum
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a Spectrum
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a Spectrum
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all Spectrums in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// Spectrum with its basic characteristics
+message Spectrum {
+	message Monochromatic{
+		double wavelength = 1; // Wavelength of the monochromatic spectrum, in nm
+	}
+	message BlackBody{
+		double temperature = 1; // Temperature of the blackbody, in K
+	}
+	message Sampled{
+		repeated double wavelengths = 1; // List of wavelengths, in nm
+		repeated double values = 2; // List of values, expected from 0. to 100. in %
+	}
+	message Library{
+		string file_uri = 1; // uri of the spectrum file
+	}
+
+	oneof spectrum {
+		Monochromatic monochromatic = 1;
+		BlackBody blackbody = 2;
+		Sampled sampled = 3;
+		Library library = 4;
+	}
+	string name = 5; // Spectrum name
+	string description = 6; // Spectrum descrition
+}
+
+
+// Request to create a Spectrum in SpectrumsManager
+message Create_Request {
+	Spectrum spectrum = 1; // Spectrum containing its basic characteristics
+}
+message Create_Response {
+	string guid = 1; // Guid of the Spectrum created in SpectrumsManager
+}
+// Request to read a Spectrum in SpectrumsManager
+message Read_Request {
+	string guid = 1; // Guid of the Spectrum to be read
+}
+message Read_Response {
+	Spectrum spectrum = 1; // Spectrum corresponding to the guid given in Read_Request
+}
+// Request to update a Spectrum in SpectrumsManager
+message Update_Request {
+	string guid = 1; // Guid of the Spectrum to be updated
+	Spectrum spectrum = 2; // Spectrum that will be used for the update
+}
+message Update_Response {
+}
+// Request to delete a Spectrum in SpectrumsManager
+message Delete_Request {
+	string guid = 1; // Guid of the Spectrum to be deleted
+}
+message Delete_Response {}
+
+message List_Request {
+}
+message List_Response {
+	repeated string guids = 1; // Guids of the Spectrums in SpectrumsManager
+}
