@@ -5,7 +5,6 @@ import "ansys/api/speos/simulation/v1/sensor_properties.proto";
 
 package ansys.api.speos.simulation.v1;
 
-// Service to manage a simulation
 service SimulationsManager {
 	// Create a Simulation
 	rpc Create(Create_Request) returns (Create_Response) {}
@@ -69,40 +68,32 @@ message List_Response {
 }
 
 
-// Low level service to manage speos system
+// Service to handle a simulation
 service SpeosSimulation {
-	/*! @brief System load from file
-	@param[in] guid: The guid to the system in the manager.
-	@param[in] input_file_path: The Path to the .speos file - or uri to the .speos file uploaded to server.*/
+	// Load a speos file into a simulation
 	rpc Load(Load_Request) returns (Load_Response) {}
-
-	/*! @brief Save simulation
-	@param[in] guid: The guid to the system in the manager.
-	@param[in] input_folder_path: The Path to the folder where the .speos file will be saved - or uri of a reserved file item on the server.*/
+	// Save a simulation
 	rpc Save(Save_Request) returns (Save_Response) {}
-
-	/*! @brief Get Name of the simulation
-	@param[in] guid: The guid to the system in the manager.
-	@param[out] name: The name of the Speos simulation.*/
+	// Get the name of a simulation
 	rpc GetName(GetName_Request) returns (GetName_Response) {}
 }
 
 message Load_Request {
-	string guid = 1;
-	string input_file_path = 2;
+	string guid = 1; // Guid of the Simulation in SimulationsManager
+	string input_file_path = 2; // Path to the .speos file - or uri of .speos file uploaded to the server via FileTransferService.
 }
 message Load_Response {}
 
 message Save_Request {
-	string guid = 1;
-	string input_folder_path = 2;
+	string guid = 1; // Guid of the Simulation in SimulationsManager
+	string input_folder_path = 2; // Path to the folder where the .speos file will be saved - or uri of a reserved file item on the server (using FileTransferService).
 }
 message Save_Response {}
 
 message GetName_Request {
-	string guid = 1;
+	string guid = 1; // Guid of the Simulation in SimulationsManager
 }
 message GetName_Response {
-	string name = 1;
+	string name = 1; // name of the Simulation corresponding to the guid given in GetName_Request
 }
 
