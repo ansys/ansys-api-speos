@@ -5,35 +5,34 @@ import "google/protobuf/duration.proto";
 
 package ansys.api.speos.file.v1;
 
-// service to transfer a file
 service FileTransferService {
-    // Reserve a file item on the server - the uri reserved will be given in Reserve_Response
+    // Reserve a FileSystemItem
     rpc Reserve(Reserve_Request) returns (Reserve_Response) {}
-    // Upload a file on the server 
+    // Upload a file 
     // Mandatory Client's Metadata:
     // key: "file-name" - value: file name
     // key: "file-size" - value: size of the file in bytes
     rpc Upload(stream Chunk) returns (Upload_Response) {}
-    // Download a file from the server
+    // Download a FileSystemItem
     // Server's' Initial Metadata:
     // key: "file-name" - value: file name
     // key: "file-size" - value: size of the file in bytes
     rpc Download(Download_Request) returns (stream Chunk) {}
-    // Delete a file on the server
+    // Delete a FileSystemItem
     rpc Delete(Delete_Request) returns (Delete_Response) {}
-    // Add file dependencies to a file
+    // Add dependencies to a FileSystemItem
     rpc AddDependencies(AddDependencies_Request) returns (AddDependencies_Response) {}
-    // List a file's dependencies
+    // List all dependencies of a FileSystemItem
     rpc ListDependencies(ListDependencies_Request) returns (ListDependencies_Response) {}
 }
 
 message Reserve_Request {}
 message Reserve_Response {
-    string uri = 1;
+    string uri = 1; // uri of the FileSystemItem reserved
 }
 
 message FileSystemItemInformation {
-    string uri = 1;
+    string uri = 1; // FileSystemItem uri
     string file_name = 2;
     uint64 file_size = 3;
 }
@@ -44,36 +43,36 @@ message Chunk {
 }
 
 message Upload_Response {
-    FileSystemItemInformation info = 1;
+    FileSystemItemInformation info = 1; // Information about the FileSystemItem created
     google.protobuf.Duration upload_duration = 2;
 }
 
 message Download_Request {
-    string uri = 1;
+    string uri = 1; // uri of the FileSystemItem to be downloaded
 }
 
 message Delete_Request {
-    string uri = 1;
+    string uri = 1; // uri of the FileSystemItem to be deleted
 }
 message Delete_Response {
 }
 
 message AddDependencies_Request {
-    string uri = 1;
-    repeated string dependency_uris = 2;
+    string uri = 1; // uri of the FileSystemItem to be completed with dependencies
+    repeated string dependency_uris = 2; // FileSystemItem uris to be added as dependencies
 }
 message AddDependencies_Response {
 }
 
 message ListDependencies_Request {
-    string uri = 1;
+    string uri = 1; // uri of the FileSystemItem
 }
 message ListDependencies_Response {
-    repeated FileSystemItemInformation dependency_infos = 1;
+    repeated FileSystemItemInformation dependency_infos = 1; // Information about the FileSystemItems noticed as dependencies
 }
 
 // Used in File Transfer helpers
 message Download_Response {
-    FileSystemItemInformation info = 1;
+    FileSystemItemInformation info = 1; // Information about the FileSystemItem downloaded
     google.protobuf.Duration download_duration = 2;
 }
