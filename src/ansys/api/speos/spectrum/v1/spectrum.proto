@@ -32,14 +32,37 @@ message Spectrum {
 		string file_uri = 1; // uri of the spectrum file
 	}
 
-	oneof spectrum {
-		Monochromatic monochromatic = 1;
-		BlackBody blackbody = 2;
-		Sampled sampled = 3;
-		Library library = 4;
+	message Incandescent{}
+	message WarmWhiteFluorescent{}
+	message DaylightFluorescent{}
+	message WhiteLED{}
+	message Halogen{}
+	message MetalHalide{}
+	message HighPressureSodium{}
+
+	// Predefined sampled spectrums
+	message Predefined{
+		oneof predefined{
+			Incandescent incandescent = 1;
+			WarmWhiteFluorescent warmwhitefluorescent = 2;
+			DaylightFluorescent daylightfluorescent = 3;
+			WhiteLED whiteLED = 4;
+			Halogen halogen = 5;
+			MetalHalide metalhalide = 6;
+			HighPressureSodium highpressuresodium = 7;
+		}
 	}
-	string name = 5; // Spectrum name
-	string description = 6; // Spectrum descrition
+
+	string name = 1; // Spectrum name
+	string description = 2; // Spectrum descrition
+
+	oneof spectrum {
+		Monochromatic monochromatic = 3;
+		BlackBody blackbody = 4;
+		Sampled sampled = 5;
+		Library library = 6;
+		Predefined predefined = 7;
+	}
 }
 
 
