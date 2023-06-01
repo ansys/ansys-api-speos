@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2022 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
 package ansys.api.speos.spectrum.v1;
@@ -32,14 +32,35 @@ message Spectrum {
 		string file_uri = 1; // uri of the spectrum file
 	}
 
+	message Incandescent{}
+	message WarmWhiteFluorescent{}
+	message DaylightFluorescent{}
+	message WhiteLED{}
+	message Halogen{}
+	message MetalHalide{}
+	message HighPressureSodium{}
+
+	message Predefined{
+		oneof predefined{
+			Incandescent incandescent = 1;
+			WarmWhiteFluorescent warmwhitefluorescent = 2;
+			DaylightFluorescent daylightfluorescent = 3;
+			WhiteLED whiteLED = 4;
+			Halogen halogen = 5;
+			MetalHalide metalhalide = 6;
+			HighPressureSodium highpressuresodium = 7;
+		}
+	}
+
 	oneof spectrum {
 		Monochromatic monochromatic = 1;
 		BlackBody blackbody = 2;
 		Sampled sampled = 3;
 		Library library = 4;
+		Predefined predefined = 5;
 	}
-	string name = 5; // Spectrum name
-	string description = 6; // Spectrum descrition
+	string name = 6; // Spectrum name
+	string description = 7; // Spectrum descrition
 }
 
 
