@@ -52,15 +52,16 @@ message Spectrum {
 		}
 	}
 
+	string name = 1; // Spectrum name
+	string description = 2; // Spectrum descrition
+
 	oneof spectrum {
-		Monochromatic monochromatic = 1;
-		BlackBody blackbody = 2;
-		Sampled sampled = 3;
-		Library library = 4;
-		Predefined predefined = 5;
+		Monochromatic monochromatic = 3;
+		BlackBody blackbody = 4;
+		Sampled sampled = 5;
+		Library library = 6;
+		Predefined predefined = 7;
 	}
-	string name = 6; // Spectrum name
-	string description = 7; // Spectrum descrition
 }
 
 
