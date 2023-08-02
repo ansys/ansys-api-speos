@@ -1,10 +1,6 @@
 // (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
-import "ansys/api/speos/sensor/v1/camera_sensor.proto";
-import "ansys/api/speos/sensor/v1/radiance_sensor.proto";
-import "ansys/api/speos/sensor/v1/irradiance_sensor.proto";
-
 package ansys.api.speos.sensor.v1;
 
 
@@ -23,13 +19,202 @@ service SensorTemplatesManager {
 
 // Sensor template with its basic characteristics
 message SensorTemplate {
-	string name = 4; // SensorTemplate name
-	string description = 5; // SensorTemplate description
-	oneof sensor_template {
-		CameraSensorTemplate camera_sensor_template = 1;
-		IrradianceSensorTemplate irradiance_sensor_template = 2;
-		RadianceSensorTemplate radiance_sensor_template = 3;
+	string name = 1; // SensorTemplate name
+	string description = 2; // SensorTemplate description
+	oneof sensor {
+		Camera camera = 3;
+		Irradiance irradiance = 4;
+		//Radiance radiance = 5;
 	}
+
+	// Spectral excursion to use
+	message WavelengthsRange {
+		double w_start = 1; // Defines the minimum wavelength. (nm)
+		double w_end = 2; // Defines the maximum wavelength. (nm)
+		uint32 w_sampling = 3; // Defines the number of wavelength to be taken into account between the minimum and minimum wavelengths set.
+	}
+	message SensorType {
+		// The sensor considers the visible spectrum and gets the results in lm/m2 or lx.
+		message Photometric {}
+		// Color results without any spectral data or layer separation (in lx or W//m2).
+		message Colorimetric {
+			WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+		}
+		// The sensor considers the entire spectrum and gets the results in W/m2.
+		message Radiometric {}
+		// Color results and spectral data separated by wavelength (in lx or W/m2).
+		message Spectral {
+			WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+		}
+
+		oneof type {
+			Photometric photometric = 1; // Sensor type : Photometric
+			Colorimetric colorimetric = 2; //  Sensor type : Colorimetric
+			Radiometric radiometric = 3; //  Sensor type : Radiometric
+			Spectral spectral = 4; // Sensor type : Spectral
+		}
+	}
+	message IlluminanceType {
+		// Integration made orthogonally with the sensor plan.
+		message Planar {
+			repeated double integration_direction = 1; // integration_direction : x, y, z (by default: 0, 0, -1)
+		}
+		message Radial {}
+		message Hemispherical {}
+		message Cylindrical {}
+		message SemiCylindrical {
+			repeated double integration_direction = 1; // integration_direction : x, y, z (by default: 0, 0, -1)
+		}
+
+		oneof type {
+			Planar planar = 1; // Illuminance type : Planar
+			Radial radial = 2; // Illuminance type : Radial
+			Hemispherical hemispherical = 3; // Illuminance type : Hemispherical
+			Cylindrical cylindrical = 4; // Illuminance type : Cylindrical
+			SemiCylindrical semi_cylindrical = 5; // Illuminance type : SemiCylindrical
+		}
+	}
+	// Dimensions of the sensor
+	message SensorDimensions {
+		double x_start = 1; // (mm)
+		double x_end = 2; // (mm)
+		uint32 x_sampling = 3; // Corresponds to the number of pixels of the XMP map.
+		double y_start = 4; // (mm)
+		double y_end = 5; // (mm)
+		uint32 y_sampling = 6; // Corresponds to the number of pixels of the XMP map.
+	}
+
+	message Camera {
+		Mode mode = 1;
+
+		double focal_length = 2; // Distance between the center of the optical system and the focus. (mm)
+		double imager_distance = 3; // The imager is located at the focal point. The Imager distance has no impact on the result.
+		double f_number = 4; // F-number represent the aperture of the front lens. F number has no impact on the result.
+		string distorsion_file_uri = 5; // Optical aberration that deforms and bend straight lines. The distortion is expressed in a .OPTDistortion file.
+
+		uint32 horz_pixel = 6; // Defines the horizontal pixels number corresponding to the camera resolution.
+		uint32 vert_pixel = 7; // Defines the vertical pixels number corresponding to the camera resolution.
+		double width = 8; // Defines the sensor's width.
+		double height = 9; // Defines the sensor's height.
+
+		message Mode{
+			// Simplified version of the Camera Sensor definition parameters
+			message Geometric {}
+			// Allows to set every Camera Sensor parameters, including the photometric definition parameters
+			message Photometric {
+				double acquisition_integration = 1;
+				double acquisition_lag_time = 2;
+				string transmittance_file_uri = 3; // Amount of light of the source that passes through the lens and reaches the sensor. The transmittance is expressed in a .spectrum file.
+				float gamma_correction = 4; // Compensation of the curve before the display on the screen.
+				EnumSensorCameraPNGBits png_bits = 5; // Choose between 8, 10, 12 and 16-bit.
+				ColorMode color_mode = 6;
+				WavelengthsRange wavelengths_range = 7; // Spectral excursion to use for simulation
+
+				enum EnumSensorCameraPNGBits {
+					PNG_08 = 0;
+					PNG_10 = 1;
+					PNG_12 = 2;
+					PNG_16 = 3;
+				}
+				message ColorMode {
+					// Simulation results are available in color according to the White Balance mode.
+					message Color {
+						string red_spectrum_file_uri = 1;
+						string green_spectrum_file_uri = 2;
+						string blue_spectrum_file_uri = 3;
+						BalanceMode balance_mode = 4;
+						
+						message BalanceMode {
+							// The spectral transmittance of the optical system and the spectral sensitivity for each channel are applied to the detected spectral image before the conversion in a three channel results. This method is referred to as the basic conversion.
+							message NoBalance {}
+							// The grey world assumption states that the content of the image is grey on average. This method converts spectral results in a three channel results with the basic conversion. Then it computes and applies coefficients to the red, green and blue images to make sure their averages are equal.
+							message Greyworld {}
+							// In addition to the basic treatment, it allows you to apply your own coefficients to the red, green, blue images.
+							message Userwhite {
+								double red_gain = 1;
+								double green_gain = 2;
+								double blue_gain = 3;
+							}
+							// Spectral results are converted in a three channels result. Then a post-treatment is realized to take the distortion induced by the display devices into account. With this method, displayed results are similar to what the camera really gets.
+							message Display {
+								string red_display_file_uri = 1;
+								string green_display_file_uri = 2;
+								string blue_display_file_uri = 3;
+							}
+
+							oneof mode {
+								NoBalance no_balance = 1; // Balance mode : None
+								Greyworld greyworld = 2; // Balance mode : Greyworld
+								Userwhite userwhite = 3; // Balance mode : Userwhite
+								Display display = 4; // Balance mode : Display
+							}
+						}
+					}
+					// Simulation results are available in grey scale.
+					message Monochromatic {
+						string spectrum_file_uri = 1;
+					}
+
+					oneof mode {
+						Color color = 1; // Color mode : Color
+						Monochromatic monochromatic = 2; // Color mode : Monochromatic
+					}
+				}
+			}
+
+			oneof mode {
+				Geometric geometric = 1; // Sensor mode : Geometric
+				Photometric photometric = 2; // Sensor mode : Photometric
+			}
+		}
+	}
+	message Irradiance {
+		oneof sensor_type {
+			SensorType.Photometric photometric_sensor_type = 1; // Sensor type : Photometric
+			SensorType.Colorimetric colorimetric_sensor_type = 2; //  Sensor type : Colorimetric
+			SensorType.Radiometric radiometric_sensor_type = 3; //  Sensor type : Radiometric
+			SensorType.Spectral spectral_sensor_type = 4; // Sensor type : Spectral
+		}
+	
+		// Select how the light should be integrated to the sensor.
+		oneof illuminance_type {
+			IlluminanceType.Planar planar_illuminance_type = 5; // Illuminance type : Planar
+			IlluminanceType.Radial radial_illuminance_type = 6; // Illuminance type : Radial
+			IlluminanceType.Hemispherical hemispherical_illuminance_type = 7; // Illuminance type : Hemispherical
+			IlluminanceType.Cylindrical cylindrical_illuminance_type = 8; // Illuminance type : Cylindrical
+			IlluminanceType.SemiCylindrical semi_cylindrical_illuminance_type = 9; // Illuminance type : SemiCylindrical
+		}
+	
+		SensorDimensions dimensions = 10; // Dimensions of the sensor
+	}
+	/*message Radiance {
+		oneof sensor_type {
+			SensorType.Photometric photometric_sensor_type = 1; // Sensor type : Photometric
+			SensorType.Colorimetric colorimetric_sensor_type = 2; //  Sensor type : Colorimetric
+			SensorType.Radiometric radiometric_sensor_type = 3; //  Sensor type : Radiometric
+			SensorType.Spectral spectral_sensor_type = 4; // Sensor type : Spectral
+		}
+
+		ObserverType observer_type = 5;
+
+		SensorDimensions dimensions = 6; // Dimensions of the sensor
+
+		message ObserverType {
+			// Define the distance between the sensor plane and the observer point.
+			message Focal {
+				double focal = 1; // (mm)
+			}
+			// Define focal point
+			message Observer {
+				repeated double focal_point = 1; // focal_point : x, y, z
+			}
+
+			oneof type {
+				Focal focal = 1; // Observer type : focal
+				Observer observer = 2; // Observer type : Observer
+			}
+		}
+	}*/
 }
 
 // Request to create a SensorTemplate in SensorTemplatesManager
@@ -65,3 +250,62 @@ message List_Response {
 	repeated string guids = 1; // Guids of the SensorTemplates in SensorTemplatesManager
 }
 
+service SensorTemplateActions {
+	rpc GetDefaultDM(GetDefaultDM_Request) returns (SensorTemplate) {}
+	rpc GetDefaultCameraModeDM(GetDefaultCameraModeDM_Request) returns (SensorTemplate.Camera.Mode) {}
+	rpc GetDefaultCameraColorModeDM(GetDefaultCameraColorModeDM_Request) returns (SensorTemplate.Camera.Mode.Photometric.ColorMode) {}
+	rpc GetDefaultCameraBalanceModeDM(GetDefaultCameraBalanceModeDM_Request) returns (SensorTemplate.Camera.Mode.Photometric.ColorMode.Color.BalanceMode) {}
+	rpc GetDefaultSensorTypeDM(GetDefaultSensorTypeDM_Request) returns (SensorTemplate.SensorType) {}
+	rpc GetDefaultIlluminanceTypeDM(GetDefaultIlluminanceTypeDM_Request) returns (SensorTemplate.IlluminanceType) {}
+}
+
+message GetDefaultDM_Request {
+	enum DefaultType {
+		CAMERA = 0;
+		IRRADIANCE = 1;
+		//RADIANCE = 2;
+	}
+	DefaultType type = 1;
+}
+message GetDefaultCameraModeDM_Request {
+	enum DefaultType {
+		GEOMETRIC = 0;
+		PHOTOMETRIC = 1;
+	}
+	DefaultType type = 1;
+}
+message GetDefaultCameraColorModeDM_Request {
+	enum DefaultType {
+		COLOR = 0;
+		MONOCHROMATIC = 1;
+	}
+	DefaultType type = 1;
+}
+message GetDefaultCameraBalanceModeDM_Request {
+	enum DefaultType {
+		NO_BALANCE = 0;
+		GREYWORLD = 1;
+		USERWHITE = 2;
+		DISPLAY = 3;
+	}
+	DefaultType type = 1;
+}
+message GetDefaultSensorTypeDM_Request {
+	enum DefaultType {
+		PHOTOMETRIC = 0;
+		COLORIMETRIC = 1;
+		RADIOMETRIC = 2;
+		SPECTRAL = 3;
+	}
+	DefaultType type = 1;
+}
+message GetDefaultIlluminanceTypeDM_Request {
+	enum DefaultType {
+		PLANAR = 0;
+		RADIAL = 1;
+		HEMISPHERICAL = 2;
+		CYLINDRICAL = 3;
+		SEMI_CYLINDRICAL = 4;
+	}
+	DefaultType type = 1;
+}
