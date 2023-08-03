@@ -98,3 +98,19 @@ message List_Request {
 message List_Response {
 	repeated string guids = 1; // Guids of the Spectrums in SpectrumsManager
 }
+
+// Actions available on a Spectrum
+service SpectrumActions {
+	rpc GetDefaultDM(GetDefaultDM_Request) returns (Spectrum) {}
+}
+
+message GetDefaultDM_Request {
+	enum DefaultType {
+		MONOCHROMATIC = 0;
+		BLACKBODY = 1;
+		SAMPLED = 2;
+		LIBRARY = 3;
+		PREDEFINED = 4;
+	}
+	DefaultType type = 1;
+}
