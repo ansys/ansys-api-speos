@@ -21,7 +21,6 @@ enum EnumColorimetricStandard {
 
 // The Direct Simulation is commonly used to analyze standard optical systems.
 message DirectMCSimulationTemplate {
-	string name = 1; // Deprecated - use instead SimulationTemplate.name
 	double geom_distance_tolerance = 2; // Maximum distance to consider two faces as tangent.
 	int32 max_impact = 3; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 	Weight weight = 4; // Activates Weight. Highly recommended to fill
@@ -34,7 +33,6 @@ message DirectMCSimulationTemplate {
 // The Inverse Simulation allows to reverse the light trajectory direction. 
 // The propagation is done from the sensors to the sources. It is useful when needing to analyze optical systems where the sensors are small and the sources are diffuse.
 message InverseMCSimulationTemplate {
-	string name = 1; // Deprecated - use instead SimulationTemplate.name
 	double geom_distance_tolerance = 2; // Maximum distance to consider two faces as tangent.
 	int32 max_impact = 3; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 	Weight weight = 4; // Activates Weight. Highly recommended to fill
@@ -54,6 +52,32 @@ message SimulationTemplate {
 	oneof simulation_template {
 		DirectMCSimulationTemplate direct_mc_simulation_template = 1;
 		InverseMCSimulationTemplate inverse_mc_simulation_template = 2;
+		Interactive interactive_simulation_template = 5;
+	}
+
+	message Interactive {
+		CommonPropagationParameters common_propagation_params = 1;
+		string ambient_material_uri = 2; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
+	}
+	message CommonPropagationParameters {
+		double geom_distance_tolerance = 1; // Maximum distance to consider two faces as tangent.
+		int32 max_impact = 2; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+		Weight weight = 3; // Activates Weight. Highly recommended to fill
+		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
+
+		// The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
+		// Activating weight means that the Weight message is present.
+		// When weight is not activated, rays' energy stay constant and probability laws dictate if they continue or stop propagating.
+		// It is highly recommended to fill this parameter excepted in interactive simulation.
+		// Not fill this parameter is useful to understand certain phenomena as absorption.
+		message Weight {
+			double minimum_energy_percentage = 1; // The Minimum energy percentage parameter defines the minimum energy ratio to continue to propagate a ray with weight.
+		}
+		// Default Colorimetric Standard
+		enum EnumColorimetricStandard {
+			CIE_1931 = 0; // 2 degrees CIE Standard Colorimetric Observer Data.
+			CIE_1964 = 1; // 10 degrees CIE Standard Colorimetric Observer Data.
+		}
 	}
 }
 
