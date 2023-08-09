@@ -44,8 +44,8 @@ message SensorCameraBalanceModeDisplay {
 message SensorCameraModeGeometric {}
 // Allows to set every Camera Sensor parameters, including the photometric definition parameters
 message SensorCameraModePhotometric {
-	double acquisition_integration = 1;
-	double acquisition_lag_time = 2;
+	double acquisition_integration = 1; // Acquisition integration in s
+	double acquisition_lag_time = 2; // Acquisition lag time in s
 
 	string transmittance_file_uri = 3; // Amount of light of the source that passes through the lens and reaches the sensor. The transmittance is expressed in a .spectrum file.
 
@@ -76,12 +76,12 @@ message CameraSensorTemplate {
 	}
 
 	double focal_length = 4; // Distance between the center of the optical system and the focus. (mm)
-	double imager_distance = 5; // The imager is located at the focal point. The Imager distance has no impact on the result.
+	double imager_distance = 5; // Imager distance in mm, the imager is located at the focal point. The Imager distance has no impact on the result.
 	double f_number = 6; // F-number represent the aperture of the front lens. F number has no impact on the result.
 	string distorsion_file_uri = 7; // Optical aberration that deforms and bend straight lines. The distortion is expressed in a .OPTDistortion file.
 
 	uint32 horz_pixel = 8; // Defines the horizontal pixels number corresponding to the camera resolution.
 	uint32 vert_pixel = 9; // Defines the vertical pixels number corresponding to the camera resolution.
-	double width = 10; // Defines the sensor's width.
-	double height = 11; // Defines the sensor's height.
+	double width = 10; // Defines the sensor's width in mm.
+	double height = 11; // Defines the sensor's height in mm.
 }
