@@ -56,28 +56,11 @@ message SimulationTemplate {
 	}
 
 	message Interactive {
-		CommonPropagationParameters common_propagation_params = 1;
-		string ambient_material_uri = 2; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
-	}
-	message CommonPropagationParameters {
-		double geom_distance_tolerance = 1; // Maximum distance to consider two faces as tangent.
+		double geom_distance_tolerance = 1; // Maximum distance in mm to consider two faces as tangent.
 		int32 max_impact = 2; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 		Weight weight = 3; // Activates Weight. Highly recommended to fill
 		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
-
-		// The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
-		// Activating weight means that the Weight message is present.
-		// When weight is not activated, rays' energy stay constant and probability laws dictate if they continue or stop propagating.
-		// It is highly recommended to fill this parameter excepted in interactive simulation.
-		// Not fill this parameter is useful to understand certain phenomena as absorption.
-		message Weight {
-			double minimum_energy_percentage = 1; // The Minimum energy percentage parameter defines the minimum energy ratio to continue to propagate a ray with weight.
-		}
-		// Default Colorimetric Standard
-		enum EnumColorimetricStandard {
-			CIE_1931 = 0; // 2 degrees CIE Standard Colorimetric Observer Data.
-			CIE_1964 = 1; // 10 degrees CIE Standard Colorimetric Observer Data.
-		}
+		string ambient_material_uri = 5; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 	}
 }
 
