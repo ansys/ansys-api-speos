@@ -21,7 +21,6 @@ enum EnumColorimetricStandard {
 
 // The Direct Simulation is commonly used to analyze standard optical systems.
 message DirectMCSimulationTemplate {
-	string name = 1; // Deprecated - use instead SimulationTemplate.name
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
 	int32 max_impact = 3; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 	Weight weight = 4; // Activates Weight. Highly recommended to fill
@@ -34,7 +33,6 @@ message DirectMCSimulationTemplate {
 // The Inverse Simulation allows to reverse the light trajectory direction. 
 // The propagation is done from the sensors to the sources. It is useful when needing to analyze optical systems where the sensors are small and the sources are diffuse.
 message InverseMCSimulationTemplate {
-	string name = 1; // Deprecated - use instead SimulationTemplate.name
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
 	int32 max_impact = 3; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 	Weight weight = 4; // Activates Weight. Highly recommended to fill
@@ -54,6 +52,15 @@ message SimulationTemplate {
 	oneof simulation_template {
 		DirectMCSimulationTemplate direct_mc_simulation_template = 1;
 		InverseMCSimulationTemplate inverse_mc_simulation_template = 2;
+		Interactive interactive_simulation_template = 5;
+	}
+
+	message Interactive {
+		double geom_distance_tolerance = 1; // Maximum distance in mm to consider two faces as tangent.
+		int32 max_impact = 2; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+		Weight weight = 3; // Activates Weight. Highly recommended to fill
+		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
+		string ambient_material_uri = 5; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 	}
 }
 
