@@ -1,5 +1,4 @@
-# (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
-# (c) 2023 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+# (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 """Module to handle file transfer to a server.
 
 This module allows to transfer files to and from a server
