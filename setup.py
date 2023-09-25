@@ -1,3 +1,4 @@
+# (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 """Installation file for the ansys-api-speos package"""
 
 import os
