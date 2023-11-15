@@ -52,7 +52,7 @@ enum IntensityTypes {
 enum UnitTypes {
 	OptisUnitTypeRadiometric = 0;
 	OptisUnitTypePhotometric = 1;
-	OptisUnitTypeGain = 2;
+	OptisUnitTypeTemperature = 2; 
 	OptisUnitTypeUnknown = 3;
 	OptisUnitTypeFTM = 4;
 	OptisUnitTypeDegree = 5;
