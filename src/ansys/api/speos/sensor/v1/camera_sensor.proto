@@ -68,7 +68,6 @@ message SensorCameraModePhotometric {
 }
 
 message CameraSensorTemplate {
-	string sensor_name = 1; // Deprecated - use instead SensorTemplate.name
 
 	oneof sensor_mode {
 		SensorCameraModeGeometric sensor_mode_geometric = 2; // Sensor mode : Geometric
