@@ -12,17 +12,6 @@ enum EnumSensorCameraPNGBits {
 	PNG_16 = 3;
 }
 
-// Simulation results are available in color according to the White Balance mode.
-message SensorCameraColorModeColor {
-	string red_spectrum_file_uri = 1;
-	string green_spectrum_file_uri = 2;
-	string blue_spectrum_file_uri = 3;
-}
-// Simulation results are available in grey scale.
-message SensorCameraColorModeMonochromatic {
-	string spectrum_file_uri = 1;
-}
-
 // The spectral transmittance of the optical system and the spectral sensitivity for each channel are applied to the detected spectral image before the conversion in a three channel results. This method is referred to as the basic conversion.
 message SensorCameraBalanceModeNone {}
 // The grey world assumption states that the content of the image is grey on average. This method converts spectral results in a three channel results with the basic conversion. Then it computes and applies coefficients to the red, green and blue images to make sure their averages are equal.
@@ -40,6 +29,25 @@ message SensorCameraBalanceModeDisplay {
 	string blue_display_file_uri = 3;
 }
 
+// Simulation results are available in color according to the White Balance mode.
+message SensorCameraColorModeColor {
+	string red_spectrum_file_uri = 1;
+	string green_spectrum_file_uri = 2;
+	string blue_spectrum_file_uri = 3;
+
+	oneof balance_mode {
+		SensorCameraBalanceModeNone balance_mode_none = 8; // Balance mode : None
+		SensorCameraBalanceModeGreyworld balance_mode_greyworld = 9; // Balance mode : Greyworld
+		SensorCameraBalanceModeUserwhite balance_mode_userwhite = 10; // Balance mode : Userwhite
+		SensorCameraBalanceModeDisplay balance_mode_display = 11; // Balance mode : Display
+	}
+}
+
+// Simulation results are available in grey scale.
+message SensorCameraColorModeMonochromatic {
+	string spectrum_file_uri = 1;
+}
+
 // Simplified version of the Camera Sensor definition parameters
 message SensorCameraModeGeometric {}
 // Allows to set every Camera Sensor parameters, including the photometric definition parameters
@@ -55,13 +63,6 @@ message SensorCameraModePhotometric {
 	oneof color_mode {
 		SensorCameraColorModeColor color_mode_color = 6; // Color mode : Color
 		SensorCameraColorModeMonochromatic color_mode_monochromatic = 7; // Color mode : Monochromatic
-	}
-
-	oneof balance_mode {
-		SensorCameraBalanceModeNone balance_mode_none = 8; // Balance mode : None
-		SensorCameraBalanceModeGreyworld balance_mode_greyworld = 9; // Balance mode : Greyworld
-		SensorCameraBalanceModeUserwhite balance_mode_userwhite = 10; // Balance mode : Userwhite
-		SensorCameraBalanceModeDisplay balance_mode_display = 11; // Balance mode : Display
 	}
 
 	WavelengthsRange wavelengths_range = 12; // Spectral excursion to use for simulation
