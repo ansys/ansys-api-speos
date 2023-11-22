@@ -66,13 +66,3 @@ message IrradianceSensorProperties {
 
 	repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is normal to sensor plane (anti-normal of the sensor)) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
 }
-
-message RadianceSensorProperties {
-	CoordinateSystem sensor_position = 1; // Position of the sensor
-	oneof layer_type {
-		LayerTypeNone layer_type_none = 2; // Layer type : None
-		LayerTypeSource layer_type_source = 3; // Layer type : Source
-		LayerTypeFace layer_type_face = 4; // Layer type : Face
-		LayerTypeSequence layer_type_sequence = 5; // Layer type : Sequence
-	}
-}

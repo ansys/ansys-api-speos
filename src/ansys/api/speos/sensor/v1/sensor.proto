@@ -2,7 +2,6 @@
 syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/camera_sensor.proto";
-import "ansys/api/speos/sensor/v1/radiance_sensor.proto";
 import "ansys/api/speos/sensor/v1/irradiance_sensor.proto";
 
 package ansys.api.speos.sensor.v1;
@@ -29,7 +28,6 @@ message SensorTemplate {
 	oneof sensor_template {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
-		RadianceSensorTemplate radiance_sensor_template = 3;
 	}
 }
 

@@ -26,7 +26,6 @@ message Sensor {
 	oneof properties {
 		CameraSensorProperties camera_sensor_properties = 4;
 		IrradianceSensorProperties irradiance_sensor_properties = 5;
-		RadianceSensorProperties radiance_sensor_properties = 6;
 	}
 }
 
