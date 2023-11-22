@@ -48,7 +48,7 @@ message InverseMCSimulationTemplate {
 // Simulation template with its basic characteristics
 message SimulationTemplate {
 	string name = 3; // Simulation name
-	string description = 6; // Simulation description
+	string description = 4; // Simulation description
 	map<string, string> metadata = 7; // User defined metadatas
 	oneof simulation_template {
 		DirectMCSimulationTemplate direct_mc_simulation_template = 1;
