@@ -55,6 +55,7 @@ message Spectrum {
 
 	string name = 1; // Spectrum name
 	string description = 2; // Spectrum descrition
+	map<string, string> metadata = 8; // User defined metadatas
 
 	oneof spectrum {
 		Monochromatic monochromatic = 3;

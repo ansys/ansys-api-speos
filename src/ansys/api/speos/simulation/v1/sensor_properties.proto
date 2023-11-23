@@ -43,7 +43,6 @@ message LayerTypeIncidenceAngle {
 	uint32 sampling = 1;
 }
 
-
 message CameraSensorProperties {
 	CoordinateSystem sensor_position = 1; // Position of the sensor
 	string trajectory_file_uri = 2; // Trajectory file, used to define the position and orientations of the Camera sensor in time.
@@ -64,14 +63,6 @@ message IrradianceSensorProperties {
 		LayerTypePolarization layer_type_polarization = 7; // Layer type : Polarization
 		LayerTypeIncidenceAngle layer_type_incidence_angle = 8; // Layer type : Incidence angle
 	}
-}
 
-message RadianceSensorProperties {
-	CoordinateSystem sensor_position = 1; // Position of the sensor
-	oneof layer_type {
-		LayerTypeNone layer_type_none = 2; // Layer type : None
-		LayerTypeSource layer_type_source = 3; // Layer type : Source
-		LayerTypeFace layer_type_face = 4; // Layer type : Face
-		LayerTypeSequence layer_type_sequence = 5; // Layer type : Sequence
-	}
+	repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is anti-normal of the sensor plane) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
 }

@@ -4,15 +4,11 @@ syntax = "proto3";
 package ansys.api.speos.sensor.v1;
 
 // Integration made orthogonally with the sensor plan.
-message IlluminanceTypePlanar {
-	repeated double integration_direction = 1; // integration_direction : x, y, z (by default: 0, 0, -1)
-}
+message IlluminanceTypePlanar {}
 message IlluminanceTypeRadial {}
 message IlluminanceTypeHemispherical {}
 message IlluminanceTypeCylindrical {}
-message IlluminanceTypeSemiCylindrical {
-	repeated double integration_direction = 1; // integration_direction : x, y, z (by default: 0, 0, -1)
-}
+message IlluminanceTypeSemiCylindrical {}
 
 // Spectral excursion to use for simulation
 message WavelengthsRange {

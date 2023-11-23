@@ -2,7 +2,6 @@
 syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/camera_sensor.proto";
-import "ansys/api/speos/sensor/v1/radiance_sensor.proto";
 import "ansys/api/speos/sensor/v1/irradiance_sensor.proto";
 
 package ansys.api.speos.sensor.v1;
@@ -25,10 +24,10 @@ service SensorTemplatesManager {
 message SensorTemplate {
 	string name = 4; // SensorTemplate name
 	string description = 5; // SensorTemplate description
+	map<string, string> metadata = 6; // User defined metadatas
 	oneof sensor_template {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
-		RadianceSensorTemplate radiance_sensor_template = 3;
 	}
 }
 
