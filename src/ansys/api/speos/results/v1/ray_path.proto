@@ -1,0 +1,43 @@
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.results.v1;
+
+message RayPath {
+	repeated float impacts_coordinates = 1; // Impacts coordinates of this RayPath. (i0x, i0y, i0z, i1x, i1y, i1z, ..., iNx, iNy, iNz) with N+1 impacts
+	repeated double wavelengths = 2; // Wavelength at each impact.
+	repeated uint32 body_context_ids = 3; // ID of the body impacted at each impact.
+	repeated uint32 unique_face_ids = 4; // ID of the face impacted at each impact.
+	repeated PhotonStatus interaction_statuses = 5; // Interaction type at each impact with the elements encountered.
+	repeated float last_direction = 6; // Direction after the last impact. (x, y, z)
+
+	enum PhotonStatus {
+		StatusAbsorbed = 0;
+		StatusSpecularTransmitted = 1;
+		StatusGaussianTransmitted = 2;
+		StatusLambertianTransmitted = 3;
+		StatusVolumicDiffused = 4;
+		StatusJustEmitted = 5;
+		StatusDiracTransmitted = 6;
+		StatusError = 7;
+		StatusErrorVolumicBodyNotClosed = 8;
+		StatusErrorVolumeConflict = 9;
+		StatusError2DTangency = 10;
+		StatusError2DIntersect3DWarning = 11;
+		StatusErrorNonOpticalMaterial = 12;
+		StatusErrorIntersection = 13;
+		StatusErrorNonOpticalMaterialAtEmission = 14;
+		StatusError3DTextureSupportTangency = 15;
+		StatusLast = 16;
+		StatusFirst = -7;
+		StatusDiracReflected = -6;
+		StatusReserved = -5;
+		StatusGrinStep = -4;
+		StatusLambertianReflected = -3;
+		StatusGaussianReflected = -2;
+		StatusSpecularReflected = -1;
+	}
+}
+
+
+

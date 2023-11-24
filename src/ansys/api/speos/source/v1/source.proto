@@ -1,0 +1,160 @@
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.source.v1;
+
+// Manager for SourceTemplates
+service SourceTemplatesManager {
+	// Create a SourceTemplate
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a SourceTemplate
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a SourceTemplate
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a SourceTemplate
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all SourceTemplates in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// Source template with its basic characteristics
+message SourceTemplate {
+
+	string name = 1; // SourceTemplate name
+	string description = 2; // SourceTemplate description
+	map<string, string> metadata = 5; // User defined metadatas
+
+	// All source types
+	oneof source {
+		Luminaire luminaire = 3;
+		Surface surface = 4;
+	}
+
+	// Flux messages
+	message FromIntensityFile{}; 
+	message Luminous{
+		double luminous_value = 1; // Luminous flux in lumens
+	};
+	message Radiant{
+		double radiant_value = 1; // Radiant flux in watts
+	};
+	message LuminousIntensity{
+		double luminous_intensity_value = 1; // Luminous intensity in candelas
+	};
+
+	message Surface{
+		oneof flux{ // Flux value
+			FromIntensityFile flux_from_intensity_file = 1; // Take flux from intensity file provided
+			Luminous luminous_flux = 2; // Luminous flux in lumens
+			Radiant radiant_flux = 3; // Radiant flux in watts
+			LuminousIntensity luminous_intensity_flux = 4; // Luminous intensity in candelas
+		}
+		string intensity_guid = 5; // Intensity guid in intensity manager
+		oneof exitance{ // Exitance type
+			ExitanceConstant exitance_constant = 6; // Constant
+			ExitanceVariable exitance_variable = 7; // Taken from XMP map
+		}
+		oneof spectrum{
+			SpectrumFromXMPFile spectrum_from_xmp_file = 8; // Take spectrum from xmp file provided
+			string spectrum_guid = 9; // Spectrum guid in spectrum manager
+		}
+
+		// Exitance messages
+		message ExitanceVariable{
+			string exitance_xmp_file_uri = 1; // XMP file describing exitance, if spectral, spectrum is not needed in source definition
+		}
+		message ExitanceConstant{} 
+
+		// Spectrum messages
+		message SpectrumFromXMPFile{}
+	}
+
+	message Luminaire{
+		oneof flux{ // Flux value
+			FromIntensityFile flux_from_intensity_file = 1; // Take flux from intensity file provided
+			Luminous luminous_flux = 2; // Luminous flux in lumens, must be positive
+			Radiant radiant_flux = 3; // Radiant flux in watts, must be positive
+		}
+		string intensity_file_uri = 4; // IES or EULUMDAT format file uri 
+		string spectrum_guid = 5; // Spectrum guid in spectrum manager
+	}
+
+//	message Thermic{
+//		Flux flux = 1;
+//
+//		oneof emitance {
+//				TemperatureField temperature_field = 2;
+//				EmissiveFaces emissives_faces = 3;
+//		}
+//
+//		oneof intensity{
+//			Lambertian lambertian = 5;
+//			CosN cos = 6;
+//		}
+//
+//		// not input - used to compute flux via COptSourceThermicItf::ComputeFluxValue
+//		// and then print value in UI
+//		// So not in source template - maybe in source instance
+//		message Flux{
+//			oneof type{
+//				Luminous luminous = 1;
+//				Radiant radiant = 2;	
+//			}
+//		}
+//		message TemperatureField{
+//			string temperature_file_uri = 1;
+//			string material_guid = 2;
+//		}
+//		
+//		message EmissiveFaces{
+//			double temperature = 1;
+//		}
+//
+//		message Lambertian{}
+//		message CosN{
+//			double N = 1;
+//		}
+//
+//		// So not in source template - maybe in source instance
+//		message Luminous{};
+//		message Radiant{};
+//	}
+}
+
+// Request to create a SourceTemplate in SourceTemplatesManager
+message Create_Request {
+	SourceTemplate source_template = 1; // SourceTemplate containing its basic characteristics
+}
+message Create_Response {
+	string guid = 1; // Guid of the SourceTemplate created in SourceTemplatesManager
+}
+
+// Request to read a SourceTemplate in SourceTemplatesManager
+message Read_Request {
+	string guid = 1; // Guid of the SourceTemplate to be read
+}
+message Read_Response {
+	SourceTemplate source_template = 1; // SourceTemplate corresponding to the guid given in Read_Request
+}
+
+// Request to update a SourceTemplate in SourceTemplatesManager
+message Update_Request {
+	string guid = 1; // Guid of the SourceTemplate to be updated
+	SourceTemplate source_template = 2; // SourceTemplate that will be used for the update
+}
+message Update_Response {}
+
+// Request to delete a SourceTemplate in SourceTemplatesManager
+message Delete_Request {
+	string guid = 1; // Guid of the SourceTemplate to be deleted
+}
+message Delete_Response {}
+
+message List_Request {}
+message List_Response {
+	repeated string guids = 1; // Guids of the SourceTemplates in SourceTemplatesManager
+}
+
+// Actions available on a SourceTemplate
+service SourceTemplateActions {
+}
