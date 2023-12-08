@@ -1,0 +1,85 @@
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.sop.v1;
+
+// Manager for SOPTemplates (SOP: Surface Optical Properties)
+service SOPTemplatesManager {
+	// Create a SOPTemplate
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a SOPTemplate
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a SOPTemplate
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a SOPTemplate
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all SOPTemplates in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// SOP: Surface Optical Properties
+// Defines the behavior of light rays when they hit the surface of a body.
+message SOPTemplate {
+	// Perfect specular surface
+	message Mirror {
+		double reflectance = 1; // Reflectance, expected from 0. to 100. in % 
+	}
+	// Transparent or perfectly polished material (glass, plastic)
+	message OpticalPolished {}
+	message Library {
+		string sop_file_uri = 1; // Surface optical properties file, *.scattering, *.bsdf, *.brdf, *.coated, ...
+	}
+	// Custom made plug-in
+	message Plugin {
+		string plugin_sop_file_uri = 1; // *.sop plug-in
+		string parameters_file_uri = 2; // parameters file needed for the plug-in
+	}
+
+	string name = 1; // SOPTemplate name
+	string description = 2; // SOPTemplate description
+	map<string, string> metadata = 7; // User defined metadatas
+	oneof type {
+		Mirror mirror = 3; // Perfect specular surface
+		OpticalPolished optical_polished = 4; // Transparent or perfectly polished material (glass, plastic)
+		Library library = 5; // Based on surface optical properties file
+		Plugin plugin = 6; // Custom made plug-in
+	}
+}
+
+// Request to create a SOPTemplate in SOPTemplatesManager
+message Create_Request {
+	SOPTemplate sop_template = 1; // SOPTemplate containing its basic characteristics
+}
+message Create_Response {
+	string guid = 1; // Guid of the SOPTemplate created in SOPTemplatesManager
+}
+
+// Request to read a SOPTemplate in SOPTemplatesManager
+message Read_Request {
+	string guid = 1; // Guid of the SOPTemplate to be read
+}
+message Read_Response {
+	SOPTemplate sop_template = 1; // SOPTemplate corresponding to the guid given in Read_Request
+}
+
+// Request to update a SOPTemplate in SOPTemplatesManager
+message Update_Request {
+	string guid = 1; // Guid of the SOPTemplate to be updated
+	SOPTemplate sop_template = 2; // SOPTemplate that will be used for the update
+}
+message Update_Response {}
+
+// Request to delete a SOPTemplate in SOPTemplatesManager
+message Delete_Request {
+	string guid = 1; // Guid of the SOPTemplate to be deleted
+}
+message Delete_Response {}
+
+message List_Request {}
+message List_Response {
+	repeated string guids = 1; // Guids of the SOPTemplates in SOPTemplatesManager
+}
+
+// Actions available on a SOPTemplate
+service SOPTemplateActions {
+}

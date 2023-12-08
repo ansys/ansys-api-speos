@@ -1,0 +1,86 @@
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.vop.v1;
+
+// Manager for VOPTemplates (VOP: Volume Optical Properties)
+service VOPTemplatesManager {
+	// Create a VOPTemplate
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a VOPTemplate
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a VOPTemplate
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a VOPTemplate
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all VOPTemplates in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// VOP: Volume Optical Properties
+// Defines the behavior of light rays when they are propagated in a body.
+message VOPTemplate {
+	// Non transparent material
+	message Opaque {}
+	// Transparent colorless material without bulk scattering
+	message Optic {
+		double index = 1; // Refractive index
+		double absorption = 2;
+		optional double constringence = 3; // Abbe number
+	}
+	message Library {
+		string material_file_uri = 1; // *.material file
+	}
+	// Material with non-homogeneous refractive index
+	message NonHomogeneous {
+		string gradedmaterial_file_uri = 1; // *.gradedmaterial file that describes the spectral variations of refractive index and absorption with the respect to position in space
+	}
+
+	string name = 1; // VOPTemplate name
+	string description = 2; // VOPTemplate description
+	map<string, string> metadata = 7; // User defined metadatas
+	oneof type {
+		Opaque opaque = 3; // Non transparent material
+		Optic optic = 4; // Transparent colorless material without bulk scattering
+		Library library = 5; // Based on *.material file
+		NonHomogeneous non_homogeneous = 6; // Material with non-homogeneous refractive index
+	}
+}
+
+// Request to create a VOPTemplate in VOPTemplatesManager
+message Create_Request {
+	VOPTemplate vop_template = 1; // VOPTemplate containing its basic characteristics
+}
+message Create_Response {
+	string guid = 1; // Guid of the VOPTemplate created in VOPTemplatesManager
+}
+
+// Request to read a VOPTemplate in VOPTemplatesManager
+message Read_Request {
+	string guid = 1; // Guid of the VOPTemplate to be read
+}
+message Read_Response {
+	VOPTemplate vop_template = 1; // VOPTemplate corresponding to the guid given in Read_Request
+}
+
+// Request to update a VOPTemplate in VOPTemplatesManager
+message Update_Request {
+	string guid = 1; // Guid of the VOPTemplate to be updated
+	VOPTemplate vop_template = 2; // VOPTemplate that will be used for the update
+}
+message Update_Response {}
+
+// Request to delete a VOPTemplate in VOPTemplatesManager
+message Delete_Request {
+	string guid = 1; // Guid of the VOPTemplate to be deleted
+}
+message Delete_Response {}
+
+message List_Request {}
+message List_Response {
+	repeated string guids = 1; // Guids of the VOPTemplates in VOPTemplatesManager
+}
+
+// Actions available on a VOPTemplate
+service VOPTemplateActions {
+}

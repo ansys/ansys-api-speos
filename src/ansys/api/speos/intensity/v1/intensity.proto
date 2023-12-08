@@ -1,0 +1,95 @@
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.intensity.v1;
+
+service IntensityTemplatesManager {
+	// Create a Intensity
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a Intensity
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a Intensity
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a Intensity
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all Intensities in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// Intensity with its basic characteristics
+message IntensityTemplate {
+
+	message Library{ 
+		string intensity_file_uri = 1; // uri of the intensity file IES (.ies), Eulumdat (.ldt), speos intensities (.xmp)
+	}
+
+	message Lambertian{ 
+		double total_angle = 1; // total angle in degrees of the emission of the light source
+	}
+
+	message Cos{ 
+		double N = 1; // Order of cos law
+		double total_angle = 2; // total angle in degrees of the emission of the light source
+	}
+
+	message SymmetricGaussian{ 
+		double FWHM_angle = 1; // Full Width in degrees at Half Maximum 
+		double total_angle = 2; // total angle in degrees of the emission of the light source
+	}
+
+	message AsymmetricGaussian{ 
+		double FWHM_angle_x = 1; // Full Width in degrees following x at Half Maximum 
+		double FWHM_angle_y = 2; // Full Width in degrees following y at Half Maximum 
+		double total_angle = 3; // total angle in degrees of the emission of the light source
+	}
+
+	string name = 1; // Intensity name
+	string description = 2; // Intensity descrition
+	map<string, string> metadata = 8; // User defined metadatas
+
+	oneof intensity{
+		Library library = 3; // From file
+		Lambertian lambertian = 4; // Lambertian distribution
+		Cos cos = 5; // Lambert cosine law distribution
+		SymmetricGaussian symmetric_gaussian = 6; // Symmetric gaussian distribution
+		AsymmetricGaussian asymmetric_gaussian = 7; // Asymmetric gaussian distribution
+	}
+}
+
+
+// Request to create a Intensity in IntensitysManager
+message Create_Request {
+	IntensityTemplate intensity_template = 1; // Intensity containing its basic characteristics
+}
+message Create_Response {
+	string guid = 1; // Guid of the Intensity created in IntensitysManager
+}
+// Request to read a Intensity in IntensitysManager
+message Read_Request {
+	string guid = 1; // Guid of the Intensity to be read
+}
+message Read_Response {
+	IntensityTemplate intensity_template = 1; // Intensity corresponding to the guid given in Read_Request
+}
+// Request to update a Intensity in IntensitysManager
+message Update_Request {
+	string guid = 1; // Guid of the Intensity to be updated
+	IntensityTemplate intensity_template = 2; // Intensity that will be used for the update
+}
+message Update_Response {
+}
+// Request to delete a Intensity in IntensitysManager
+message Delete_Request {
+	string guid = 1; // Guid of the Intensity to be deleted
+}
+message Delete_Response {}
+
+message List_Request {
+}
+message List_Response {
+	repeated string guids = 1; // Guids of the Intensitys in IntensitysManager
+}
+
+// Actions available on a IntensityTemplate
+service IntensityTemplateActions {
+}

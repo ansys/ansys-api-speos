@@ -1,0 +1,78 @@
+// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+syntax = "proto3";
+
+package ansys.api.speos.body.v1;
+
+//////////
+// CRUD //
+//////////
+// Body definition made of faces
+message Body
+{
+	string name = 1;
+	string description = 2;
+	map<string, string> metadata = 4; // User defined metadatas
+	repeated string face_guids = 5; // List of faces constituting the body
+}
+
+service BodiesManager {
+	// Create a new body
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a body
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a body
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a body
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all body in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+
+// Request to create a body
+message Create_Request {
+    Body body = 1; // body to create
+}
+// Response to create a body
+message Create_Response {
+	string guid = 1; // Guid of the created body
+}
+
+// Request to read a body
+message Read_Request {
+	string guid = 1; // Guid of the body to be read
+}
+// Response to read a body
+message Read_Response {
+	Body body = 1; // body corresponding to the guid given in Read_Request
+}
+
+// Request to update a body
+message Update_Request {
+	string guid = 1; // Guid of the body to be updated
+	Body body = 2; // New body that will be used for the update
+}
+// Response to update a body
+message Update_Response {
+}
+
+// Request to delete a body
+message Delete_Request {
+	string guid = 1; // Guid of the body to be deleted
+}
+// Response to delete a body
+message Delete_Response {}
+
+// Request to list all bodies
+message List_Request {}
+// Response to list all bodies
+message List_Response {
+	repeated string guids = 1; // Guids of all bodies
+}
+
+/////////////
+// ACTIONS //
+/////////////
+// Actions available on a body
+service BodyActions {
+}
