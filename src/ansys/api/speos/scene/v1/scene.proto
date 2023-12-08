@@ -170,6 +170,7 @@ message Scene
 
 		string name = 1;
 		string description = 2;
+		map<string, string> metadata = 3; // User defined metadatas
 		string sensor_guid = 10; // Guid of the SensorTemplate in SensorTemplatesManager to instantiate
 		string result_file_name = 11; // Result file name without extention. Result files of the sensor will be based on this name.
 		oneof properties {
