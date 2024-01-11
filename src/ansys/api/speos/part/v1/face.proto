@@ -81,6 +81,40 @@ message List_Response {
 /////////////
 // ACTIONS //
 /////////////
+// Chunk of a Face
+message Chunk {
+	string guid = 1; // Guid of a FacesManager element - Used for FaceActions.Upload rpc
+
+	string name = 2; // Field used only in first Chunk
+	string description = 3; // Field used only in first Chunk
+	map<string, string> metadata = 4; // User defined metadatas - Field used only in first Chunk
+
+	oneof data {
+		Vertices vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
+		Facets facets = 11; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
+		Normals normals = 12; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
+	}
+
+	message Vertices {
+		repeated float data = 1;
+	}
+	message Facets {
+		repeated uint32 data = 1;
+	}
+	message Normals {
+		repeated float data = 1;
+	}
+}
+message Upload_Response {
+}
+message Download_Request {
+	string guid = 1; // Guid of a FacesManager element
+}
+
 // Actions available on a face
 service FaceActions {
+	// Update a face via streaming
+	rpc Upload(stream Chunk) returns (Upload_Response) {}
+	// Read a face via streaming
+	rpc Download(Download_Request) returns (stream Chunk) {}
 }
