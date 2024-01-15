@@ -83,11 +83,12 @@ message List_Response {
 /////////////
 // Chunk of a Face
 message Chunk {
-	string guid = 1; // Guid of a FacesManager element - Used for FaceActions.Upload rpc
+	string guid = 1; // Guid of a FacesManager element - Used for FaceActions.Upload rpc - Field used only in first Chunk
 
 	string name = 2; // Field used only in first Chunk
 	string description = 3; // Field used only in first Chunk
 	map<string, string> metadata = 4; // User defined metadatas - Field used only in first Chunk
+	repeated int32 sizes = 5; // total sizes for vertices, facets and normals (vertices_size, facets_size, normals_size) - Field used only in first Chunk
 
 	oneof data {
 		Vertices vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
