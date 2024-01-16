@@ -83,19 +83,20 @@ message List_Response {
 /////////////
 // Chunk of a Face
 message Chunk {
-	string guid = 1; // Guid of a FacesManager element - Used for FaceActions.Upload rpc - Field used only in first Chunk
-
-	string name = 2; // Field used only in first Chunk
-	string description = 3; // Field used only in first Chunk
-	map<string, string> metadata = 4; // User defined metadatas - Field used only in first Chunk
-	repeated int32 sizes = 5; // total sizes for vertices, facets and normals (vertices_size, facets_size, normals_size) - Field used only in first Chunk
-
 	oneof data {
+		FirstData first_data = 1; // Common face data - Field used only in first Chunk (to take advantage of vectors sizes)
 		Vertices vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
 		Facets facets = 11; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
 		Normals normals = 12; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
 	}
 
+	message FirstData {
+		string guid = 1; // Guid of a FacesManager element - Used for FaceActions.Upload rpc
+		string name = 2;
+		string description = 3;
+		map<string, string> metadata = 4;
+		repeated int32 sizes = 5; // total sizes for vertices, facets and normals (vertices_size, facets_size, normals_size)
+	}
 	message Vertices {
 		repeated float data = 1;
 	}
