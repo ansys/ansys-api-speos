@@ -85,9 +85,9 @@ message List_Response {
 message Chunk {
 	oneof data {
 		FirstData first_data = 1; // Common face data - Field used only in first Chunk (to take advantage of vectors sizes)
-		Vertices vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
-		Facets facets = 11; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
-		Normals normals = 12; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
+		Vertices vertices = 2; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
+		Facets facets = 3; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
+		Normals normals = 4; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
 	}
 
 	message FirstData {
