@@ -50,7 +50,7 @@ message Job {
 	// If several stop conditions are set, the first condition reached ends the simulation.
 	// If no stop condition is set, the simulation ends when you stop the process.
 	message DirectMCSimulationProperties {
-		optional uint32 stop_condition_rays_number = 1; // To stop the simulation after a certain number of rays were sent
+		optional int64 stop_condition_rays_number = 1; // To stop the simulation after a certain number of rays were sent
 		optional int64 stop_condition_duration = 2; // To stop the simulation after a certain duration
 		int32 automatic_save_frequency = 3; // Define a backup interval (s). This option is useful when computing long simulations. But a reduced number of save operations naturally increases the simulation performance
 	}
