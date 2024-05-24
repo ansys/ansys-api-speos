@@ -22,6 +22,37 @@ message Scene
 		repeated string geo_paths = 1; // list of geo paths
 	}
 
+	// Instance of a Material to apply on geometries of the scene
+	message MaterialInstance2
+	{
+		string name = 1;
+		string description = 2;
+		map<string, string> metadata = 3; // User defined metadatas
+		string material_guid = 10; 
+		GeoPaths geometries = 12; // Geometries that will use this material
+	}
+
+	// Instance of a Material to apply on geometries of the scene
+	message MaterialTemplate
+	{
+		string name = 1;
+		string description = 2;
+		map<string, string> metadata = 3; // User defined metadatas
+		optional string vop_guid = 10; // optional - Guid of the volume optical property to instanciate
+		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instanciate
+	}
+
+	// Instance of a Material to apply on geometries of the scene
+	message MaterialInstance
+	{
+		string name = 1;
+		string description = 2;
+		map<string, string> metadata = 3; // User defined metadatas
+		optional string vop_guid = 10; // optional - Guid of the volume optical property to instanciate
+		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instanciate
+		GeoPaths geometries = 12; // Geometries that will use this material
+	}
+
 	// Instance of a VOP to apply on geometries of the scene
 	message VOPInstance
 	{
@@ -205,6 +236,7 @@ message Scene
 	map<string, string> metadata = 3; // User defined metadatas
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
+	repeated MaterialInstance materials = 16; // The materials (volumic + surfacic) applied on geometries
 	repeated VOPInstance vops = 11; // The volumic materials applied on geometries
 	repeated SOPInstance sops = 12; // The surfacic materials applied on geometries
 	repeated SourceInstance sources = 13; // The sources added in the scene
