@@ -78,7 +78,8 @@ message CameraSensorTemplate {
 	double focal_length = 4; // Distance between the center of the optical system and the focus. (mm)
 	double imager_distance = 5; // Imager distance in mm, the imager is located at the focal point. The Imager distance has no impact on the result.
 	double f_number = 6; // F-number represent the aperture of the front lens. F number has no impact on the result.
-	string distorsion_file_uri = 7; // Optical aberration that deforms and bend straight lines. The distortion is expressed in a .OPTDistortion file.
+	string distorsion_file_uri = 7; // Will be deprecated soon due to typo error - better use distortion_file_uri
+	string distortion_file_uri = 12; // Optical aberration that deforms and bend straight lines. The distortion is expressed in a .OPTDistortion file.
 
 	uint32 horz_pixel = 8; // Defines the horizontal pixels number corresponding to the camera resolution.
 	uint32 vert_pixel = 9; // Defines the vertical pixels number corresponding to the camera resolution.
