@@ -3,6 +3,8 @@ syntax = "proto3";
 
 package ansys.api.speos.intensity.v1;
 
+import "ansys/api/speos/common/v1/datas.proto";
+
 service IntensityTemplatesManager {
 	// Create a Intensity
 	rpc Create(Create_Request) returns (Create_Response) {}
@@ -92,4 +94,13 @@ message List_Response {
 
 // Actions available on a IntensityTemplate
 service IntensityTemplateActions {
+	rpc GetLibraryTypeInfo(GetLibraryTypeInfo_Request) returns (GetLibraryTypeInfo_Response) {}
+}
+
+message GetLibraryTypeInfo_Request {
+	string intensity_template_uri = 1; // Intensity corresponding to the intensity guid in manager, should point to a library intensity only 
+}
+
+message GetLibraryTypeInfo_Response {
+	ansys.api.speos.common.v1.data flux = 1;
 }
