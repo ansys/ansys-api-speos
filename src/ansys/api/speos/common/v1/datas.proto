@@ -25,10 +25,10 @@ enum DatasUnit {
 	luxes_per_nanometers = 17; // lx.s/(nm)
 	luxes_seconds_per_nanometers = 18; // lx.s/(nm)
 
-	candela = 28; // cd
-	candela_per_square_meters = 29; // cd/(m2)
-	candela_per_nanometers = 30; // cd/(m2)
-	candela_per_squaremeters_nanometers = 31; // cd/(m2.nm)
+	candelas = 28; // cd
+	candelas_per_square_meters = 29; // cd/(m2)
+	candelas_per_nanometers = 30; // cd/(m2)
+	candelas_per_squaremeters_nanometers = 31; // cd/(m2.nm)
 
 	lumens = 45; // lm
 	lumens_per_steradians = 46; // lm/(sr)

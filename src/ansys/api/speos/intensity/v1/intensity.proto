@@ -98,7 +98,7 @@ service IntensityTemplateActions {
 }
 
 message GetLibraryTypeInfo_Request {
-	string intensity_template_uri = 1; // Intensity corresponding to the intensity guid in manager, should point to a library intensity only 
+	string guid = 1; //Guid of the Intensity File to get informations, should point to a library intensity only 
 }
 
 message GetLibraryTypeInfo_Response {
