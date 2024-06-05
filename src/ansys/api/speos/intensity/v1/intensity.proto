@@ -3,7 +3,7 @@ syntax = "proto3";
 
 package ansys.api.speos.intensity.v1;
 
-import "ansys/api/speos/common/v1/datas.proto";
+import "ansys/api/speos/common/v1/data.proto";
 
 service IntensityTemplatesManager {
 	// Create a Intensity
@@ -98,9 +98,9 @@ service IntensityTemplateActions {
 }
 
 message GetLibraryTypeInfo_Request {
-	string guid = 1; //Guid of the Intensity File to get informations, should point to a library intensity only 
+	string guid = 1; // Guid of the Intensity File to get informations, should point to a library intensity only 
 }
 
 message GetLibraryTypeInfo_Response {
-	ansys.api.speos.common.v1.data flux = 1;
+	ansys.api.speos.common.v1.DatumDouble flux = 1;
 }
