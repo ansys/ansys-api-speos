@@ -1,14 +1,14 @@
 // (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
-package ansys.api.speos.common.v1; //.data;
+package ansys.api.speos.common.v1;
 
 //////////////
 // MESSAGES //
 //////////////
 
 
-enum DataUnit {
+enum Unit {
 	// Energetic units
 	watts = 0; // W
 	watts_per_square_meters = 1; // W/(m2)
@@ -31,9 +31,6 @@ enum DataUnit {
 	candelas_per_squaremeters_nanometers = 31; // cd/(m2.nm)
 
 	lumens = 45; // lm
-//	lumens_per_steradians = 46; // lm/(sr) // candelas
-//	lumens_per_square_meters_steradians = 47; // lm/(m2.sr) // candela/m2
-//	lumens_per_steradians_nanometers = 48; // lm/(sr.nm) // candela/nm
 	lumens_per_square_meters_nanometers = 49; // lm/(m2.nm) 
 }
 
@@ -77,26 +74,26 @@ message DataDoubles {
 	repeated double values = 1; // raw values
 	repeated uint64 dimensions = 2; // size of dimensions = total number of dimension representation of the data, each value representing its dimension size
 	Magnitude magnitude = 3; // magnitude of the value cf what we have received
-	DataUnit unit = 4; // units of the values
+	Unit unit = 4; // units of the values
 }
 
 message DataIntegers {
 	repeated int64 values = 1; // raw values
 	repeated uint64 dimensions = 2; // size of dimensions = total number of dimension representation of the data, each value representing its dimension size
 	Magnitude magnitude = 3; // magnitude of the value cf what we have received
-	DataUnit unit = 4; // units of the values
+	Unit unit = 4; // units of the values
 }
 
 // single values
 message DatumDouble {
 	double value = 1; // raw value
 	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	DataUnit unit = 3; // units of the values
+	Unit unit = 3; // units of the values
 }
 
 message DatumInteger {
 	uint64 value = 1; // raw values
 	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	DataUnit unit = 3; // units of the values
+	Unit unit = 3; // units of the values
 }
 
