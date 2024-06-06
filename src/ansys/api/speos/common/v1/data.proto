@@ -8,32 +8,59 @@ package ansys.api.speos.common.v1;
 //////////////
 
 
+// Units used in Speos data
 enum Unit {
-	// Energetic units
 	watts = 0; // W
 	watts_per_square_meters = 1; // W/(m2)
 	watts_per_steradians = 2; // W/(sr)
-	watts_per_square_meters_steradians = 3; // W/(m2.sr)
-	watts_per_steradians_nanometers = 4; // W/(sr.nm)
-	watts_per_square_meters_nanometers = 5; // W/(m2.nm)
+	watts_per_nanometers = 3; // W/(nm)
+	watts_per_square_meters_steradians = 4; // W/(m2.sr)
+	watts_per_steradians_nanometers = 5; // W/(sr.nm)
+	watts_per_square_meters_nanometers = 6; // W/(m2.nm)
 
-	joules_per_square_meters = 6; // J/(m2)
-	joules_per_square_meters_nanometers = 7; // J/(m2.nm)
+	joules = 16; // J
+	joules_per_nanometers = 17; // J/(nm)
+	joules_per_square_meters = 18; // J/(m2)
+	joules_per_square_meters_nanometers = 19; // J/(m2.nm)
 
-	luxes = 15; // lx
-	luxes_seconds = 16; // lx.s
-	luxes_per_nanometers = 17; // lx.s/(nm)
-	luxes_seconds_per_nanometers = 18; // lx.s/(nm)
+	luxes = 29; // lx
+	luxes_seconds = 30; // lx.s
+	luxes_per_nanometers = 31; // lx.s/(nm)
+	luxes_seconds_per_nanometers = 32; // lx.s/(nm)
 
-	candelas = 28; // cd
-	candelas_per_square_meters = 29; // cd/(m2)
-	candelas_per_nanometers = 30; // cd/(m2)
-	candelas_per_squaremeters_nanometers = 31; // cd/(m2.nm)
+	candelas = 42; // cd
+	candelas_per_square_meters = 43; // cd/(m2)
+	candelas_per_nanometers = 44; // cd/(m2)
+	candelas_per_squaremeters_nanometers = 45; // cd/(m2.nm)
 
-	lumens = 45; // lm
+	lumens = 55; // lm
+	lumens_seconds = 56; // lm.s
+	lumens_per_nanometers = 57; // lm/(nm)
 	lumens_per_square_meters_nanometers = 49; // lm/(m2.nm) 
+
+	percent = 60; // %
+
+	color_XYZ = 70; // XYZ CIE
+	color_xyY = 71; // xy CIE
+	color_uvY = 72; // uvY 1960 UCS CIE
+	color_uvY_prime = 73; // u'v'Y' 1976 UCS CIE
+	color_Luv = 74; // L*u*v CIELUV
+	color_Lab = 75; // L*a*b CIELAB
+	color_LCh = 76; // L*C*h  CIELAB
+	color_rgb = 77; // rgb
+	color_rgba = 78; // rgba
+
+
+	nanometers = 120; // nm
+	micrometers = 121; // um
+	millimeters = 122; // mm
+	meters = 123; // m
+	radians = 124; // rad
+	degrees = 125; // deg
+	steradians = 126; // sr
 }
 
+// Magnitudes in Speos data
 enum Magnitude {
 	irradiance = 0; // radiometric irradiance 
 	illuminance = 1; // photometric irradiance
@@ -54,43 +81,41 @@ enum Magnitude {
 
 	radiant_flux = 16; // radiometric flux
 	luminous_flux = 17; // photometric flux
+
+	ratio = 27; // magnitude ratio
+
+	color = 37; // color
 }
 
-// units serving as coordinates
-enum CoordinatesUnit {
-	// spacial units
-	millimeters = 0; // mm
-	meters = 1; // m
-	radians = 2; // rad
-	degrees 3; // deg
-	steradians = 4; // sr
-}
 
-// arrays values
+// arrays values of doubles
 message DataDoubles {
 	repeated double values = 1; // raw values
-	repeated uint64 dimensions = 2; // size of dimensions = total number of dimension representation of the data, each value representing its dimension size
-	Magnitude magnitude = 3; // magnitude of the value cf what we have received
-	Unit unit = 4; // units of the values
+	uint64 magnitude_dimension = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 domain_dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	Magnitude magnitude = 4; // magnitude of the value cf what we have received
+	Unit unit = 5; // units of the values
 }
 
+// arrays values of integers
 message DataIntegers {
 	repeated int64 values = 1; // raw values
-	repeated uint64 dimensions = 2; // size of dimensions = total number of dimension representation of the data, each value representing its dimension size
-	Magnitude magnitude = 3; // magnitude of the value cf what we have received
-	Unit unit = 4; // units of the values
+	uint64 magnitude_dimension = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 domain_dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	Magnitude magnitude = 4; // magnitude of the value cf what we have received
+	Unit unit = 5; // units of the values
 }
 
-// single values
+// single value of double
 message DatumDouble {
 	double value = 1; // raw value
 	Magnitude magnitude = 2; // magnitude of the value cf what we have received
 	Unit unit = 3; // units of the values
 }
 
+ // single value of integer
 message DatumInteger {
 	uint64 value = 1; // raw values
 	Magnitude magnitude = 2; // magnitude of the value cf what we have received
 	Unit unit = 3; // units of the values
 }
-

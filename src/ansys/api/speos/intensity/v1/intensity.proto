@@ -94,13 +94,16 @@ message List_Response {
 
 // Actions available on a IntensityTemplate
 service IntensityTemplateActions {
+	// Get information about intensity library template
 	rpc GetLibraryTypeInfo(GetLibraryTypeInfo_Request) returns (GetLibraryTypeInfo_Response) {}
 }
 
+// Request of GetLibraryTypeInfo
 message GetLibraryTypeInfo_Request {
 	string guid = 1; // Guid of the Intensity File to get informations, should point to a library intensity only 
 }
 
+// Response of GetLibraryTypeInfo
 message GetLibraryTypeInfo_Response {
-	ansys.api.speos.common.v1.DatumDouble flux = 1;
+	ansys.api.speos.common.v1.DatumDouble flux = 1; // Flux of the intensity file
 }
