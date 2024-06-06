@@ -61,12 +61,9 @@ enum CoordinatesUnit {
 	// spacial units
 	millimeters = 0; // mm
 	meters = 1; // m
-	radians = 2; // radians
-	square_millimeters = 3; // mm2
-	square_meter = 4; // m2
-	reciprocal_meters = 5; // m-1
-	reciprocal_square_meters = 6; // m-2
-	steradians = 7; // sr
+	radians = 2; // rad
+	degrees 3; // deg
+	steradians = 4; // sr
 }
 
 // arrays values
