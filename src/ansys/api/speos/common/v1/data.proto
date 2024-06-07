@@ -47,10 +47,11 @@ enum Unit {
 	color_Lab = 75; // L*a*b CIELAB
 	color_LCh = 76; // L*C*h  CIELAB
 	color_rgb = 77; // rgb
-	color_rgba = 78; // rgba
+	color_rgba = 79; // rgba
 
 
 	nanometers = 120; // nm
+
 	micrometers = 121; // um
 	millimeters = 122; // mm
 	meters = 123; // m
@@ -98,7 +99,7 @@ message DataDoubles {
 
 // arrays values of floats
 message DataFloats {
-	repeated Floats values = 1; // raw values
+	repeated float values = 1; // raw values
 	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
 	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
 	Magnitude magnitude = 4; // magnitude of the value cf what we have received
@@ -183,10 +184,11 @@ message DatumUInteger32 {
 	Unit unit = 3; // units of the values
 }
 
+
 // raw buffer in bytes, to send any kind of data
 message Data{
 	repeated bytes values = 1; // raw values
-	uint64 magnitude_dimension = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
 	repeated uint64 domain_dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
 	Magnitude magnitude = 4; // magnitude of the value cf what we have received
 	Unit unit = 5; // units of the values
