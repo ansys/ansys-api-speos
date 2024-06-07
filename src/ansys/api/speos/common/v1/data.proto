@@ -7,7 +7,6 @@ package ansys.api.speos.common.v1;
 // MESSAGES //
 //////////////
 
-
 // Units used in Speos data
 enum Unit {
 	watts = 0; // W
@@ -61,6 +60,7 @@ enum Unit {
 }
 
 // Magnitudes in Speos data
+
 enum Magnitude {
 	irradiance = 0; // radiometric irradiance 
 	illuminance = 1; // photometric irradiance
@@ -87,21 +87,56 @@ enum Magnitude {
 	color = 37; // color
 }
 
-
 // arrays values of doubles
 message DataDoubles {
 	repeated double values = 1; // raw values
-	uint64 magnitude_dimension = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
-	repeated uint64 domain_dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	Magnitude magnitude = 4; // magnitude of the value cf what we have received
+	Unit unit = 5; // units of the values
+}
+
+// arrays values of floats
+message DataFloats {
+	repeated Floats values = 1; // raw values
+	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
 	Magnitude magnitude = 4; // magnitude of the value cf what we have received
 	Unit unit = 5; // units of the values
 }
 
 // arrays values of integers
-message DataIntegers {
+message DataIntegers64 {
 	repeated int64 values = 1; // raw values
-	uint64 magnitude_dimension = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
-	repeated uint64 domain_dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	Magnitude magnitude = 4; // magnitude of the value cf what we have received
+	Unit unit = 5; // units of the values
+}
+
+// arrays values of integers
+message DataIntegers32 {
+	repeated int32 values = 1; // raw values
+	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	Magnitude magnitude = 4; // magnitude of the value cf what we have received
+	Unit unit = 5; // units of the values
+}
+
+// arrays values of integers
+message DataUIntegers64 {
+	repeated uint64 values = 1; // raw values
+	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	Magnitude magnitude = 4; // magnitude of the value cf what we have received
+	Unit unit = 5; // units of the values
+}
+
+// arrays values of integers
+message DataUIntegers32 {
+	repeated uint32 values = 1; // raw values
+	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
 	Magnitude magnitude = 4; // magnitude of the value cf what we have received
 	Unit unit = 5; // units of the values
 }
@@ -113,9 +148,46 @@ message DatumDouble {
 	Unit unit = 3; // units of the values
 }
 
+// single value of double
+message DatumFloat {
+	float value = 1; // raw value
+	Magnitude magnitude = 2; // magnitude of the value cf what we have received
+	Unit unit = 3; // units of the values
+}
+
  // single value of integer
-message DatumInteger {
+message DatumInteger64 {
+	int64 value = 1; // raw values
+	Magnitude magnitude = 2; // magnitude of the value cf what we have received
+	Unit unit = 3; // units of the values
+}
+
+ // single value of integer
+message DatumUInteger64 {
 	uint64 value = 1; // raw values
 	Magnitude magnitude = 2; // magnitude of the value cf what we have received
 	Unit unit = 3; // units of the values
+}
+
+ // single value of integer
+message DatumInteger32 {
+	int32 value = 1; // raw values
+	Magnitude magnitude = 2; // magnitude of the value cf what we have received
+	Unit unit = 3; // units of the values
+}
+
+ // single value of integer
+message DatumUInteger32 {
+	uint32 value = 1; // raw values
+	Magnitude magnitude = 2; // magnitude of the value cf what we have received
+	Unit unit = 3; // units of the values
+}
+
+// raw buffer in bytes, to send any kind of data
+message Data{
+	repeated bytes values = 1; // raw values
+	uint64 magnitude_dimension = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
+	repeated uint64 domain_dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size
+	Magnitude magnitude = 4; // magnitude of the value cf what we have received
+	Unit unit = 5; // units of the values
 }
