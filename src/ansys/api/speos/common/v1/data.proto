@@ -49,7 +49,6 @@ enum Unit {
 	color_rgb = 77; // rgb
 	color_rgba = 79; // rgba
 
-
 	nanometers = 120; // nm
 
 	micrometers = 121; // um
@@ -142,51 +141,8 @@ message DataUIntegers32 {
 	Unit unit = 5; // units of the values
 }
 
-// single value of double
-message DatumDouble {
-	double value = 1; // raw value
-	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	Unit unit = 3; // units of the values
-}
-
-// single value of double
-message DatumFloat {
-	float value = 1; // raw value
-	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	Unit unit = 3; // units of the values
-}
-
- // single value of integer
-message DatumInteger64 {
-	int64 value = 1; // raw values
-	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	Unit unit = 3; // units of the values
-}
-
- // single value of integer
-message DatumUInteger64 {
-	uint64 value = 1; // raw values
-	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	Unit unit = 3; // units of the values
-}
-
- // single value of integer
-message DatumInteger32 {
-	int32 value = 1; // raw values
-	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	Unit unit = 3; // units of the values
-}
-
- // single value of integer
-message DatumUInteger32 {
-	uint32 value = 1; // raw values
-	Magnitude magnitude = 2; // magnitude of the value cf what we have received
-	Unit unit = 3; // units of the values
-}
-
-
 // raw buffer in bytes, to send any kind of data
-message Data{
+message DataBytes{
 	repeated bytes values = 1; // raw values
 	uint64 magnitude_size = 2; // number of values needed to describe the magnitude (ex : simple value=1 / vector=3 / color_rgb=3 ...)
 	repeated uint64 dimensions = 3; // size of dimensions where the magnitudes are applied = total number of dimension representation of the data, each value representing its dimension size

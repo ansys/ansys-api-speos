@@ -105,5 +105,5 @@ message GetLibraryTypeInfo_Request {
 
 // Response of GetLibraryTypeInfo
 message GetLibraryTypeInfo_Response {
-	ansys.api.speos.common.v1.DatumDouble flux = 1; // Flux of the intensity file
+	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the intensity file
 }
