@@ -59,8 +59,7 @@ enum Unit {
 	steradians = 126; // sr
 }
 
-// Magnitudes in Speos data
-
+// magnitudes in Speos data
 enum Magnitude {
 	irradiance = 0; // radiometric irradiance 
 	illuminance = 1; // photometric irradiance
