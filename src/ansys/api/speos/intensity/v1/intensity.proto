@@ -3,6 +3,8 @@ syntax = "proto3";
 
 package ansys.api.speos.intensity.v1;
 
+import "ansys/api/speos/common/v1/data.proto";
+
 service IntensityTemplatesManager {
 	// Create a Intensity
 	rpc Create(Create_Request) returns (Create_Response) {}
@@ -92,4 +94,16 @@ message List_Response {
 
 // Actions available on a IntensityTemplate
 service IntensityTemplateActions {
+	// Get information about intensity library template
+	rpc GetLibraryTypeInfo(GetLibraryTypeInfo_Request) returns (GetLibraryTypeInfo_Response) {}
+}
+
+// Request of GetLibraryTypeInfo
+message GetLibraryTypeInfo_Request {
+	string guid = 1; // Guid of the IntensityTemplate to get information about intensity file (example: flux). Only for IntensityTemplate of type Library.
+}
+
+// Response of GetLibraryTypeInfo
+message GetLibraryTypeInfo_Response {
+	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the intensity file
 }
