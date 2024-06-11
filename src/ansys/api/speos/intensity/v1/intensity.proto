@@ -100,7 +100,7 @@ service IntensityTemplateActions {
 
 // Request of GetLibraryTypeInfo
 message GetLibraryTypeInfo_Request {
-	string guid = 1; // Guid of the Intensity File to get informations, should point to a library intensity only 
+	string guid = 1; // Guid of the IntensityTemplate to get information about intensity file (example: flux). Only for IntensityTemplate of type Library.
 }
 
 // Response of GetLibraryTypeInfo
