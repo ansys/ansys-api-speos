@@ -38,3 +38,24 @@ message SensorTypeRadiometric {}
 message SensorTypeSpectral {
 	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
 }
+
+// Orientation of the intensity sensor
+message IntensityOrientationXAsMeridian {}
+message IntensityOrientationXAsParallel {}
+message IntensityOrientationConoscopic {}
+
+// Format of polar intensity sensor
+message PolarIntensityIesnaA {}
+message PolarIntensityIesnaB {}
+message PolarIntensityIesnaC {}
+message PolarIntensityEulumdat {}
+
+// Near field intensity or polar intensity sensor
+message SensorNearField {
+	double cell_distance = 1; // (mm)
+	double cell_diameter = 2; // (mm)
+}
+
+// Intensity result viewing direction
+message FromSourceLookingAtSensor {}
+message FromSensorLookingAtSource {}

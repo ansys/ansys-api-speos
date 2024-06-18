@@ -3,6 +3,7 @@ syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/camera_sensor.proto";
 import "ansys/api/speos/sensor/v1/irradiance_sensor.proto";
+import "ansys/api/speos/sensor/v1/common.proto";
 
 package ansys.api.speos.sensor.v1;
 
@@ -28,6 +29,39 @@ message SensorTemplate {
 	oneof sensor_template {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
+		Intensity intensity_sensor_template = 7;
+		PolarIntensity polar_intensity_sensor_template = 8;
+	}
+	message Intensity {
+		oneof sensor_type {
+			ansys.api.speos.sensor.v1.SensorTypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric
+			ansys.api.speos.sensor.v1.SensorTypeColorimetric sensor_type_colorimetric = 3; //  Sensor type : Colorimetric
+			ansys.api.speos.sensor.v1.SensorTypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric
+			ansys.api.speos.sensor.v1.SensorTypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral
+		}
+		oneof orientation {
+			ansys.api.speos.sensor.v1.IntensityOrientationXAsMeridian intensity_orientation_x_as_meridian = 6; // Orientation type: X As Meridian, Y as Parallel
+			ansys.api.speos.sensor.v1.IntensityOrientationXAsParallel intensity_orientation_x_as_parallel = 7; // Orientation type: X As Parallel, Y as Meridian
+			ansys.api.speos.sensor.v1.IntensityOrientationConoscopic intensity_orientation_conoscopic = 8; // Orientation type: Conoscopic
+		}
+		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 9; // Dimensions of the sensor
+		ansys.api.speos.sensor.v1.SensorNearField near_field = 10;
+		oneof viewing_direction {
+			ansys.api.speos.sensor.v1.FromSourceLookingAtSensor from_source_looking_at_sensor = 11;
+			ansys.api.speos.sensor.v1.FromSensorLookingAtSource from_sensor_looking_at_source = 12;
+		}		
+	}
+	message PolarIntensity{
+		oneof format {
+			ansys.api.speos.sensor.v1.PolarIntensityIesnaA iesna_a = 1;
+			ansys.api.speos.sensor.v1.PolarIntensityIesnaB iesna_b = 2;
+			ansys.api.speos.sensor.v1.PolarIntensityIesnaC iesna_c = 3;
+			ansys.api.speos.sensor.v1.PolarIntensityEulumdat eulumdat = 4;
+		}
+		double sampling = 5; // sampling in degree
+		string adaptive_sampling = 6;
+		ansys.api.speos.sensor.v1.SensorNearField near_field = 7;
+		double integration_angle = 8;
 	}
 }
 
