@@ -38,3 +38,46 @@ message SensorTypeRadiometric {}
 message SensorTypeSpectral {
 	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
 }
+
+// Orientation of the intensity sensor
+message IntensityOrientationXAsMeridian {}
+message IntensityOrientationXAsParallel {}
+message IntensityOrientationConoscopic {}
+
+// Format of polar intensity sensor
+message PolarIntensityIesnaA {}
+message PolarIntensityIesnaB {}
+message PolarIntensityIesnaC {}
+message PolarIntensityEulumdat {}
+
+// Near field intensity or polar intensity sensor
+message SensorNearField {
+	double cell_distance = 1; // (mm)
+	double cell_diameter = 2; // (mm)
+}
+
+// Intensity result viewing direction
+message FromSourceLookingAtSensor {}
+message FromSensorLookingAtSource {}
+
+// Dimensions of the non conoscopic intensity sensor
+message IntensityDimensions {
+	double x_start = 1; // (mm)
+	double x_end = 2; // (mm)
+	uint32 x_sampling = 3; // Corresponds to the number of pixels of the XMP map.
+	double y_start = 4; // (mm)
+	double y_end = 5; // (mm)
+	uint32 y_sampling = 6; // Corresponds to the number of pixels of the XMP map.
+}
+
+// Dimensions of the conoscopic intensity sensor
+message ConoscopicIntensityDimensions {
+	double theta_max = 1; // (deg)	
+	uint32 sampling = 2; // Corresponds to the number of pixels of the XMP map.	
+}
+
+// Dimensions of the conoscopic intensity sensor
+message PolarIntensityDimensions {	
+	uint32 horizontal_sampling = 1; // Corresponds to the number of samples of the intensity file, IESNA or EULUMDAT.
+	uint32 vertical_sampling = 2; // Corresponds to the number of samples of the intensity file, IESNA or EULUMDAT.
+}
