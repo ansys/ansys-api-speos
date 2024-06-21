@@ -28,6 +28,10 @@ message SourceTemplate {
 	oneof source {
 		Luminaire luminaire = 3;
 		Surface surface = 4;
+		//Rayfile ray_file = 5;
+		//Display display = 6;
+		//Thermic thermic = 7;
+		Ambient ambient = 8;
 	}
 
 	// Flux messages
@@ -67,6 +71,40 @@ message SourceTemplate {
 
 		// Spectrum messages
 		message SpectrumFromXMPFile{}
+	}
+
+	message UniformAmbient {
+		double luminance = 1; // Luminance in cd per squared meter
+		bool mirrored_extent = 2;
+		string spectrum_guid = 3;
+	}
+	message CieOvercast {
+		double luminance = 1; // Luminance in cd per squared meter
+		string spectrum_guid = 2;
+	}
+	message CieGeneral {
+		double luminance = 1; // Luminance in cd per squared meter
+		//CieType cie_type = 2; // CIE type
+	}
+	message NaturalLight {
+		double turbidity = 1;
+		bool with_sky = 2;
+	}
+	message UsStandard {}
+	message EnvironmentMap {
+		double luminance = 1; // Luminance in cd per squared meter
+		string image_uri = 2;
+		// TODO: add color space using Display mode
+	}
+	message Ambient {
+		oneof source{
+			UniformAmbient uniform_ambient = 1;
+			CieOvercast cie_overcast = 2;
+			CieGeneral cie_general = 3;
+			NaturalLight natural_light = 4;
+			UsStandard us_standard = 5;
+			EnvironmentMap environment_map = 6;
+		}
 	}
 
 	message Luminaire{

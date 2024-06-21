@@ -94,6 +94,67 @@ message Scene
 			IntensityProperties intensity_properties = 3;
 		}
 
+		message AutomaticSun {
+			string time_zone_uri = 1;
+			int32 year = 2;
+			int32 month = 3;
+			int32 day = 4;
+			int32 hour = 5;
+			int32 minute = 6;
+		}
+
+		message ManualSun {
+			repeated double sun_direction = 1; 
+		}
+
+		message SunAxisSystem {
+			oneof sun_type {
+				AutomaticSun automatic_sun = 1;
+				ManualSun manual_sun = 2;
+			}
+		}
+
+		message UniformAmbientProperties {
+			SunAxisSystem sun_axis_system = 1;
+		}
+
+		message CieOvercastProperties {}
+
+		message CieGeneralProperties {
+			repeated double north_direction = 1;
+			SunAxisSystem sun_axis_system = 2;
+		}
+
+		message NaturalLightProperties {
+			repeated double north_direction = 1;
+			SunAxisSystem sun_axis_system = 2;
+		}
+
+		message UsStandardProperties {
+			repeated double north_direction = 1;
+			SunAxisSystem sun_axis_system = 2;
+		}
+
+		message EnvironmentMapProperties {
+			repeated double north_direction = 1;
+			repeated double ground_origin = 2;
+			double ground_height = 3; // unit mm
+		}
+
+		message AmbientProperties {
+			repeated double zenith_direction = 1;
+			oneof source_properties {
+				UniformAmbientProperties uniform_ambient_properties = 2;
+				CieOvercastProperties cie_overcast_properties = 3;
+				CieGeneralProperties cie_general_properties = 4;
+				NaturalLightProperties natural_light_properties = 5;
+				UsStandardProperties us_standard_properties = 6;
+				EnvironmentMapProperties environment_map_properties = 7;
+			}
+			//optional repeated double north = 2;
+			//optional SunAxisSystem sun_axis_system = 3;
+		}
+
 		string name = 1;
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadatas
@@ -101,6 +162,7 @@ message Scene
 		oneof properties {
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
+			AmbientProperties ambient_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type Ambient
 		}
 	}
 
