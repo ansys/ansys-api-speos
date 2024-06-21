@@ -38,7 +38,7 @@ message SensorTemplate {
 			ansys.api.speos.sensor.v1.SensorTypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric
 			ansys.api.speos.sensor.v1.SensorTypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral
 		}		
-		double focal = 6; // Observer type : focal
+		double focal = 6; // Observer type : focal (mm)
 		double integration_angle = 7; // Integration angle, in degree
 		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 8; // Dimensions of the sensor
 	}
