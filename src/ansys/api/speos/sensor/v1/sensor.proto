@@ -61,7 +61,7 @@ message SensorTemplate {
 			ansys.api.speos.sensor.v1.PolarIntensityIesnaC iesna_c = 3;
 			ansys.api.speos.sensor.v1.PolarIntensityEulumdat eulumdat = 4;
 		}
-		PolarIntensityDimensions dimensions = 5; // dimensions
+		ansys.api.speos.sensor.v1.PolarIntensityDimensions dimensions = 5; // dimensions
 		string adaptive_sampling_uri = 6;
 		ansys.api.speos.sensor.v1.SensorNearField near_field = 7;
 		double integration_angle = 8;
