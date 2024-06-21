@@ -62,11 +62,11 @@ message FromSensorLookingAtSource {}
 
 // Dimensions of the non conoscopic intensity sensor
 message IntensityDimensions {
-	double x_start = 1; // (mm)
-	double x_end = 2; // (mm)
+	double x_start = 1; // (deg)
+	double x_end = 2; // (deg)
 	uint32 x_sampling = 3; // Corresponds to the number of pixels of the XMP map.
-	double y_start = 4; // (mm)
-	double y_end = 5; // (mm)
+	double y_start = 4; // (deg)
+	double y_end = 5; // (deg)
 	uint32 y_sampling = 6; // Corresponds to the number of pixels of the XMP map.
 }
 

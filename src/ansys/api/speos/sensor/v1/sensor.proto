@@ -3,6 +3,7 @@ syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/camera_sensor.proto";
 import "ansys/api/speos/sensor/v1/irradiance_sensor.proto";
+import "ansys/api/speos/sensor/v1/common.proto";
 
 package ansys.api.speos.sensor.v1;
 
