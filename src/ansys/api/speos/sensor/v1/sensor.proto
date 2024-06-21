@@ -3,6 +3,7 @@ syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/camera_sensor.proto";
 import "ansys/api/speos/sensor/v1/irradiance_sensor.proto";
+import "ansys/api/speos/sensor/v1/common.proto";
 
 package ansys.api.speos.sensor.v1;
 
@@ -28,6 +29,47 @@ message SensorTemplate {
 	oneof sensor_template {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
+		Irradiance3D irradiance_3d = 10;
+	}
+
+	message Irradiance3D {
+		oneof sensor_type {
+			TypePhotometric sensor_type_photometric = 1; // Sensor type : Photometric
+			TypeColorimetric sensor_type_colorimetric = 2; //  Sensor type : Colorimetric
+			TypeRadiometric sensor_type_radiometric = 3; //  Sensor type : Radiometric
+		}
+
+		message IntegrationTypeRadial {}
+
+		message IntegrationTypePlanar {
+			bool reflection = 1;
+			bool transmission = 2; 
+			bool absorption = 3;
+		}
+		
+		enum IntegrationType {
+			Radial = 0;
+			Planar = 1;
+		}
+
+		message TypePhotometric{
+			oneof interrogation_type {
+				IntegrationTypeRadial interrogation_type_radial = 1;
+				IntegrationTypePlanar interrogation_type_planar = 2;
+			}
+		}
+
+		message TypeRadiometric{
+			oneof interrogation_type {
+				IntegrationTypeRadial interrogation_type_radial = 1;
+				IntegrationTypePlanar interrogation_type_planar = 2;
+			}
+		}
+
+		message TypeColorimetric{
+			ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 1;
+			IntegrationType integration_type = 2;
+		}
 	}
 }
 
