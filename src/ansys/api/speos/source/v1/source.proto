@@ -28,6 +28,7 @@ message SourceTemplate {
 	oneof source {
 		Luminaire luminaire = 3;
 		Surface surface = 4;
+		Display display = 6;
 	}
 
 	// Flux messages
@@ -79,6 +80,56 @@ message SourceTemplate {
 		string spectrum_guid = 5; // Spectrum guid in spectrum manager
 	}
 
+	enum EColorSpace
+	{
+		ColorSpaceRGB = 0; // ColorSpaceRGB use D65 white point
+		ColorSpaceAdobeRGB = 1; //ColorSpaceAdobeRGB use D65 white point
+		ColorSpaceUserDefined = 2; //User defined white point
+	}
+
+	enum EWhitePoint
+	{
+		WhitePointD65 = 0;  //D65 white point
+		WhitePointD50 = 1; //D50 white point
+		WhitePointC = 2; //C white point
+		WhitePointE = 3; //E white point
+		WhitePointUserDefined = 4; //User defined white point
+	}
+
+	message SourceDimensions {
+		double x_start = 1; // (mm)
+		double x_end = 2; // (mm)
+		double y_start = 4; // (mm)
+		double y_end = 5; // (mm)
+	}// source dimensions 
+
+	message ColorSpace
+	{
+		EColorSpace color_space = 1;
+		EWhitePoint white_point = 2;
+
+		double x = 3; //x white point value
+		double y = 4; //y white point value
+
+		string r_spectrum_guid = 5; //Reg Spectrum library guid in spectrum manager
+		string g_spectrum_guid = 6; //Green Spectrum library guid in spectrum manager
+		string b_spectrum_guid = 7; //Blue Spectrum library guid in spectrum manager
+	}
+
+	message Display{
+
+		string image_file_uri = 1; //png,jpeg,bmp,tiff or rgb format file uri
+		SourceDimensions source_dimensions = 2; //horizontal and vertical dimensions (mm)
+		double luminous_flux = 3; //luminace in cd/m²
+		optional int32 contrast_ratio = 4; //Contrast ratio, infitine if not defined
+		string intensity_guid = 5; // Intensity guid in intensity manager
+		ColorSpace color_space = 6; // Color space
+		int32 nbRays = 7; //source rays number
+	}
+
+
+}
+
 //	message Thermic{
 //		Flux flux = 1;
 //
@@ -119,7 +170,6 @@ message SourceTemplate {
 //		message Luminous{};
 //		message Radiant{};
 //	}
-}
 
 // Request to create a SourceTemplate in SourceTemplatesManager
 message Create_Request {

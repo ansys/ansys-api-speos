@@ -75,6 +75,12 @@ message Scene
 		message LuminaireProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 		}
+
+		message DisplayProperties{
+			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+			IntensityProperties intensity_properties = 3;
+		}
+
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
 				message GeoPath {
@@ -101,6 +107,7 @@ message Scene
 		oneof properties {
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
+			DisplayProperties display_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type Display
 		}
 	}
 
