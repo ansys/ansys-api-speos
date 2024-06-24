@@ -32,12 +32,12 @@ message SensorTemplate {
 		Intensity intensity_sensor_template = 7;
 		PolarIntensity polar_intensity_sensor_template = 8;
 	}
-	message Intensity { // Carthesian intensity
+	message Intensity { // Carthesian intensity sensor, generating a XMP result
 		oneof sensor_type {
-			ansys.api.speos.sensor.v1.SensorTypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric
-			ansys.api.speos.sensor.v1.SensorTypeColorimetric sensor_type_colorimetric = 3; //  Sensor type : Colorimetric
-			ansys.api.speos.sensor.v1.SensorTypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric
-			ansys.api.speos.sensor.v1.SensorTypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral
+			ansys.api.speos.sensor.v1.SensorTypePhotometric sensor_type_photometric = 2; // Sensor type: Photometric
+			ansys.api.speos.sensor.v1.SensorTypeColorimetric sensor_type_colorimetric = 3; // Sensor type: Colorimetric
+			ansys.api.speos.sensor.v1.SensorTypeRadiometric sensor_type_radiometric = 4; // Sensor type: Radiometric
+			ansys.api.speos.sensor.v1.SensorTypeSpectral sensor_type_spectral = 5; // Sensor type: Spectral
 		}
 		oneof orientation {
 			ansys.api.speos.sensor.v1.IntensityOrientationXAsMeridian intensity_orientation_x_as_meridian = 6; // Orientation type: X As Meridian, Y as Parallel
@@ -45,27 +45,28 @@ message SensorTemplate {
 			ansys.api.speos.sensor.v1.IntensityOrientationConoscopic intensity_orientation_conoscopic = 8; // Orientation type: Conoscopic
 		}
 		oneof dimensions {
-			ansys.api.speos.sensor.v1.IntensityDimensions intensity_dimensions = 9; // Dimensions of the sensor
-			ansys.api.speos.sensor.v1.ConoscopicIntensityDimensions conoscopic_dimensions = 13; // Dimensions of the conoscopic sensor
+			ansys.api.speos.sensor.v1.IntensityDimensions intensity_dimensions = 9; // Dimensions for non conoscopic sensor
+			ansys.api.speos.sensor.v1.ConoscopicIntensityDimensions conoscopic_dimensions = 13; // Dimensions for conoscopic sensor
 		}
 		
-		ansys.api.speos.sensor.v1.SensorNearField near_field = 10;
+		ansys.api.speos.sensor.v1.SensorNearField near_field = 10; // Optional, near field parameters. When not set, near field is disabled for the sensor
+
 		oneof viewing_direction {
-			ansys.api.speos.sensor.v1.FromSourceLookingAtSensor from_source_looking_at_sensor = 11;
-			ansys.api.speos.sensor.v1.FromSensorLookingAtSource from_sensor_looking_at_source = 12;
+			ansys.api.speos.sensor.v1.FromSourceLookingAtSensor from_source_looking_at_sensor = 11; // Viewing direction from source looking at sensor
+			ansys.api.speos.sensor.v1.FromSensorLookingAtSource from_sensor_looking_at_source = 12; // Viewing direction from sensor looking at source
 		}	
 	}
 	message PolarIntensity{
 		oneof format {
-			ansys.api.speos.sensor.v1.PolarIntensityIesnaA iesna_a = 1;
-			ansys.api.speos.sensor.v1.PolarIntensityIesnaB iesna_b = 2;
-			ansys.api.speos.sensor.v1.PolarIntensityIesnaC iesna_c = 3;
-			ansys.api.speos.sensor.v1.PolarIntensityEulumdat eulumdat = 4;
+			ansys.api.speos.sensor.v1.PolarIntensityIesnaA iesna_a = 1; // Sensor format: Iesna A type
+			ansys.api.speos.sensor.v1.PolarIntensityIesnaB iesna_b = 2; // Sensor format: Iesna B type
+			ansys.api.speos.sensor.v1.PolarIntensityIesnaC iesna_c = 3; // Sensor format: Iesna C type
+			ansys.api.speos.sensor.v1.PolarIntensityEulumdat eulumdat = 4; // Sensor format: Eulumdat
 		}
-		ansys.api.speos.sensor.v1.PolarIntensityDimensions dimensions = 5; // dimensions
-		string adaptive_sampling_uri = 6;
-		ansys.api.speos.sensor.v1.SensorNearField near_field = 7;
-		double integration_angle = 8;
+		ansys.api.speos.sensor.v1.PolarIntensityDimensions dimensions = 5; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file
+		string adaptive_sampling_uri = 6; // Path to the adaptive sampling file
+		ansys.api.speos.sensor.v1.SensorNearField near_field = 7; // Optional, near field parameters. When not set, near field is disabled for the sensor
+		double integration_angle = 8; // Integration angle (deg)
 	}
 }
 
