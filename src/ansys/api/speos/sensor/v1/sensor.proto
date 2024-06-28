@@ -29,8 +29,20 @@ message SensorTemplate {
 	oneof sensor_template {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
+		Radiance radiance_sensor_template = 3;
 		Intensity intensity_sensor_template = 7;
 		PolarIntensity polar_intensity_sensor_template = 8;
+	}
+	message Radiance {
+		oneof sensor_type {
+			ansys.api.speos.sensor.v1.SensorTypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric
+			ansys.api.speos.sensor.v1.SensorTypeColorimetric sensor_type_colorimetric = 3; //  Sensor type : Colorimetric
+			ansys.api.speos.sensor.v1.SensorTypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric
+			ansys.api.speos.sensor.v1.SensorTypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral
+		}		
+		double focal = 6; // Observer type : focal (mm)
+		double integration_angle = 7; // Integration angle, in degree
+		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 8; // Dimensions of the sensor
 	}
 	message Intensity { // Carthesian intensity sensor, generating a XMP result
 		oneof sensor_type {
@@ -66,8 +78,8 @@ message SensorTemplate {
 		ansys.api.speos.sensor.v1.PolarIntensityDimensions dimensions = 5; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file
 		string adaptive_sampling_uri = 6; // Path to the adaptive sampling file
 		ansys.api.speos.sensor.v1.SensorNearField near_field = 7; // Optional, near field parameters. When not set, near field is disabled for the sensor
-		double integration_angle = 8; // Integration angle (deg)
-	}
+		double integration_angle = 8; // Integration angle (deg)		
+	}	
 }
 
 // Request to create a SensorTemplate in SensorTemplatesManager
