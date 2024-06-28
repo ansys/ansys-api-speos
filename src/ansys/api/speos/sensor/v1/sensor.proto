@@ -49,7 +49,7 @@ message SensorTemplate {
 			ansys.api.speos.sensor.v1.ConoscopicIntensityDimensions conoscopic_dimensions = 13; // Dimensions for conoscopic sensor
 		}
 		
-		ansys.api.speos.sensor.v1.SensorNearField near_field = 10; // Optional, near field parameters. When not set, near field is disabled for the sensor
+		ansys.api.speos.sensor.v1.SensorNearField near_field = 10; // Activates Near field. When not set, near field is disabled for the sensor
 
 		oneof viewing_direction {
 			ansys.api.speos.sensor.v1.FromSourceLookingAtSensor from_source_looking_at_sensor = 11; // Viewing direction from source looking at sensor

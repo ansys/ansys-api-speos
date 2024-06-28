@@ -90,6 +90,6 @@ message ConoscopicIntensityDimensions {
 
 // Dimensions of the conoscopic intensity sensor
 message PolarIntensityDimensions {	
-	uint32 horizontal_sampling = 1; // Number of horizontal samples of the intensity file (IESNA or EULUMDAT).
-	uint32 vertical_sampling = 2; // Number of vertical samples of the intensity file (IESNA or EULUMDAT).
+	int32 horizontal_sampling = 1; // Number of horizontal samples of the intensity file (IESNA or EULUMDAT).
+	int32 vertical_sampling = 2; // Number of vertical samples of the intensity file (IESNA or EULUMDAT).
 }
