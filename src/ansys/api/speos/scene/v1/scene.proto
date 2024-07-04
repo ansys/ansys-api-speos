@@ -190,6 +190,16 @@ message Scene
 			}
 			repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is normal to sensor plane (anti-normal of the sensor)) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
 		}
+		message RadianceSensorProperties {
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+			repeated double observer_point = 2; // Position of the sensor (Ox Oy Oz), optional (default: focal length is used)
+			oneof layer_type {
+				LayerTypeNone layer_type_none = 3; // Layer type : None
+				LayerTypeSource layer_type_source = 4; // Layer type : Source
+				LayerTypeFace layer_type_face = 5; // Layer type : Face
+				LayerTypeSequence layer_type_sequence = 6; // Layer type : Sequence								
+			}
+		}
 
 		string name = 1;
 		string description = 2;
@@ -199,6 +209,7 @@ message Scene
 		oneof properties {
 			CameraSensorProperties camera_sensor_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
 			IrradianceSensorProperties irradiance_sensor_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
+			RadianceSensorProperties radiance_sensor_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
 		}
 	}
 
