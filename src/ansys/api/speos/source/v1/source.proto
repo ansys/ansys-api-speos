@@ -28,6 +28,7 @@ message SourceTemplate {
 	oneof source {
 		Luminaire luminaire = 3;
 		Surface surface = 4;
+		RayFile rayfile = 6;
 	}
 
 	// Flux messages
@@ -41,6 +42,7 @@ message SourceTemplate {
 	message LuminousIntensity{
 		double luminous_intensity_value = 1; // Luminous intensity in candelas
 	};
+	message FromRayFile{}; 
 
 	message Surface{
 		oneof flux{ // Flux value
@@ -77,6 +79,22 @@ message SourceTemplate {
 		}
 		string intensity_file_uri = 4; // IES or EULUMDAT format file uri 
 		string spectrum_guid = 5; // Spectrum guid in spectrum manager
+	}
+
+	message RayFile{
+		string ray_file_uri = 1; // Rayfile format file uri (.ray or .tm25ray files expected)
+		oneof flux{ // Flux value
+			FromRayFile flux_from_ray_file = 2; // Take flux from ray file provided
+			Luminous luminous_flux = 3; // Luminous flux in lumens, must be positive
+			Radiant radiant_flux = 4; // Radiant flux in watts, must be positive
+		}
+		oneof spectrum{
+			SpectrumFromRayFile spectrum_from_ray_file = 5; // Take spectrum from ray file provided
+			string spectrum_guid = 6; // Spectrum guid in spectrum manager
+		}
+
+		// Spectrum messages
+		message SpectrumFromRayFile{}
 	}
 
 //	message Thermic{

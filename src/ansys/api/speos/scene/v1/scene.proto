@@ -55,7 +55,7 @@ message Scene
 				// Define the intensity distribution as normal to the selected emissive surface and its orientation on the emissive surface.
 				message NormalToUVMap {}
 
-				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surfacic source 
+				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surface source 
 				// Orientation of the source intensity distribution
 				oneof orientation {
 					AxisSystem axis_system = 2; // orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
@@ -75,10 +75,11 @@ message Scene
 		message LuminaireProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 		}
+		
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
 				message GeoPath {
-					string geo_path = 1; // Geometry that will use this surfacic source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
+					string geo_path = 1; // Geometry that will use this surface source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
 					optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 				}
 				repeated GeoPath geo_paths = 1;
@@ -94,6 +95,11 @@ message Scene
 			IntensityProperties intensity_properties = 3;
 		}
 
+		message RayFileProperties{
+			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
+		}
+
 		string name = 1;
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadatas
@@ -101,6 +107,7 @@ message Scene
 		oneof properties {
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
+			RayFileProperties rayfile_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type RayFile
 		}
 	}
 
@@ -216,8 +223,8 @@ message Scene
 	map<string, string> metadata = 3; // User defined metadatas
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
-	repeated VOPInstance vops = 11; // The volumic materials applied on geometries
-	repeated SOPInstance sops = 12; // The surfacic materials applied on geometries
+	repeated VOPInstance vops = 11; // The volume materials applied on geometries
+	repeated SOPInstance sops = 12; // The surface materials applied on geometries
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
