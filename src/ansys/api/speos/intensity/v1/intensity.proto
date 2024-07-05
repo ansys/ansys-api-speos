@@ -26,6 +26,7 @@ message IntensityTemplate {
 	}
 
 	message Lambertian{ 
+		option deprecated = true; // Use Cos instead (Lambertian was only Cos with N (order of cos law) set to 1)
 		double total_angle = 1; // total angle in degrees of the emission of the light source
 	}
 
