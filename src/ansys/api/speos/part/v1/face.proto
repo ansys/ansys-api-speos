@@ -12,14 +12,20 @@ message Face
 {
 	string name = 1;
 	string description = 2;
-	map<string, string> metadata = 3; // User defined metadatas
+	map<string, string> metadata = 3; // user defined metadatas
 	repeated float vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
 	repeated uint32 facets = 11; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
 	repeated float normals = 12; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
 
+	message TextureCoordinates
+	{
+		repeated float uv = 1; // coordinates (u_1 v_1 ... u_NbPoints v_NbPoints) representating bridge between vertices and point on texture 
+	}
+
+	repeated TextureCoordinates texture_coordinates_channels = 13; // if we want apply textures on this face, we have to set a TextureCoordinates per texture
+
 	// tangents ?
 	// bitangents ?
-	// texture_coordinates ?
 	// custom data on vertex ?
 }
 
@@ -88,6 +94,7 @@ message Chunk {
 		Vertices vertices = 2; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
 		Facets facets = 3; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
 		Normals normals = 4; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
+		TextureCoordinatesChannels texture_coordinates_channels = 5;
 	}
 
 	message FaceHeader {
@@ -95,16 +102,23 @@ message Chunk {
 		string name = 2;
 		string description = 3;
 		map<string, string> metadata = 4;
-		repeated int32 sizes = 5; // total sizes for vectors: (vertices_normals_size, facets_size) - vertices and normals vectors have same size, that's why it is gathered in vertices_normals_size
+		repeated int32 sizes = 5; // total sizes for vectors: (vertices_normals_size, facets_size, texture_coordinates_channels_size) - vertices and normals vectors have same size, that's why it is gathered in vertices_normals_size
 	}
+	
 	message Vertices {
 		repeated float data = 1;
 	}
+	
 	message Facets {
 		repeated uint32 data = 1;
 	}
+	
 	message Normals {
 		repeated float data = 1;
+	}
+
+	message TextureCoordinatesChannels {
+		repeated Face.TextureCoordinates data = 1;
 	}
 }
 message Upload_Response {
