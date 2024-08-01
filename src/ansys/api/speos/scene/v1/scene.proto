@@ -135,6 +135,7 @@ message Scene
 			}
 
 			EnumSCAFilteringType sca_filtering_mode = 1;
+			repeated GeoPaths geometries = 2; // surfaces selected (repeated GeoPaths) - one layer per surface (GeoPaths) - as per definition, one surface (GeoPaths) can contain several faces (repeated string geo_paths).
 		}
 		// Includes one layer per sequence in the result.
 		message LayerTypeSequence {
