@@ -133,9 +133,13 @@ message Scene
 				LastImpact = 0;
 				IntersectedOneTime = 1;
 			}
+			message Layer {
+				string name = 1; // Name of the layer (will appear for example in Virtual Photometric Lab)
+				GeoPaths geometries = 2; // Surface selected.
+			}
 
 			EnumSCAFilteringType sca_filtering_mode = 1;
-			repeated GeoPaths geometries = 2; // surfaces selected (repeated GeoPaths) - one layer per surface (GeoPaths) - as per definition, one surface (GeoPaths) can contain several faces (repeated string geo_paths).
+			repeated Layer layers = 2; // Layers that will be taken into account in the result.
 		}
 		// Includes one layer per sequence in the result.
 		message LayerTypeSequence {
