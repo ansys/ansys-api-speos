@@ -59,28 +59,28 @@ message IntensityTemplate {
 }
 
 
-// Request to create a Intensity in IntensitysManager
+// Request to create a Intensity in IntensityTemplatesManager
 message Create_Request {
 	IntensityTemplate intensity_template = 1; // Intensity containing its basic characteristics
 }
 message Create_Response {
-	string guid = 1; // Guid of the Intensity created in IntensitysManager
+	string guid = 1; // Guid of the Intensity created in IntensityTemplatesManager
 }
-// Request to read a Intensity in IntensitysManager
+// Request to read a Intensity in IntensityTemplatesManager
 message Read_Request {
 	string guid = 1; // Guid of the Intensity to be read
 }
 message Read_Response {
 	IntensityTemplate intensity_template = 1; // Intensity corresponding to the guid given in Read_Request
 }
-// Request to update a Intensity in IntensitysManager
+// Request to update a Intensity in IntensityTemplatesManager
 message Update_Request {
 	string guid = 1; // Guid of the Intensity to be updated
 	IntensityTemplate intensity_template = 2; // Intensity that will be used for the update
 }
 message Update_Response {
 }
-// Request to delete a Intensity in IntensitysManager
+// Request to delete a Intensity in IntensityTemplatesManager
 message Delete_Request {
 	string guid = 1; // Guid of the Intensity to be deleted
 }
@@ -89,7 +89,7 @@ message Delete_Response {}
 message List_Request {
 }
 message List_Response {
-	repeated string guids = 1; // Guids of the Intensitys in IntensitysManager
+	repeated string guids = 1; // Guids of the Intensitys in IntensityTemplatesManager
 }
 
 // Actions available on a IntensityTemplate
