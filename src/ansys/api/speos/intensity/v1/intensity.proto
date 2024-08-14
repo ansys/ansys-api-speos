@@ -20,7 +20,6 @@ service IntensityTemplatesManager {
 
 // Intensity with its basic characteristics
 message IntensityTemplate {
-
 	message Library{ 
 		string intensity_file_uri = 1; // uri of the intensity file IES (.ies), Eulumdat (.ldt), speos intensities (.xmp)
 	}
