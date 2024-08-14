@@ -20,12 +20,12 @@ service IntensityTemplatesManager {
 
 // Intensity with its basic characteristics
 message IntensityTemplate {
-
 	message Library{ 
 		string intensity_file_uri = 1; // uri of the intensity file IES (.ies), Eulumdat (.ldt), speos intensities (.xmp)
 	}
 
 	message Lambertian{ 
+		option deprecated = true; // Use Cos instead (Lambertian was only Cos with N (order of cos law) set to 1)
 		double total_angle = 1; // total angle in degrees of the emission of the light source
 	}
 
@@ -35,14 +35,22 @@ message IntensityTemplate {
 	}
 
 	message SymmetricGaussian{ 
+		option deprecated = true; // Use Gaussian instead
 		double FWHM_angle = 1; // Full Width in degrees at Half Maximum 
 		double total_angle = 2; // total angle in degrees of the emission of the light source
 	}
 
 	message AsymmetricGaussian{ 
+		option deprecated = true; // Use Gaussian instead
 		double FWHM_angle_x = 1; // Full Width in degrees following x at Half Maximum 
 		double FWHM_angle_y = 2; // Full Width in degrees following y at Half Maximum 
 		double total_angle = 3; // total angle in degrees of the emission of the light source
+	}
+
+	message Gaussian{
+	    double FWHM_angle_x = 1; // Full Width in degrees following x at Half Maximum
+	    double FWHM_angle_y = 2; // Full Width in degrees following y at Half Maximum
+	    double total_angle = 3; // total angle in degrees of the emission of the light source
 	}
 
 	string name = 1; // Intensity name
@@ -53,8 +61,9 @@ message IntensityTemplate {
 		Library library = 3; // From file
 		Lambertian lambertian = 4; // Lambertian distribution
 		Cos cos = 5; // Lambert cosine law distribution
-		SymmetricGaussian symmetric_gaussian = 6; // Symmetric gaussian distribution
-		AsymmetricGaussian asymmetric_gaussian = 7; // Asymmetric gaussian distribution
+		SymmetricGaussian symmetric_gaussian = 6; // Deprecated (use gaussian instead) - Symmetric gaussian distribution
+		AsymmetricGaussian asymmetric_gaussian = 7; // Deprecated (use gaussian instead) - Asymmetric gaussian distribution
+		Gaussian gaussian = 9; // Gaussian distribution
 	}
 }
 
