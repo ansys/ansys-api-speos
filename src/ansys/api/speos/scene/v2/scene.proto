@@ -55,12 +55,18 @@ message Scene
 				}
 			}
 			message AsymmetricGaussianProperties {
+				option deprecated = true; // Use GaussianProperties instead
 				repeated double axis_system = 1; // orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+			}
+
+			message GaussianProperties {
+			    repeated double axis_system = 1; // optional - orientation of the intensity distribution (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) - if not filled : normal to surface map.
 			}
 
 			oneof properties {
 				LibraryProperties library_properties = 1; // To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type Library
-				AsymmetricGaussianProperties asymmetric_gaussian_properties = 2; // To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type AsymmetricGaussian
+				AsymmetricGaussianProperties asymmetric_gaussian_properties = 2; // Deprecated (use gaussian_properties instead) - To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type AsymmetricGaussian
+				GaussianProperties gaussian_properties = 3; // To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type Gaussian
 			}
 		}
 		message LuminaireProperties{
