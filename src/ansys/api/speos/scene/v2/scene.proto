@@ -27,6 +27,11 @@ message Scene
 		repeated string geo_paths = 1; // list of geo paths
 	}
 
+	message GeoPath {
+		string geo_path = 1; // Geometry that will be used ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
+		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
+	}
+
 	// Instance of a Material to apply on geometries of the scene
 	message MaterialInstance
 	{
@@ -74,10 +79,6 @@ message Scene
 		}
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
-				message GeoPath {
-					string geo_path = 1; // Geometry that will use this surface source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
-					optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
-				}
 				repeated GeoPath geo_paths = 1;
 			}
 			message ExitanceVariableProperties {
