@@ -171,7 +171,7 @@ message Scene
 		}
 		message RadianceProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			repeated double observer_point = 2; // Position of the sensor (Ox Oy Oz), optional (default: focal length is used)
+			repeated double observer_point = 2; // Position of the observer point (Ox Oy Oz), optional (default: focal length is used)
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 3; // Layer type : None
 				LayerTypeSource layer_type_source = 4; // Layer type : Source
