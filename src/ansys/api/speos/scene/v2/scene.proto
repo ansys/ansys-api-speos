@@ -12,11 +12,16 @@ package ansys.api.speos.scene.v2;
 message Scene
 {
 	// Geometry path of object that will include the specific property (can be sub-scene/part/body/face). 
-	// Empty or "" for all geometries, or in the format : <sub-scene name>/<part name>/<body name>/<face name> (no name by default for root scene and root part).
+	// geo_path in the format : "<sub-scene name>/<part name>/<body name>/<face name>" (no name by default for root scene and root part).
+	// "body0" -> body0 of the root part in the root scene
+	// "body0/face0" -> face0 in body0 of the root part in the root scene
 	// "part1" -> part1 of the root part in the root scene
 	// "part1/body1/face1" -> face1 in body1 in part1 of the root part in the root scene
 	// "subScene1" -> root part in the sub scene subScene1
 	// "subScene1/part2" -> part2 of the sub scene subScene1
+	// Particularities:
+	// If the object GeoPaths is defined and geo_paths left empty, this means "All geometry selected".
+	// If the object GeoPaths is NOT defined, this means "No geometry selected".
 	message GeoPaths
 	{
 		repeated string geo_paths = 1; // list of geo paths
@@ -46,7 +51,7 @@ message Scene
 				// Define the intensity distribution as normal to the selected emissive surface and its orientation on the emissive surface.
 				message NormalToUVMap {}
 
-				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surfacic source 
+				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surface source 
 				// Orientation of the source intensity distribution
 				oneof orientation {
 					AxisSystem axis_system = 2; // orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
@@ -70,7 +75,7 @@ message Scene
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
 				message GeoPath {
-					string geo_path = 1; // Geometry that will use this surfacic source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
+					string geo_path = 1; // Geometry that will use this surface source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
 					optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 				}
 				repeated GeoPath geo_paths = 1;
@@ -194,9 +199,9 @@ message Scene
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadatas
 		string simulation_guid = 10; // Guid of the element to instantiate
-		repeated string sensor_paths = 11; // Sensors that this simulation will include (empty or "" for all sensors, "<sensor name>" for a specific sensor in the current scene, or "<scene name>/<sensor name>" for a specific sensor in a specific sub scene)
-		repeated string source_paths = 12; // Sources that this simulation will include (empty or "" for all sources, "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene)
-		GeoPaths geometries = 13; // Geometries that this simulation will include (empty to select the root part and all the subscenes)
+		repeated string sensor_paths = 11; // Sensors that this simulation will include (empty for no sensor, [""] for all sensors, "<sensor name>" for a specific sensor in the current scene, or "<scene name>/<sensor name>" for a specific sensor in a specific sub scene)
+		repeated string source_paths = 12; // Sources that this simulation will include (empty for no source, [""] for all sources, "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene)
+		GeoPaths geometries = 13; // Geometries that this simulation will include - Not yet functional (All geometry is included by default to each simulation)
 	}
 
 	message SceneInstance
@@ -217,7 +222,7 @@ message Scene
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
-	repeated MaterialInstance materials = 16; // The materials (volumic + surfacic) applied on geometries
+	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
 }
 
