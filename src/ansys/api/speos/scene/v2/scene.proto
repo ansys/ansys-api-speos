@@ -148,7 +148,7 @@ message Scene
 			uint32 sampling = 1;
 		}
 
-		message CameraSensorProperties {
+		message CameraProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			string trajectory_file_uri = 2; // Trajectory file, used to define the position and orientations of the Camera sensor in time.
 			oneof layer_type {
@@ -156,7 +156,7 @@ message Scene
 				LayerTypeSource layer_type_source = 4; // Layer type : Source
 			}
 		}
-		message IrradianceSensorProperties {
+		message IrradianceProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			EnumRayFileType ray_file_type = 2; // Choose type of ray file generated after the simulation.
 			oneof layer_type {
@@ -169,7 +169,7 @@ message Scene
 			}
 			repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is normal to sensor plane (anti-normal of the sensor)) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
 		}
-		message RadianceSensorProperties {
+		message RadianceProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			repeated double observer_point = 2; // Position of the sensor (Ox Oy Oz), optional (default: focal length is used)
 			oneof layer_type {
@@ -186,9 +186,9 @@ message Scene
 		string sensor_guid = 10; // Guid of the SensorTemplate in SensorTemplatesManager to instantiate
 		string result_file_name = 11; // Result file name without extention. Result files of the sensor will be based on this name.
 		oneof properties {
-			CameraSensorProperties camera_sensor_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
-			IrradianceSensorProperties irradiance_sensor_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
-			RadianceSensorProperties radiance_sensor_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
+			CameraProperties camera_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
+			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
+			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
 		}
 	}
 
