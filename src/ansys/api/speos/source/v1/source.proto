@@ -175,4 +175,16 @@ message List_Response {
 
 // Actions available on a SourceTemplate
 service SourceTemplateActions {
+	// Get Flux from ray file
+	rpc GetRayFileInfo(GetRayFileInfo_Request) returns (GetRayFileInfo_Response) {}
+}
+
+// Request of GetRayFileInfo
+message GetRayFileInfo_Request {
+	string guid = 1; // Guid of the RayFileTemplate to get information about ray file (example: flux). Only for RayFileTemplate of type Library.
+}
+
+// Response of GetRayFileInfo
+message GetRayFileInfo_Response {
+	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the ray file
 }
