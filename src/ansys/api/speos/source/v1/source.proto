@@ -181,7 +181,7 @@ service SourceTemplateActions {
 
 // Request of GetRayFileInfo
 message GetRayFileInfo_Request {
-	string guid = 1; // Guid of the RayFileTemplate to get information about ray file (example: flux). Only for RayFileTemplate of type Library.
+	string guid = 1; // Guid of the SourceTemplate to get information about ray file (example: flux). Only for SourceTemplate of type RayFile.
 }
 
 // Response of GetRayFileInfo
