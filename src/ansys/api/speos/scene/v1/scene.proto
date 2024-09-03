@@ -184,6 +184,7 @@ message Scene
 				LayerTypeIncidenceAngle layer_type_incidence_angle = 8; // Layer type : Incidence angle
 			}
 			repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is normal to sensor plane (anti-normal of the sensor)) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
+			GeoPaths output_face_geometries = 10; // List of output faces for inverse simulation optimization
 		}
 		message RadianceSensorProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
