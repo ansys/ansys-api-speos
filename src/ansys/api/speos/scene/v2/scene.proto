@@ -318,4 +318,6 @@ message GetSourceRayPaths_Request {
 	string guid = 1; // Guid of a ScenesManager element
 	string source_path = 2; // path to the source in the Scene : "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene
 	optional uint32 rays_nb = 3; // Number of rays sent by the source. Default 100
+	optional bool raw_data = 4; // Boolean to get the wavelengths in response stream
+	optional bool display_data = 5; // Boolean to get the colors (RGB24 format) in response stream
 }
