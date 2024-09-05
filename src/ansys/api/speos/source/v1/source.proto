@@ -3,6 +3,8 @@ syntax = "proto3";
 
 package ansys.api.speos.source.v1;
 
+import "ansys/api/speos/common/v1/data.proto";
+
 // Manager for SourceTemplates
 service SourceTemplatesManager {
 	// Create a SourceTemplate
