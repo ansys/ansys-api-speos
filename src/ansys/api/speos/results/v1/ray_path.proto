@@ -1,6 +1,8 @@
 // (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
+import "ansys/api/speos/common/v1/data.proto";
+
 package ansys.api.speos.results.v1;
 
 message RayPath {
@@ -10,6 +12,7 @@ message RayPath {
 	repeated uint32 unique_face_ids = 4; // ID of the face impacted at each impact.
 	repeated PhotonStatus interaction_statuses = 5; // Interaction type at each impact with the elements encountered.
 	repeated float last_direction = 6; // Direction after the last impact. (x, y, z)
+	ansys.api.speos.common.v1.DataBytes colors = 7; // The color in RGB24 format at each impact
 
 	enum PhotonStatus {
 		StatusAbsorbed = 0;

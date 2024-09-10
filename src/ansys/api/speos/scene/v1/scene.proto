@@ -139,8 +139,13 @@ message Scene
 				LastImpact = 0;
 				IntersectedOneTime = 1;
 			}
+			message Layer {
+				string name = 1; // Name of the layer (will appear for example in Virtual Photometric Lab)
+				GeoPaths geometries = 2; // Surface selected.
+			}
 
 			EnumSCAFilteringType sca_filtering_mode = 1;
+			repeated Layer layers = 2; // Layers that will be taken into account in the result.
 		}
 		// Includes one layer per sequence in the result.
 		message LayerTypeSequence {
@@ -179,6 +184,7 @@ message Scene
 				LayerTypeIncidenceAngle layer_type_incidence_angle = 8; // Layer type : Incidence angle
 			}
 			repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is normal to sensor plane (anti-normal of the sensor)) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
+			GeoPaths output_face_geometries = 10; // List of output faces for inverse simulation optimization
 		}
 		message RadianceSensorProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
@@ -323,4 +329,6 @@ message GetSourceRayPaths_Request {
 	string guid = 1; // Guid of a ScenesManager element
 	string source_path = 2; // path to the source in the Scene : "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene
 	optional uint32 rays_nb = 3; // Number of rays sent by the source. Default 100
+	optional bool raw_data = 4; // Boolean to get the wavelengths in response stream
+	optional bool display_data = 5; // Boolean to get the colors (RGB24 format) in response stream
 }
