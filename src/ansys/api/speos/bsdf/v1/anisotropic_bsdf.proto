@@ -7,7 +7,7 @@ import "google/protobuf/empty.proto";
 
 service AnisotropicBsdfService
 {
-	// serialization for native *.anisotropicbsdf files
+	// serialization for native *.anisotropicbsdf files.
 	rpc Load(FileName) returns (google.protobuf.Empty) {}
 	rpc Save(FileName) returns (google.protobuf.Empty) {}
 
