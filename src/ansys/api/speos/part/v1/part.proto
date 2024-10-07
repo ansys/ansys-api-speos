@@ -22,7 +22,7 @@ message Part
 
 	string name = 1;
 	string description = 2;
-	map<string, string> metadata = 3; // User defined metadatas
+	map<string, string> metadata = 3; // User defined metadata
 	repeated string body_guids = 10; // List of bodies constituting the part
 	repeated PartInstance parts = 20; // List of sub parts
 }
@@ -37,7 +37,7 @@ service PartsManager {
 	rpc Update(Update_Request) returns (Update_Response) {}
 	// Delete a part
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
-	// List all part in manager
+	// List all parts in manager
 	rpc List(List_Request) returns (List_Response) {}
 }
 

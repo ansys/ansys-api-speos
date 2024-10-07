@@ -59,7 +59,7 @@ message IntensityTemplate {
 
 	oneof intensity{
 		Library library = 3; // From file
-		Lambertian lambertian = 4; // Lambertian distribution
+		Lambertian lambertian = 4; // Deprecated (use cos instead) - Lambertian distribution
 		Cos cos = 5; // Lambert cosine law distribution
 		SymmetricGaussian symmetric_gaussian = 6; // Deprecated (use gaussian instead) - Symmetric gaussian distribution
 		AsymmetricGaussian asymmetric_gaussian = 7; // Deprecated (use gaussian instead) - Asymmetric gaussian distribution
@@ -98,7 +98,7 @@ message Delete_Response {}
 message List_Request {
 }
 message List_Response {
-	repeated string guids = 1; // Guids of the Intensitys in IntensityTemplatesManager
+	repeated string guids = 1; // Guids of the Intensities in IntensityTemplatesManager
 }
 
 // Actions available on a IntensityTemplate

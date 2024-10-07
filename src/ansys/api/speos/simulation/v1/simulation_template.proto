@@ -5,8 +5,8 @@ package ansys.api.speos.simulation.v1.templates;
 
 // The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
 // Activating weight means that the Weight message is present.
-// When weight is not activated, rays' energy stay constant and probability laws dictate if they continue or stop propagating.
-// When weight is activated, the ray's energy evolves with interactions until they reach the sensors.
+// When weight is not activated, rays' energy stays constant and probability laws dictate if rays continue or stop propagating.
+// When weight is activated, the rays'' energy evolves with interactions until rays reach the sensors.
 // It is highly recommended to fill this parameter excepted in interactive simulation.
 // Not fill this parameter is useful to understand certain phenomena as absorption.
 message Weight {
@@ -22,11 +22,11 @@ enum EnumColorimetricStandard {
 // The Direct Simulation is commonly used to analyze standard optical systems.
 message DirectMCSimulationTemplate {
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
-	int32 max_impact = 3; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+	int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 	Weight weight = 4; // Activates Weight. Highly recommended to fill
 	EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
 	bool dispersion = 6; // To activate the dispersion calculation.
-	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted though a transparent surface.
+	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
 	string ambient_material_uri = 8; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 }
 
@@ -34,14 +34,14 @@ message DirectMCSimulationTemplate {
 // The propagation is done from the sensors to the sources. It is useful when needing to analyze optical systems where the sensors are small and the sources are diffuse.
 message InverseMCSimulationTemplate {
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
-	int32 max_impact = 3; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+	int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 	Weight weight = 4; // Activates Weight. Highly recommended to fill
 	EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
 	bool dispersion = 6; // To activate the dispersion calculation.
 	bool splitting = 7; // To split each propagated ray into several paths at their first impact after leaving the observer point.
 	uint32 number_of_gathering_rays_per_source = 8; // This number pilots the number of shadow rays to target at each source.
 	uint32 maximum_gathering_error = 9; // This value defines the level below which a source can be neglected. 0, the default value means that no approximation will be done.
-	bool fast_transmission_gathering = 10; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted though a transparent surface.
+	bool fast_transmission_gathering = 10; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
 	string ambient_material_uri = 11; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 }
 
@@ -49,7 +49,7 @@ message InverseMCSimulationTemplate {
 message SimulationTemplate {
 	string name = 3; // Simulation name
 	string description = 4; // Simulation description
-	map<string, string> metadata = 7; // User defined metadatas
+	map<string, string> metadata = 7; // User defined metadata
 	oneof simulation_template {
 		DirectMCSimulationTemplate direct_mc_simulation_template = 1;
 		InverseMCSimulationTemplate inverse_mc_simulation_template = 2;
@@ -58,7 +58,7 @@ message SimulationTemplate {
 
 	message Interactive {
 		double geom_distance_tolerance = 1; // Maximum distance in mm to consider two faces as tangent.
-		int32 max_impact = 2; // Define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+		int32 max_impact = 2; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 		Weight weight = 3; // Activates Weight. Highly recommended to fill
 		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
 		string ambient_material_uri = 5; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
@@ -95,7 +95,7 @@ message Read_Response {
 // Request to update a SimulationTemplate in SimulationTemplatesManager
 message Update_Request {
 	string guid = 1; // Guid of the SimulationTemplate to be updated
-	SimulationTemplate simulation_template = 2; // SimulationTemplate that will be use for the update
+	SimulationTemplate simulation_template = 2; // SimulationTemplate that will be used for the update
 }
 message Update_Response {
 }

@@ -115,7 +115,7 @@ def upload_folder(
         folder's path containing all files to upload
 
     main_file_name
-        name of the file that will be considered as main - other files will be a dependency to it.
+        name of the file that will be considered as main - other files will be dependencies of main.
 
     reserved_main_file_uri
         Optional - in case an uri was already reserved in server for the main file.

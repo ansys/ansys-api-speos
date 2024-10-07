@@ -37,7 +37,7 @@ message SOPTemplate {
 
 	string name = 1; // SOPTemplate name
 	string description = 2; // SOPTemplate description
-	map<string, string> metadata = 7; // User defined metadatas
+	map<string, string> metadata = 7; // User defined metadata
 	oneof type {
 		Mirror mirror = 3; // Perfect specular surface
 		OpticalPolished optical_polished = 4; // Transparent or perfectly polished material (glass, plastic)
