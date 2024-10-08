@@ -24,7 +24,7 @@ message SourceTemplate {
 
 	string name = 1; // SourceTemplate name
 	string description = 2; // SourceTemplate description
-	map<string, string> metadata = 5; // User defined metadatas
+	map<string, string> metadata = 5; // User defined metadata
 
 	// All source types
 	oneof source {
