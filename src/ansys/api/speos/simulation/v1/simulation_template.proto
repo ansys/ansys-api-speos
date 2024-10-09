@@ -6,7 +6,7 @@ package ansys.api.speos.simulation.v1.templates;
 // The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
 // Activating weight means that the Weight message is present.
 // When weight is not activated, rays' energy stays constant and probability laws dictate if rays continue or stop propagating.
-// When weight is activated, the rays'' energy evolves with interactions until rays reach the sensors.
+// When weight is activated, the rays' energy evolves with interactions until rays reach the sensors.
 // It is highly recommended to fill this parameter excepted in interactive simulation.
 // Not fill this parameter is useful to understand certain phenomena as absorption.
 message Weight {
