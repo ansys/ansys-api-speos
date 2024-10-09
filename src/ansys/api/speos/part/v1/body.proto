@@ -11,7 +11,7 @@ message Body
 {
 	string name = 1;
 	string description = 2;
-	map<string, string> metadata = 4; // User defined metadatas
+	map<string, string> metadata = 4; // User defined metadata
 	repeated string face_guids = 5; // List of faces constituting the body
 }
 
@@ -24,7 +24,7 @@ service BodiesManager {
 	rpc Update(Update_Request) returns (Update_Response) {}
 	// Delete a body
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
-	// List all body in manager
+	// List all bodies in manager
 	rpc List(List_Request) returns (List_Response) {}
 }
 

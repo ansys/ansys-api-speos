@@ -12,7 +12,7 @@ message Face
 {
 	string name = 1;
 	string description = 2;
-	map<string, string> metadata = 3; // user defined metadatas
+	map<string, string> metadata = 3; // user defined metadata
 	repeated float vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
 	repeated uint32 facets = 11; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
 	repeated float normals = 12; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
@@ -38,7 +38,7 @@ service FacesManager {
 	rpc Update(Update_Request) returns (Update_Response) {}
 	// Delete a face
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
-	// List all face in manager
+	// List all faces in manager
 	rpc List(List_Request) returns (List_Response) {}
 }
 

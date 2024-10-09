@@ -25,7 +25,7 @@ service SensorTemplatesManager {
 message SensorTemplate {
 	string name = 4; // SensorTemplate name
 	string description = 5; // SensorTemplate description
-	map<string, string> metadata = 6; // User defined metadatas
+	map<string, string> metadata = 6; // User defined metadata
 	oneof sensor_template {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;

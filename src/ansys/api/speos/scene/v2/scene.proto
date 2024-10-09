@@ -37,9 +37,9 @@ message Scene
 	{
 		string name = 1;
 		string description = 2;
-		map<string, string> metadata = 3; // User defined metadatas
-		optional string vop_guid = 10; // optional - Guid of the volume optical property to instanciate
-		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instanciate
+		map<string, string> metadata = 3; // User defined metadata
+		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
+		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instantiate
 		GeoPaths geometries = 12; // Geometries that will use this material
 	}
 
@@ -98,7 +98,7 @@ message Scene
 
 		string name = 1;
 		string description = 2;
-		map<string, string> metadata = 3; // User defined metadatas
+		map<string, string> metadata = 3; // User defined metadata
 		string source_guid = 10; // Guid of the SourceTemplate in SourceTemplatesManager to instantiate
 		oneof properties {
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
@@ -149,14 +149,14 @@ message Scene
 		}
 		// Includes one layer per Stokes parameter using the polarization parameter.
 		message LayerTypePolarization {}
-		// Include one layer per range of incident angles.
+		// Includes one layer per range of incident angles.
 		message LayerTypeIncidenceAngle {
 			uint32 sampling = 1;
 		}
 
 		message CameraProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			string trajectory_file_uri = 2; // Trajectory file, used to define the position and orientations of the Camera sensor in time.
+			string trajectory_file_uri = 2; // Trajectory file, used to define the positions and orientations of the Camera sensor in time.
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 3; // Layer type : None
 				LayerTypeSource layer_type_source = 4; // Layer type : Source
@@ -189,7 +189,7 @@ message Scene
 
 		string name = 1;
 		string description = 2;
-		map<string, string> metadata = 3; // User defined metadatas
+		map<string, string> metadata = 3; // User defined metadata
 		string sensor_guid = 10; // Guid of the SensorTemplate in SensorTemplatesManager to instantiate
 		string result_file_name = 11; // Result file name without extention. Result files of the sensor will be based on this name.
 		oneof properties {
@@ -204,25 +204,25 @@ message Scene
 	{
 		string name = 1;
 		string description = 2;
-		map<string, string> metadata = 3; // User defined metadatas
+		map<string, string> metadata = 3; // User defined metadata
 		string simulation_guid = 10; // Guid of the element to instantiate
 		repeated string sensor_paths = 11; // Sensors that this simulation will include (empty for no sensor, [""] for all sensors, "<sensor name>" for a specific sensor in the current scene, or "<scene name>/<sensor name>" for a specific sensor in a specific sub scene)
 		repeated string source_paths = 12; // Sources that this simulation will include (empty for no source, [""] for all sources, "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene)
-		GeoPaths geometries = 13; // Geometries that this simulation will include - Not yet functional (All geometry is included by default to each simulation)
+		GeoPaths geometries = 13; // Geometries that this simulation will include - Not yet functional (All geometries are included by default in each simulation)
 	}
 
 	message SceneInstance
 	{
 		string name = 1;
 		string description = 2;
-		map<string, string> metadata = 3; // User defined metadatas
+		map<string, string> metadata = 3; // User defined metadata
 		string scene_guid = 10; // Guid of the element to instantiate
 		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) 
 	}
 
 	string name = 1;
 	string description = 2;
-	map<string, string> metadata = 3; // User defined metadatas
+	map<string, string> metadata = 3; // User defined metadata
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
 	

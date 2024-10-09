@@ -15,7 +15,7 @@ message SpectralValues {
 		}
 		repeated Wavelengths wavelength = 1; // wavelength
 	}
-	repeated Layers layer = 1; // map layer
+	repeated Layers layer = 1; // map layers
 }
 
 message ColorValues {
@@ -31,7 +31,7 @@ message ColorValues {
 		}
 		repeated ys y = 1;  // y samples of the map
 	}
-	repeated Layers layer = 1; // map layer
+	repeated Layers layer = 1; // map layers
 }
 
 message Depth {
