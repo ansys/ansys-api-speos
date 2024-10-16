@@ -1,7 +1,9 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
 package ansys.api.speos.source.v1;
+
+import "ansys/api/speos/common/v1/data.proto";
 
 // Manager for SourceTemplates
 service SourceTemplatesManager {
@@ -22,15 +24,13 @@ message SourceTemplate {
 
 	string name = 1; // SourceTemplate name
 	string description = 2; // SourceTemplate description
-	map<string, string> metadata = 5; // User defined metadatas
+	map<string, string> metadata = 5; // User defined metadata
 
 	// All source types
 	oneof source {
 		Luminaire luminaire = 3;
 		Surface surface = 4;
-		//Rayfile ray_file = 5;
-		//Display display = 6;
-		//Thermic thermic = 7;
+		RayFile rayfile = 6;
 		Ambient ambient = 8;
 	}
 
@@ -45,6 +45,7 @@ message SourceTemplate {
 	message LuminousIntensity{
 		double luminous_intensity_value = 1; // Luminous intensity in candelas
 	};
+	message FromRayFile{}; 
 
 	message Surface{
 		oneof flux{ // Flux value
@@ -84,7 +85,24 @@ message SourceTemplate {
 	}
 	message CieGeneral {
 		double luminance = 1; // Luminance in cd per squared meter
-		//CieType cie_type = 2; // CIE type
+		enum CieType {
+			standard_overcast = 0;
+			overcast_steep_gradation = 1;
+			overcast_azimuthal_uniformity = 2;
+			overcast_slight_brightening = 3;
+			uniform_luminance = 4;
+			cloudy_slight_brightening = 5;
+			cloudy_nogradation_circumsolar = 6;
+			cloudy_solar_corona = 7;
+			cloudy_obscured_sun = 8;
+			cloudy_circumsolar_region = 9;
+			white_blue_distinct = 10;
+			standard_low_luminance = 11;
+			standard_polluted_atmosphere = 12;
+			cloudless_turbid_corona = 13;
+			white_blue_broad = 14;
+		}
+		CieType cie_type = 2; // CIE type
 	}
 	message NaturalLight {
 		double turbidity = 1;
@@ -94,7 +112,27 @@ message SourceTemplate {
 	message EnvironmentMap {
 		double luminance = 1; // Luminance in cd per squared meter
 		string image_uri = 2;
-		// TODO: add color space using Display mode
+		message ColorSpace {
+			enum ColorSpaceType {
+				sRGB = 0;
+				AdobeRGB = 1;
+				UserDefinedRGB = 2;
+			}
+			ColorSpaceType color_space_type = 1;
+			enum WhitePointType {
+				C = 0;
+				D50 = 1;
+				D65 = 2;
+				E = 3;
+				UserDefined = 4;
+			}
+			WhitePointType white_point_type = 2;
+			repeated double white_point = 3;
+			string red_spectrum_guid = 4;
+			string green_spectrum_guid = 5;
+			string blue_spectrum_guid = 6;
+		}
+		ColorSpace color_space = 3;
 	}
 	message Ambient {
 		oneof source{
@@ -115,6 +153,22 @@ message SourceTemplate {
 		}
 		string intensity_file_uri = 4; // IES or EULUMDAT format file uri 
 		string spectrum_guid = 5; // Spectrum guid in spectrum manager
+	}
+
+	message RayFile{
+		string ray_file_uri = 1; // Rayfile format file uri (.ray or .tm25ray files expected)
+		oneof flux{ // Flux value
+			FromRayFile flux_from_ray_file = 2; // Take flux from ray file provided
+			Luminous luminous_flux = 3; // Luminous flux in lumens, must be positive
+			Radiant radiant_flux = 4; // Radiant flux in watts, must be positive
+		}
+		oneof spectrum{
+			SpectrumFromRayFile spectrum_from_ray_file = 5; // Take spectrum from ray file provided
+			string spectrum_guid = 6; // Spectrum guid in spectrum manager
+		}
+
+		// Spectrum messages
+		message SpectrumFromRayFile{}
 	}
 
 //	message Thermic{
@@ -195,4 +249,16 @@ message List_Response {
 
 // Actions available on a SourceTemplate
 service SourceTemplateActions {
+	// Get Flux from ray file
+	rpc GetRayFileInfo(GetRayFileInfo_Request) returns (GetRayFileInfo_Response) {}
+}
+
+// Request of GetRayFileInfo
+message GetRayFileInfo_Request {
+	string guid = 1; // Guid of the SourceTemplate to get information about ray file (example: flux). Only for SourceTemplate of type RayFile.
+}
+
+// Response of GetRayFileInfo
+message GetRayFileInfo_Response {
+	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the ray file
 }

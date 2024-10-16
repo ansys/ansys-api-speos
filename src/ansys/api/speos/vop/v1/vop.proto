@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
 package ansys.api.speos.vop.v1;
@@ -20,7 +20,7 @@ service VOPTemplatesManager {
 // VOP: Volume Optical Properties
 // Defines the behavior of light rays when they are propagated in a body.
 message VOPTemplate {
-	// Non transparent material
+	// Non-transparent material
 	message Opaque {}
 	// Transparent colorless material without bulk scattering
 	message Optic {
@@ -33,14 +33,14 @@ message VOPTemplate {
 	}
 	// Material with non-homogeneous refractive index
 	message NonHomogeneous {
-		string gradedmaterial_file_uri = 1; // *.gradedmaterial file that describes the spectral variations of refractive index and absorption with the respect to position in space
+		string gradedmaterial_file_uri = 1; // *.gradedmaterial file that describes the spectral variations of refractive index and absorption with respect to position in space
 	}
 
 	string name = 1; // VOPTemplate name
 	string description = 2; // VOPTemplate description
 	map<string, string> metadata = 7; // User defined metadatas
 	oneof type {
-		Opaque opaque = 3; // Non transparent material
+		Opaque opaque = 3; // Non-transparent material
 		Optic optic = 4; // Transparent colorless material without bulk scattering
 		Library library = 5; // Based on *.material file
 		NonHomogeneous non_homogeneous = 6; // Material with non-homogeneous refractive index
