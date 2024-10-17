@@ -74,77 +74,6 @@ message SourceTemplate {
 		message SpectrumFromXMPFile{}
 	}
 
-	message UniformAmbient {
-		double luminance = 1; // Luminance in cd per squared meter
-		bool mirrored_extent = 2;
-		string spectrum_guid = 3;
-	}
-	message CieOvercast {
-		double luminance = 1; // Luminance in cd per squared meter
-		string spectrum_guid = 2;
-	}
-	message CieGeneral {
-		double luminance = 1; // Luminance in cd per squared meter
-		enum CieType {
-			standard_overcast = 0;
-			overcast_steep_gradation = 1;
-			overcast_azimuthal_uniformity = 2;
-			overcast_slight_brightening = 3;
-			uniform_luminance = 4;
-			cloudy_slight_brightening = 5;
-			cloudy_nogradation_circumsolar = 6;
-			cloudy_solar_corona = 7;
-			cloudy_obscured_sun = 8;
-			cloudy_circumsolar_region = 9;
-			white_blue_distinct = 10;
-			standard_low_luminance = 11;
-			standard_polluted_atmosphere = 12;
-			cloudless_turbid_corona = 13;
-			white_blue_broad = 14;
-		}
-		CieType cie_type = 2; // CIE type
-	}
-	message NaturalLight {
-		double turbidity = 1;
-		bool with_sky = 2;
-	}
-	message UsStandard {}
-	message EnvironmentMap {
-		double luminance = 1; // Luminance in cd per squared meter
-		string image_uri = 2;
-		message ColorSpace {
-			enum ColorSpaceType {
-				sRGB = 0;
-				AdobeRGB = 1;
-				UserDefinedRGB = 2;
-			}
-			ColorSpaceType color_space_type = 1;
-			enum WhitePointType {
-				C = 0;
-				D50 = 1;
-				D65 = 2;
-				E = 3;
-				UserDefined = 4;
-			}
-			WhitePointType white_point_type = 2;
-			repeated double white_point = 3;
-			string red_spectrum_guid = 4;
-			string green_spectrum_guid = 5;
-			string blue_spectrum_guid = 6;
-		}
-		ColorSpace color_space = 3;
-	}
-	message Ambient {
-		oneof source{
-			UniformAmbient uniform_ambient = 1;
-			CieOvercast cie_overcast = 2;
-			CieGeneral cie_general = 3;
-			NaturalLight natural_light = 4;
-			UsStandard us_standard = 5;
-			EnvironmentMap environment_map = 6;
-		}
-	}
-
 	message Luminaire{
 		oneof flux{ // Flux value
 			FromIntensityFile flux_from_intensity_file = 1; // Take flux from intensity file provided
@@ -169,6 +98,80 @@ message SourceTemplate {
 
 		// Spectrum messages
 		message SpectrumFromRayFile{}
+	}
+
+	// color space can be used for both ambient sources and display sources
+	message ColorSpace {
+		enum ColorSpaceType {
+			sRGB = 0;
+			AdobeRGB = 1;
+			UserDefinedRGB = 2;
+		}
+		ColorSpaceType color_space_type = 1;
+		enum WhitePointType {
+			C = 0;
+			D50 = 1;
+			D65 = 2;
+			E = 3;
+			UserDefined = 4;
+		}
+		WhitePointType white_point_type = 2;
+		repeated double white_point = 3;
+		string red_spectrum_guid = 4;
+		string green_spectrum_guid = 5;
+		string blue_spectrum_guid = 6;
+	}
+
+	message Ambient {
+		oneof source{
+			UniformAmbient uniform_ambient = 1;
+			CieOvercast cie_overcast = 2;
+			CieGeneral cie_general = 3;
+			NaturalLight natural_light = 4;
+			UsStandard us_standard = 5;
+			EnvironmentMap environment_map = 6;
+		}
+
+		message UniformAmbient {
+			double luminance = 1; // Luminance in cd per squared meter
+			bool mirrored_extent = 2;
+			string spectrum_guid = 3;
+		}
+		message CieOvercast {
+			double luminance = 1; // Luminance in cd per squared meter
+			string spectrum_guid = 2;
+		}
+		message CieGeneral {
+			double luminance = 1; // Luminance in cd per squared meter
+			enum CieType {
+				standard_overcast = 0;
+				overcast_steep_gradation = 1;
+				overcast_azimuthal_uniformity = 2;
+				overcast_slight_brightening = 3;
+				uniform_luminance = 4;
+				cloudy_slight_brightening = 5;
+				cloudy_nogradation_circumsolar = 6;
+				cloudy_solar_corona = 7;
+				cloudy_obscured_sun = 8;
+				cloudy_circumsolar_region = 9;
+				white_blue_distinct = 10;
+				standard_low_luminance = 11;
+				standard_polluted_atmosphere = 12;
+				cloudless_turbid_corona = 13;
+				white_blue_broad = 14;
+			}
+			CieType cie_type = 2; // CIE type
+			}
+			message NaturalLight {
+				double turbidity = 1;
+				bool with_sky = 2;
+			}
+			message UsStandard {}
+			message EnvironmentMap {
+				double luminance = 1; // Luminance in cd per squared meter
+				string image_uri = 2;
+				ColorSpace color_space = 3;
+			}
 	}
 
 //	message Thermic{

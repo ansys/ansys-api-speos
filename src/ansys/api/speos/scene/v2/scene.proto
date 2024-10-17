@@ -96,51 +96,6 @@ message Scene
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
 		}
 
-		message AutomaticSun {
-			string time_zone_uri = 1;
-			int32 year = 2;
-			int32 month = 3;
-			int32 day = 4;
-			int32 hour = 5;
-			int32 minute = 6;
-		}
-		
-		message ManualSun {
-			repeated double sun_direction = 1;
-		}
-		
-		message SunAxisSystem {
-			oneof sun_type {
-				AutomaticSun automatic_sun = 1;
-				ManualSun manual_sun = 2;
-			}
-		}
-		message UniformAmbientProperties {
-			SunAxisSystem sun_axis_system = 1;
-		}
-
-		message CieOvercastProperties {}
-
-		message CieGeneralProperties {
-			repeated double north_direction = 1;
-			SunAxisSystem sun_axis_system = 2;
-		}
-
-		message NaturalLightProperties {
-			repeated double north_direction = 1;
-			SunAxisSystem sun_axis_system = 2;
-		}
-
-		message UsStandardProperties {
-			repeated double north_direction = 1;
-			SunAxisSystem sun_axis_system = 2;
-		}
-
-		message EnvironmentMapProperties {
-			repeated double north_direction = 1;
-			repeated double ground_origin = 2;
-			double ground_height = 3; // unit mm
-		}
 		message AmbientProperties {
 			repeated double zenith_direction = 1;
 			oneof source_properties {
@@ -150,6 +105,45 @@ message Scene
 				NaturalLightProperties natural_light_properties = 5;
 				UsStandardProperties us_standard_properties = 6;
 				EnvironmentMapProperties environment_map_properties = 7;
+			}
+
+			message SunAxisSystem {
+				oneof sun_type {
+					AutomaticSun automatic_sun = 1;
+					ManualSun manual_sun = 2;
+				}
+				message AutomaticSun {
+					string time_zone_uri = 1;
+					int32 year = 2;
+					int32 month = 3;
+					int32 day = 4;
+					int32 hour = 5;
+					int32 minute = 6;
+				}
+				message ManualSun {
+					repeated double sun_direction = 1;
+				}
+			}
+			message UniformAmbientProperties {
+				SunAxisSystem sun_axis_system = 1;
+			}
+			message CieOvercastProperties {}
+			message CieGeneralProperties {
+				repeated double north_direction = 1;
+				SunAxisSystem sun_axis_system = 2;
+			}
+			message NaturalLightProperties {
+				repeated double north_direction = 1;
+				SunAxisSystem sun_axis_system = 2;
+			}
+			message UsStandardProperties {
+				repeated double north_direction = 1;
+				SunAxisSystem sun_axis_system = 2;
+			}
+			message EnvironmentMapProperties {
+				repeated double north_direction = 1;
+				repeated double ground_origin = 2;
+				double ground_height = 3; // unit mm
 			}
 		}
 
