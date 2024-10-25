@@ -117,9 +117,9 @@ message SourceTemplate {
 		}
 		WhitePointType white_point_type = 2;
 		repeated double white_point = 3;
-		string red_spectrum_guid = 4;
-		string green_spectrum_guid = 5;
-		string blue_spectrum_guid = 6;
+		string red_spectrum_uri = 4;
+		string green_spectrum_uri = 5;
+		string blue_spectrum_uri = 6;
 	}
 
 	message Ambient {
