@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "ansys/api/speos/sensor/v1/common.proto";
@@ -14,7 +14,7 @@ message IrradianceSensorTemplate {
 		ansys.api.speos.sensor.v1.SensorTypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral
 	}
 	
-	// Select how the light should be integrated to the sensor.
+	// Select how the light should be integrated into the sensor.
 	oneof illuminance_type {
 		ansys.api.speos.sensor.v1.IlluminanceTypePlanar illuminance_type_planar = 6; // Illuminance type : Planar
 		ansys.api.speos.sensor.v1.IlluminanceTypeRadial illuminance_type_radial = 7; // Illuminance type : Radial

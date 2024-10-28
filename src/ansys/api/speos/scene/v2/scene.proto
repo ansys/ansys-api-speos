@@ -2,7 +2,7 @@
 syntax = "proto3";
 import "ansys/api/speos/results/v1/ray_path.proto";
 
-package ansys.api.speos.scene.v1;
+package ansys.api.speos.scene.v2;
 
 //////////
 // CRUD //
@@ -12,34 +12,35 @@ package ansys.api.speos.scene.v1;
 message Scene
 {
 	// Geometry path of object that will include the specific property (can be sub-scene/part/body/face). 
-	// Empty or "" for all geometries, or in the format : <sub-scene name>/<part name>/<body name>/<face name> (no name by default for root scene and root part).
+	// geo_path in the format : "<sub-scene name>/<part name>/<body name>/<face name>" (no name by default for root scene and root part).
+	// "body0" -> body0 of the root part in the root scene
+	// "body0/face0" -> face0 in body0 of the root part in the root scene
 	// "part1" -> part1 of the root part in the root scene
 	// "part1/body1/face1" -> face1 in body1 in part1 of the root part in the root scene
 	// "subScene1" -> root part in the sub scene subScene1
 	// "subScene1/part2" -> part2 of the sub scene subScene1
+	// Particularities:
+	// If the object GeoPaths is defined and geo_paths left empty, this means "All geometry selected".
+	// If the object GeoPaths is NOT defined, this means "No geometry selected".
 	message GeoPaths
 	{
 		repeated string geo_paths = 1; // list of geo paths
 	}
 
-	// Instance of a VOP to apply on geometries of the scene
-	message VOPInstance
-	{
-		string name = 1;
-		string description = 2;
-		map<string, string> metadata = 3; // User defined metadata
-		string vop_guid = 10; // Guid of the element to instantiate
-		GeoPaths geometries = 11; // Geometries that will use this material
+	message GeoPath {
+		string geo_path = 1; // Geometry that will be used ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
+		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 	}
 
-	// Instance of a SOP to apply on geometries of the scene
-	message SOPInstance
+	// Instance of a Material to apply on geometries of the scene
+	message MaterialInstance
 	{
 		string name = 1;
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
-		string sop_guid = 10; // Guid of the element to instantiate
-		GeoPaths geometries = 11; // Geometries that will use this material
+		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
+		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instantiate
+		GeoPaths geometries = 12; // Geometries that will use this material
 	}
 
 	// Instance of a source to add in the scene
@@ -63,10 +64,6 @@ message Scene
 					NormalToUVMap normal_to_uv_map = 4; // Define the intensity distribution as normal to the selected emissive surface and its orientation on the emissive surface.
 				}
 			}
-			message AsymmetricGaussianProperties {
-				option deprecated = true; // Use GaussianProperties instead
-				repeated double axis_system = 1; // orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			}
 
 			message GaussianProperties {
 			    repeated double axis_system = 1; // optional - orientation of the intensity distribution (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) - if not filled : normal to surface map.
@@ -74,20 +71,14 @@ message Scene
 
 			oneof properties {
 				LibraryProperties library_properties = 1; // To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type Library
-				AsymmetricGaussianProperties asymmetric_gaussian_properties = 2; // Deprecated (use gaussian_properties instead) - To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type AsymmetricGaussian
-				GaussianProperties gaussian_properties = 3; // To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type Gaussian
+				GaussianProperties gaussian_properties = 2; // To be filled if the intensity_guid of the source template corresponds to an IntensityTemplate of type Gaussian
 			}
 		}
 		message LuminaireProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 		}
-		
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
-				message GeoPath {
-					string geo_path = 1; // Geometry that will use this surface source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
-					optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
-				}
 				repeated GeoPath geo_paths = 1;
 			}
 			message ExitanceVariableProperties {
@@ -100,29 +91,6 @@ message Scene
 			}
 			IntensityProperties intensity_properties = 3;
 		}
-
-		// future break scene v2 to be reused for surface sources (see above)
-		message GeoPath {
-			string geo_path = 1; // Geometry that will use this surfacic source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
-			optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
-		}
-				
-
-		message ThermicProperties{
-			oneof exitanceProperties{
-				EmissiveFacesProperties emissive_faces_properties = 1;
-				TemperatureFieldProperties temperature_field_properties = 2;
-			}
-
-			message EmissiveFacesProperties{
-				repeated GeoPath geo_paths = 1;
-			}
-
-			message TemperatureFieldProperties{
-				repeated double axis_plane = 1; // Position of the exitance map (Ox Oy Oz Xx Xy Xz Yx Yy Yz)
-			}
-		}
-
 		message RayFileProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
@@ -135,9 +103,7 @@ message Scene
 		oneof properties {
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
-
 			RayFileProperties rayfile_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type RayFile
-			ThermicProperties thermic_properties = 14; // To be filled if the source_guid corresponds to a SourceTemplate of type Thermic Source
 		}
 	}
 
@@ -188,7 +154,7 @@ message Scene
 			uint32 sampling = 1;
 		}
 
-		message CameraSensorProperties {
+		message CameraProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			string trajectory_file_uri = 2; // Trajectory file, used to define the positions and orientations of the Camera sensor in time.
 			oneof layer_type {
@@ -196,7 +162,7 @@ message Scene
 				LayerTypeSource layer_type_source = 4; // Layer type : Source
 			}
 		}
-		message IrradianceSensorProperties {
+		message IrradianceProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			EnumRayFileType ray_file_type = 2; // Choose type of ray file generated after the simulation.
 			oneof layer_type {
@@ -210,7 +176,7 @@ message Scene
 			repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is normal to sensor plane (anti-normal of the sensor)) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
 			GeoPaths output_face_geometries = 10; // List of output faces for inverse simulation optimization
 		}
-		message RadianceSensorProperties {
+		message RadianceProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			repeated double observer_point = 2; // Position of the observer point (Ox Oy Oz), optional (default: focal length is used)
 			oneof layer_type {
@@ -227,9 +193,9 @@ message Scene
 		string sensor_guid = 10; // Guid of the SensorTemplate in SensorTemplatesManager to instantiate
 		string result_file_name = 11; // Result file name without extention. Result files of the sensor will be based on this name.
 		oneof properties {
-			CameraSensorProperties camera_sensor_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
-			IrradianceSensorProperties irradiance_sensor_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
-			RadianceSensorProperties radiance_sensor_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
+			CameraProperties camera_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
+			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
+			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
 		}
 	}
 
@@ -240,9 +206,9 @@ message Scene
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string simulation_guid = 10; // Guid of the element to instantiate
-		repeated string sensor_paths = 11; // Sensors that this simulation will include (empty or "" for all sensors, "<sensor name>" for a specific sensor in the current scene, or "<scene name>/<sensor name>" for a specific sensor in a specific sub scene)
-		repeated string source_paths = 12; // Sources that this simulation will include (empty or "" for all sources, "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene)
-		GeoPaths geometries = 13; // Geometries that this simulation will include (empty to select the root part and all the subscenes)
+		repeated string sensor_paths = 11; // Sensors that this simulation will include (empty for no sensor, [""] for all sensors, "<sensor name>" for a specific sensor in the current scene, or "<scene name>/<sensor name>" for a specific sensor in a specific sub scene)
+		repeated string source_paths = 12; // Sources that this simulation will include (empty for no source, [""] for all sources, "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene)
+		GeoPaths geometries = 13; // Geometries that this simulation will include - Not yet functional (All geometries are included by default in each simulation)
 	}
 
 	message SceneInstance
@@ -259,12 +225,11 @@ message Scene
 	map<string, string> metadata = 3; // User defined metadata
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
-	repeated VOPInstance vops = 11; // The volume materials applied on geometries
-	repeated SOPInstance sops = 12; // The surface materials applied on geometries
+	
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
-	
+	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
 }
 

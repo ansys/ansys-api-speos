@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
 import "ansys/api/speos/file/v1/file_transfer.proto";
@@ -26,8 +26,8 @@ message Job {
 	map<string, string> metadata = 9; // User defined metadatas
 
 	string scene_guid = 1; // Guid of the Scene in ScenesManager
-	string simulation_path = 2; // simulation path in the scene that will be used by the job
-	Type job_type = 3; // Type of the job : CPU, GPU, ...
+	string simulation_path = 2; // Simulation path in the scene that will be used by the job
+	Type job_type = 3; // Type of the job : CPU, GPU
 	oneof simu_properties {
 		DirectMCSimulationProperties direct_mc_simulation_properties = 4; // Properties to be filled for simulation based on DirectMCSimulationTemplate
 		InverseMCSimulationProperties inverse_mc_simulation_properties = 5; // Properties to be filled for simulation based on InverseMCSimulationTemplate 
@@ -59,7 +59,7 @@ message Job {
 	// If no stop condition is set, the simulation ends when you stop the process.
 	message InverseMCSimulationProperties {
 		oneof optimized_propagation {
-			OptimizedPropagationNone optimized_propagation_none = 1; // No optimization. Don't forget to fill stop conditions if needed.
+			OptimizedPropagationNone optimized_propagation_none = 1; // No optimization. Do not forget to fill stop conditions if needed.
 			OptimizedPropagationRelative optimized_propagation_relative = 2;
 			OptimizedPropagationAbsolute optimized_propagation_absolute = 3;
 		}
@@ -71,14 +71,14 @@ message Job {
 			optional uint32 stop_condition_passes_number = 1; // To stop the simulation after a certain number of passes
 		}
 		// The algorithm adapts the number of passes per pixel to send the optimal number of rays according to the signal each pixel needs.
-		// As a result, the SNR is adequate in areas where pixels need more rays thus giving a balanced image.
+		// As a result, the SNR is adequate in areas where pixels need more rays, thus giving a balanced image.
 		// The Optimized propagation algorithm is only compatible with the Radiance sensors.
 		message OptimizedPropagationRelative {
 			uint32 min_pass_number = 1; // Minimum number of passes without pass optimization.
 			uint32 stop_condition_relative_value = 2; // Relative pixel standard deviation threshold, in percent. Value expected from 0 to 100.
 		}
 		// The algorithm adapts the number of passes per pixel to send the optimal number of rays according to the signal each pixel needs.
-		// As a result, the SNR is adequate in areas where pixels need more rays thus giving a balanced image.
+		// As a result, the SNR is adequate in areas where pixels need more rays, thus giving a balanced image.
 		// The Optimized propagation algorithm is only compatible with the Radiance sensors.
 		message OptimizedPropagationAbsolute {
 			uint32 min_pass_number = 1; // Minimum number of passes without pass optimization.
@@ -87,12 +87,12 @@ message Job {
 	}
 
 	message InteractiveSimulationProperties {
-		repeated RaysNumberPerSource rays_number_per_sources = 1; // If a source present in Scene::SimulationInstance is not mentionned here, its rays_nb is defaulted to 100.
+		repeated RaysNumberPerSource rays_number_per_sources = 1; // If a source present in Scene::SimulationInstance is not mentioned here, its rays_nb is defaulted to 100.
 		bool light_expert = 2; // To generate a light expert file.
 		bool impact_report = 3; // To integrate details like number of impacts, position and surface state to the HTML simulation report.
 		
 		message RaysNumberPerSource {
-			string source_path = 1; // path to the source. Hint: same path that was given in Scene::SimulationInstance
+			string source_path = 1; // Path to the source. Hint: same path that was given in Scene::SimulationInstance
 			optional uint32 rays_nb = 3; // Number of rays sent by the source referenced via its source_path. Default 100
 		}
 	}
@@ -186,15 +186,15 @@ message GetError_Response {
 
 message Result {
 	oneof result {
-		string path = 1; // result path on the server
-		ansys.api.speos.file.v1.Upload_Response upload_response = 2; // result uploaded to server's file system (via FileTransferService) -> returns Upload_Response
+		string path = 1; // Result path on the server
+		ansys.api.speos.file.v1.Upload_Response upload_response = 2; // Result uploaded to server's file system (via FileTransferService) -> returns Upload_Response
 	}
 }
 message GetResults_Request {
 	string guid = 1; // Guid of the Job in JobsManager.
 }
 message GetResults_Response {
-	repeated Result results = 1; // list of the Job results
+	repeated Result results = 1; // List of the Job results
 }
 
 message GetInformation_Request {
@@ -216,6 +216,8 @@ message GetInformation_Response {
 
 message GetRayPaths_Request {
 	string guid = 1; // Guid of the Job in JobsManager.
+	optional bool raw_data = 4; // Boolean to get the wavelengths in response stream
+	optional bool display_data = 5; // Boolean to get the colors (RGB24 format) in response stream
 }
 
 message GetProgressStatus_Request {
