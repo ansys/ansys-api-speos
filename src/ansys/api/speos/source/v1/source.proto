@@ -103,43 +103,43 @@ message SourceTemplate {
 	// color space can be used for both ambient sources and display sources
 	message ColorSpace {
 		enum ColorSpaceType {
-			sRGB = 0;
-			AdobeRGB = 1;
-			UserDefinedRGB = 2;
+			sRGB = 0; // standard and most commonly used model
+			AdobeRGB = 1; // larger gamut
+			UserDefinedRGB = 2; 
 		}
 		ColorSpaceType color_space_type = 1;
 		enum WhitePointType {
-			C = 0;
-			D50 = 1;
-			D65 = 2;
-			E = 3;
+			C = 0; // average daylight illuminant
+			D50 = 1; // natural horizon light
+			D65 = 2; // standard daylight illuminant
+			E = 3; // illuminant that gives equal weight to all wavelengths
 			UserDefined = 4;
 		}
 		WhitePointType white_point_type = 2;
-		repeated double white_point = 3;
-		string red_spectrum_uri = 4;
-		string green_spectrum_uri = 5;
-		string blue_spectrum_uri = 6;
+		repeated double white_point = 3; // X and Y coordinates of teh white point. Only necessary when type is UserDefined
+		string red_spectrum_uri = 4; // Only necessary when type is UserDefined
+		string green_spectrum_uri = 5; // Only necessary when type is UserDefined
+		string blue_spectrum_uri = 6; // Only necessary when type is UserDefined
 	}
 
 	message Ambient {
 		oneof source{
-			UniformAmbient uniform_ambient = 1;
-			CieOvercast cie_overcast = 2;
-			CieGeneral cie_general = 3;
-			NaturalLight natural_light = 4;
+			UniformAmbient uniform_ambient = 1; // set a specific and common luminance for the entire sky without any contribution of the sun. The sun has a specific value calculated according to its position
+			CieOvercast cie_overcast = 2; // generates a specific distribution for the sky according to a luminance value and CIE standard overcast model
+			CieGeneral cie_general = 3; // generates a specific distribution for the sky according to a luminance value and sky model 
+			NaturalLight natural_light = 4; // generates nautral lighting based on a day time or night time model
 			UsStandard us_standard = 5;
-			EnvironmentMap environment_map = 6;
+			EnvironmentMap environment_map = 6; // create a background using an image file
 		}
 
 		message UniformAmbient {
 			double luminance = 1; // Luminance in cd per squared meter
-			bool mirrored_extent = 2;
-			string spectrum_guid = 3;
+			bool mirrored_extent = 2; // if true then the ambient light cover all space, if false only cover the upper half space
+			string spectrum_guid = 3; // blackbody or library spectra only
 		}
 		message CieOvercast {
 			double luminance = 1; // Luminance in cd per squared meter
-			string spectrum_guid = 2;
+			string spectrum_guid = 2; // blackbody or library spectra only
 		}
 		message CieGeneral {
 			double luminance = 1; // Luminance in cd per squared meter
@@ -160,16 +160,16 @@ message SourceTemplate {
 				cloudless_turbid_corona = 13;
 				white_blue_broad = 14;
 			}
-			CieType cie_type = 2; // CIE type
+			CieType cie_type = 2; // sky model 
 			}
 			message NaturalLight {
-				double turbidity = 1;
-				bool with_sky = 2;
+				double turbidity = 1; // cloudiness of the environment. The lower the value the clearer the environment. Varies between 1.9 and 9.9
+				bool with_sky = 2; // false when only the sun will be used in simulation
 			}
 			message UsStandard {}
 			message EnvironmentMap {
 				double luminance = 1; // Luminance in cd per squared meter
-				string image_uri = 2;
+				string image_uri = 2; // image file or HDRI. HDRIs have relative luminance values, so the lumiance value will be applied to the (1,1,1) pixels and all other colors will be defined relatively
 				ColorSpace color_space = 3;
 			}
 	}

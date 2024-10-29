@@ -97,20 +97,21 @@ message Scene
 		}
 
 		message AmbientProperties {
-			repeated double zenith_direction = 1;
+			repeated double zenith_direction = 1; // line normal to the ground or Z direction
+			bool reverse_zenith = 2;  // optional - if not set or false : normal is not reversed
 			oneof source_properties {
-				UniformAmbientProperties uniform_ambient_properties = 2;
-				CieOvercastProperties cie_overcast_properties = 3;
-				CieGeneralProperties cie_general_properties = 4;
-				NaturalLightProperties natural_light_properties = 5;
-				UsStandardProperties us_standard_properties = 6;
-				EnvironmentMapProperties environment_map_properties = 7;
+				UniformAmbientProperties uniform_ambient_properties = 10;
+				CieOvercastProperties cie_overcast_properties = 11;
+				CieGeneralProperties cie_general_properties = 12;
+				NaturalLightProperties natural_light_properties = 13;
+				UsStandardProperties us_standard_properties = 14;
+				EnvironmentMapProperties environment_map_properties = 15;
 			}
 
 			message SunAxisSystem {
 				oneof sun_type {
-					AutomaticSun automatic_sun = 1;
-					ManualSun manual_sun = 2;
+					AutomaticSun automatic_sun = 1; // calculates the sun position according to the north direction and time zone location set
+					ManualSun manual_sun = 2; // set the sun position and direction from scene
 				}
 				message AutomaticSun {
 					string time_zone_uri = 1;
@@ -121,7 +122,8 @@ message Scene
 					int32 minute = 6;
 				}
 				message ManualSun {
-					repeated double sun_direction = 1;
+					repeated double sun_direction = 1; // (X Y Z) direction of the sun
+					bool reverse_sun = 2;  // optional - if not set or false : normal is not reversed
 				}
 			}
 			message UniformAmbientProperties {
@@ -130,20 +132,24 @@ message Scene
 			message CieOvercastProperties {}
 			message CieGeneralProperties {
 				repeated double north_direction = 1;
-				SunAxisSystem sun_axis_system = 2;
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+				SunAxisSystem sun_axis_system = 3;
 			}
 			message NaturalLightProperties {
-				repeated double north_direction = 1;
-				SunAxisSystem sun_axis_system = 2;
+				repeated double north_direction = 1; 
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+				SunAxisSystem sun_axis_system = 3;
 			}
 			message UsStandardProperties {
 				repeated double north_direction = 1;
-				SunAxisSystem sun_axis_system = 2;
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+				SunAxisSystem sun_axis_system = 3;
 			}
 			message EnvironmentMapProperties {
 				repeated double north_direction = 1;
-				repeated double ground_origin = 2;
-				double ground_height = 3; // unit mm
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+				repeated double ground_origin = 3; // 3D point in the geomtry. HDR image is displayed on the ground plane
+				double ground_height = 4; // height of the environment shooting (unit mm)
 			}
 		}
 
