@@ -116,7 +116,7 @@ message SourceTemplate {
 			UserDefined = 4;
 		}
 		WhitePointType white_point_type = 2;
-		repeated double white_point = 3; // X and Y coordinates of teh white point. Only necessary when type is UserDefined
+		repeated double white_point = 3; // X and Y coordinates of the white point. Only necessary when type is UserDefined
 		string red_spectrum_uri = 4; // Only necessary when type is UserDefined
 		string green_spectrum_uri = 5; // Only necessary when type is UserDefined
 		string blue_spectrum_uri = 6; // Only necessary when type is UserDefined
@@ -124,17 +124,17 @@ message SourceTemplate {
 
 	message Ambient {
 		oneof source{
-			UniformAmbient uniform_ambient = 1; // set a specific and common luminance for the entire sky without any contribution of the sun. The sun has a specific value calculated according to its position
+			UniformAmbient uniform_ambient = 1; // sets a specific and common luminance for the entire sky without any contribution of the sun. The sun has a specific value calculated according to its position
 			CieOvercast cie_overcast = 2; // generates a specific distribution for the sky according to a luminance value and CIE standard overcast model
 			CieGeneral cie_general = 3; // generates a specific distribution for the sky according to a luminance value and sky model 
-			NaturalLight natural_light = 4; // generates nautral lighting based on a day time or night time model
+			NaturalLight natural_light = 4; // generates natural lighting based on a day time or night time model
 			UsStandard us_standard = 5;
-			EnvironmentMap environment_map = 6; // create a background using an image file
+			EnvironmentMap environment_map = 6; // creates a background using an image file
 		}
 
 		message UniformAmbient {
 			double luminance = 1; // Luminance in cd per squared meter
-			bool mirrored_extent = 2; // if true then the ambient light cover all space, if false only cover the upper half space
+			bool mirrored_extent = 2; // if true then the ambient light covers all space, if false only covers the upper half space
 			string spectrum_guid = 3; // blackbody or library spectra only
 		}
 		message CieOvercast {
@@ -164,7 +164,7 @@ message SourceTemplate {
 			}
 			message NaturalLight {
 				double turbidity = 1; // cloudiness of the environment. The lower the value the clearer the environment. Varies between 1.9 and 9.9
-				bool with_sky = 2; // false when only the sun will be used in simulation
+				bool with_sky = 2; // if false, only the sun is used in the simulation. If true, both ambient sky model and sun are used in the simulation
 			}
 			message UsStandard {}
 			message EnvironmentMap {

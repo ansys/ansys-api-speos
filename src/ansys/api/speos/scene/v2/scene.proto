@@ -111,7 +111,7 @@ message Scene
 			message SunAxisSystem {
 				oneof sun_type {
 					AutomaticSun automatic_sun = 1; // calculates the sun position according to the north direction and time zone location set
-					ManualSun manual_sun = 2; // set the sun position and direction from scene
+					ManualSun manual_sun = 2; // sets the sun position and direction from scene
 				}
 				message AutomaticSun {
 					string time_zone_uri = 1;
@@ -148,7 +148,7 @@ message Scene
 			message EnvironmentMapProperties {
 				repeated double north_direction = 1;
 				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
-				repeated double ground_origin = 3; // 3D point in the geomtry. HDR image is displayed on the ground plane
+				repeated double ground_origin = 3; // 3D point in the geometry. HDR image is displayed on the ground plane
 				double ground_height = 4; // height of the environment shooting (unit mm)
 			}
 		}
