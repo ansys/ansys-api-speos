@@ -63,7 +63,7 @@ message PolarIntensityEulumdat {}
 // Near field intensity or polar intensity sensor
 message SensorNearField {
 	double cell_distance = 1; // Distance of the cell from the center of the intensity sensor (mm).
-	double cell_diameter = 2; // Diameter of the cell (mm). Used with cell_distance to calculate the integration angle of each pixel.
+	double cell_integration_angle = 2; // Integration angle of the cell (deg). Used with cell_distance to calculate the cell diameter.
 }
 
 // Intensity result viewing direction
