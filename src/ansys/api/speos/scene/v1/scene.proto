@@ -119,7 +119,6 @@ message Scene
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
 			RayFileProperties rayfile_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type RayFile
-			DisplayProperties display_properties = 15; // To be filled if the source_guid corresponds to a SourceTemplate of type Display
 		}
 	}
 
