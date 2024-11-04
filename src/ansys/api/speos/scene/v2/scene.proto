@@ -207,9 +207,10 @@ message Scene
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			Locations locations = 2; // Locations of the sensors
 			Size size = 3;	// Size of the sensors
+			double distance = 4; //radius of sphere on which the sensors wuill placed
 			oneof layer_type {
-				LayerTypeNone layer_type_none = 4; // Layer type : None
-				LayerTypeSource layer_type_source = 5; // Layer type : Source							
+				LayerTypeNone layer_type_none = 5; // Layer type : None
+				LayerTypeSource layer_type_source = 6; // Layer type : Source							
 			}
 
 
