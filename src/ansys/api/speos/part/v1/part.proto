@@ -39,6 +39,8 @@ service PartsManager {
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
 	// List all parts in manager
 	rpc List(List_Request) returns (List_Response) {}
+	// read the whole database, use with field_mask
+	rpc ReadAll(ReadAll_Request) returns (ReadAll_Response){}
 }
 
 // Request to create an element
@@ -80,6 +82,14 @@ message List_Request {}
 // Response to list all elements
 message List_Response {
 	repeated string guids = 1; // Guids of all Parts
+}
+
+// Request to read all parts
+message ReadAll_Request{
+}
+// Response to read all parts
+message ReadAll_Response{
+	map<string, Part> parts = 1; // Read parts with their Guids
 }
 
 

@@ -1,7 +1,11 @@
 // (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/any.proto";
 
 package ansys.api.speos.body.v1;
+
+
 
 //////////
 // CRUD //
@@ -26,6 +30,8 @@ service BodiesManager {
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
 	// List all bodies in manager
 	rpc List(List_Request) returns (List_Response) {}
+	// read the whole database, use with field_mask
+	rpc ReadAll(ReadAll_Request) returns (ReadAll_Response){}
 }
 
 
@@ -70,9 +76,18 @@ message List_Response {
 	repeated string guids = 1; // Guids of all bodies
 }
 
+// Request to read all bodies
+message ReadAll_Request{
+}
+// Response to read all bodies
+message ReadAll_Response{
+	map<string, Body> bodies = 1; // Read bodies with their Guids
+}
+
 /////////////
 // ACTIONS //
 /////////////
 // Actions available on a body
 service BodyActions {
+
 }
