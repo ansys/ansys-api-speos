@@ -190,18 +190,18 @@ message Scene
 			message Locations {
 				double hstart = 1;	//Horizontal start value for sensors positions
 				double hend = 2;	//Horizontal end value for sensors positions
-				uint hsampling = 3; //Horizontal number of sensors
+				uint32 hsampling = 3; //Horizontal number of sensors
 				double vstart = 4;	//Vertical start value for sensors positions
 				double vend = 5;	//Vertical end value for sensors positions
-				uint vsampling = 6;	//Vertical number of sensors
+				uint32 vsampling = 6;	//Vertical number of sensors
 			}
 			message Size{
 				double hstart = 1;	//Horizontal sensors size start
 				double hend = 2;	//Horizontal sensors size end
-				uint hsampling = 3;	//Horizontal sensors pixel number
+				uint32 hsampling = 3;	//Horizontal sensors pixel number
 				double vstart = 4;	//Vertical sensors size start
 				double vend = 5;	//Vertical sensors size end
-				uint vsampling = 6;	//Vertical sensors pixel number
+				uint32 vsampling = 6;	//Vertical sensors pixel number
 			}
 			
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)

@@ -30,8 +30,8 @@ message SensorTemplate {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
 		Radiance radiance_sensor_template = 3;
-		Observer observer_sensor_template = 4;
-		Immersive immersive_sensor_template = 5;
+		Observer observer_sensor_template = 7;
+		Immersive immersive_sensor_template = 8;
 	}
 	message Radiance {
 		oneof sensor_type {
@@ -51,10 +51,10 @@ message SensorTemplate {
 
 	}
 	message Immersive {
-		int sampling = 1;
+		uint32 sampling = 1;
 		bool stereo = 2; // true to define an interocular distance, false otherwise. When in stereo make sure that front direction is horizontal and top vertical
 		double interocular_distance = 3; // will only be used when stereo is true, should be in mm
-		double integration_angle = 4; // for direct simulations
+		double integration_angle = 4; // integration angle in degrees for direct simulations
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 5; // Spectral excursion to use for simulation
 	}
 }
