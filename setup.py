@@ -36,7 +36,7 @@ if __name__ == "__main__":
         url=f"https://github.com/ansys/{package_name}",
         license="MIT",
         python_requires=">=3.8",
-        install_requires=["grpcio~=1.48", "protobuf~=3.20"],
+        install_requires=["grpcio~=1.48", "protobuf>=3.20,<6"],
         package_dir = {"": "src"},
         packages=setuptools.find_namespace_packages("src", include=("ansys.*",)),
         package_data={

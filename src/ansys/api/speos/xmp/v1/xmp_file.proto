@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
@@ -8,18 +8,18 @@ package ansys.api.speos.xmp.v1;
 // service to manage xmp file
 service XmpFileService_Mono {
 
-	/*! @brief Create Xmp file Info
-	@param[in] FileName The Path to the Xmp file.*/
+	// Create Xmp file Info
+	// @param[in] FileName The Path to the Xmp file.
 	rpc CreateXMPFileInfo(FileName) returns (google.protobuf.Empty) {}
-	/*! @brief Build Relative Standard Error accessor  Xmp file*/
+	// Build Relative Standard Error accessor  Xmp file
 	rpc BuildMapRelativeStandardError(google.protobuf.Empty) returns (google.protobuf.Empty) {}
-	/*! @brief Get Value Relative Standard Error file*/
+	// Get Value Relative Standard Error file
 	rpc GetValueRelativeStandardError(Coordinate2d) returns (Value) {}
-	/*! @brief Get Nb pixel X Relative Standard Error file*/
+	// Get Nb pixel X Relative Standard Error file
 	rpc GetNbPixelXRelativeStandardError(google.protobuf.Empty) returns (Pixel) {}
-	/*! @brief Get Nb pixel Y Relative Standard Error file*/
+	// Get Nb pixel Y Relative Standard Error file
 	rpc GetNbPixelYRelativeStandardError(google.protobuf.Empty) returns (Pixel) {}
-	/*! @brief Export Xmp File Relative Standard Error*/
+	// Export Xmp File Relative Standard Error
 	rpc ExportXmpFileRelativeStandardError(FileName) returns (google.protobuf.Empty) {}
 }
 
