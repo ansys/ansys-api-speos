@@ -186,6 +186,9 @@ message Scene
 				LayerTypeSequence layer_type_sequence = 6; // Layer type : Sequence								
 			}
 		}
+		message LXPProperties {
+			uint32 nb_max_paths = 1; 
+		}
 
 		string name = 1;
 		string description = 2;
@@ -197,6 +200,7 @@ message Scene
 			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
 			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
 		}
+		optional LXPProperties lxp_properties = 15; // None -> disable lxp ; Else, enable lxp
 	}
 
 	// Instance of a simulation to add in the scene
