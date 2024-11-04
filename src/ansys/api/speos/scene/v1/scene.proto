@@ -82,11 +82,6 @@ message Scene
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 		}
 
-		message DisplayProperties{
-			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			IntensityProperties intensity_properties = 3;
-		}
-
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
 				message GeoPath {
