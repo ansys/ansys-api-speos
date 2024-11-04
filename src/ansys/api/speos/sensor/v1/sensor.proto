@@ -79,8 +79,9 @@ message SensorTemplate {
 		}
 
 		message TypeColorimetric{
-			ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 1;
-			IntegrationType integration_type = 2;
+		    double wavelength_start = 1;
+		    double wavelength_end = 2;
+			IntegrationType integration_type = 3;
 		}
 	}
 }
