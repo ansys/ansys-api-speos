@@ -209,9 +209,7 @@ message Scene
 			Size size = 3;	// Size of the sensors
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 4; // Layer type : None
-				LayerTypeSource layer_type_source = 5; // Layer type : Source
-				LayerTypeFace layer_type_face = 6; // Layer type : Face
-				LayerTypeSequence layer_type_sequence = 7; // Layer type : Sequence								
+				LayerTypeSource layer_type_source = 5; // Layer type : Source							
 			}
 
 
