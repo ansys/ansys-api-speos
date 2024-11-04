@@ -1,11 +1,7 @@
 // (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
-import "google/protobuf/field_mask.proto";
-import "google/protobuf/any.proto";
 
 package ansys.api.speos.body.v1;
-
-
 
 //////////
 // CRUD //
@@ -89,5 +85,4 @@ message ReadAll_Response{
 /////////////
 // Actions available on a body
 service BodyActions {
-
 }
