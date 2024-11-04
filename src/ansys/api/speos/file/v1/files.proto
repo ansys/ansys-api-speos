@@ -1,0 +1,135 @@
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "google/protobuf/duration.proto";
+
+package ansys.api.speos.file.v1;
+
+// Enumerates all types of files
+enum Types {
+	Unknown = 0; // Unknown file
+	RayFile = 1; // Any files that represent a ray file
+}
+
+// Informations on a specific file
+message FileInfo
+{
+	string name = 1;
+	string description = 2;
+	map<string, string> metadata = 4; // User defined metadata
+	string path = 10; // Path of the file in server
+	uint64 size = 11; // Size of the file. (octets)
+	Types type = 12; // Type of the file
+	string sha512 = 13; // SHA512 hash file of the file
+	repeated string dependencies = 12; // Dependencies on other files
+}
+
+//////////
+// CRUD //
+//////////
+// Manages all input and output files stored in server filesystem
+service FilesManager {
+	// Create an empty file
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a file
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a file
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a file
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all files in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// Request to create a file
+message Create_Request {}
+// Response to create a file
+message Create_Response {
+	string guid = 1; // Guid of the created file
+    FileInfo info = 2; // Information about the created file
+}
+
+// Request to read a file
+message Read_Request {
+	string guid = 1; // Guid of the file to be read
+}
+// Response to read a file
+message Read_Response {
+	FileInfo info = 1; // file corresponding to the guid given in Read_Request
+}
+
+// Request to update a file
+message Update_Request {
+	string guid = 1; // Guid of the file to be updated
+	FileInfo info = 2; // New file that will be used for the update
+}
+// Response to update a file
+message Update_Response {
+}
+
+// Request to delete a file
+message Delete_Request {
+	string guid = 1; // Guid of the file to be deleted
+}
+// Response to delete a file
+message Delete_Response {}
+
+// Request to list all files
+message List_Request {}
+// Response to list all files
+message List_Response {
+	repeated string guids = 1; // Guids of all files
+}
+
+/////////////
+// ACTIONS //
+/////////////
+// Actions available on a file
+service FileActions {
+    // Upload a file
+    rpc Upload(stream Upload_Request) returns (Upload_Response) {}
+    // Download a file
+    rpc Download(Download_Request) returns (stream Download_Response) {}
+	// Details on a File
+	rpc Details(Details_Request) returns (Details_Response) {}
+}
+
+message Chunk {
+    bytes binary = 1;
+    int64 size = 2;
+}
+
+message Upload_Request {
+    string guid = 1; // File guid where to store the chunk
+    Chunk blob = 2; // Binary blob of the file
+}
+message Upload_Response {
+    FileInfo info = 1; // Information about the FileSystemItem created
+    google.protobuf.Duration upload_duration = 2; // Upload time
+}
+
+message Download_Request {
+    string guid = 1; // File guid to download
+}
+message Download_Response {
+    Chunk blob = 1; // Binary blob of the file
+}
+
+message Details_Request {
+    string guid = 1; // File guid to download
+}
+message Details_Response {
+	FileInfo info = 1; // Information about the FileSystemItem
+	oneof source {
+		RayFileInfos ray_file_infos = 10;
+		// TODO...
+	}
+
+	message RayFileInfos {
+		bool is_spectral = 1;
+		double flux = 2;
+		bool is_flux_in_Watt = 3;
+		bool is_flux_in_Lumen = 4;
+		bool is_optimized = 5;
+	}
+}
