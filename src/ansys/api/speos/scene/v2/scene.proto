@@ -32,6 +32,32 @@ message Scene
 		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 	}
 
+	message TextureLayer 
+	{
+		string sop_guid = 1; // Guid of the surface optical property to bind to geometry
+		optional uint32 colormap_channel_id = 2; // optional - texture coordinates channel for color map
+		optional uint32 normalmap_channel_id = 3; // optional - texture coordinates channel for normal map 
+		optional uint32 normalmap_tangent_channel_id = 4; // optional - texture coordinates channel for tangent of normal map
+		optional uint32 anisotropymap_channel_id = 5; // optional - texture coordinates channel for anisotropy map
+		optional uint32 anisotropymap_tangent_channel_id = 6; // optional - texture coordinates channel for tangent of anisotropy map
+		optional bool reverse_normal = 7; // optional - if not set or false : normal is not reversed.
+	}
+
+	message MultiTexture
+	{
+		repeated TextureLayer layers = 1; // List of texture layers
+	}
+
+	// Instance of a textured material to apply on geometries of the scene
+	message MaterialTexturedInstance
+	{
+		string name = 1;
+		string description = 2;
+		map<string, string> metadata = 3; // User defined metadata
+		map<string, MultiTexture> geo_textures = 10; // map of textures per geometry
+		optional string vop_guid = 11; // optional - Guid of the volume optical property to instantiate
+	}
+
 	// Instance of a Material to apply on geometries of the scene
 	message MaterialInstance
 	{
@@ -230,6 +256,7 @@ message Scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
 	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
+	repeated MaterialTexturedInstance texMaterials = 17; // The materials (volume + textures) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
 }
 

@@ -44,6 +44,8 @@ message SOPTemplate {
 		Library library = 5; // Based on surface optical properties file
 		Plugin plugin = 6; // Custom made plug-in
 	}
+	optional string bitmap_file_uri = 8; // absolute file path to bitmap 
+	optional string normalmap_file_uri = 9; // absolute file path to normalmap 
 }
 
 // Request to create a SOPTemplate in SOPTemplatesManager
