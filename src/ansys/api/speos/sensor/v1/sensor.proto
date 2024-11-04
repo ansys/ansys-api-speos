@@ -30,6 +30,7 @@ message SensorTemplate {
 		CameraSensorTemplate camera_sensor_template = 1;
 		IrradianceSensorTemplate irradiance_sensor_template = 2;
 		Radiance radiance_sensor_template = 3;
+		Irradiance3D irradiance_3d = 10;
 	}
 	message Radiance {
 		oneof sensor_type {
@@ -41,7 +42,6 @@ message SensorTemplate {
 		double focal = 6; // Observer type : focal (mm)
 		double integration_angle = 7; // Integration angle, in degree
 		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 8; // Dimensions of the sensor
-		Irradiance3D irradiance_3d = 10;
 	}
 
 	message Irradiance3D {

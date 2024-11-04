@@ -216,7 +216,7 @@ message Scene
 			CameraSensorProperties camera_sensor_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
 			IrradianceSensorProperties irradiance_sensor_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
 			RadianceSensorProperties radiance_sensor_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
-			Irradiance3DSensorProperties irradiance_3d_sensor_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type Irradiance3DSensorTemplate
+			Irradiance3DSensorProperties irradiance_3d_sensor_properties = 15; // To be filled if the sensor_guid corresponds to a SensorTemplate of type Irradiance3DSensorTemplate
 		}
 	}
 
