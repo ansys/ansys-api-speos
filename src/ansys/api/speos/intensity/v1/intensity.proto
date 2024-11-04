@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 syntax = "proto3";
 
 package ansys.api.speos.intensity.v1;
@@ -20,12 +20,12 @@ service IntensityTemplatesManager {
 
 // Intensity with its basic characteristics
 message IntensityTemplate {
-
 	message Library{ 
 		string intensity_file_uri = 1; // uri of the intensity file IES (.ies), Eulumdat (.ldt), speos intensities (.xmp)
 	}
 
 	message Lambertian{ 
+		option deprecated = true; // Use Cos instead (Lambertian was only Cos with N (order of cos law) set to 1)
 		double total_angle = 1; // total angle in degrees of the emission of the light source
 	}
 
@@ -35,14 +35,22 @@ message IntensityTemplate {
 	}
 
 	message SymmetricGaussian{ 
+		option deprecated = true; // Use Gaussian instead
 		double FWHM_angle = 1; // Full Width in degrees at Half Maximum 
 		double total_angle = 2; // total angle in degrees of the emission of the light source
 	}
 
 	message AsymmetricGaussian{ 
+		option deprecated = true; // Use Gaussian instead
 		double FWHM_angle_x = 1; // Full Width in degrees following x at Half Maximum 
 		double FWHM_angle_y = 2; // Full Width in degrees following y at Half Maximum 
 		double total_angle = 3; // total angle in degrees of the emission of the light source
+	}
+
+	message Gaussian{
+	    double FWHM_angle_x = 1; // Full Width in degrees following x at Half Maximum
+	    double FWHM_angle_y = 2; // Full Width in degrees following y at Half Maximum
+	    double total_angle = 3; // total angle in degrees of the emission of the light source
 	}
 
 	string name = 1; // Intensity name
@@ -51,36 +59,37 @@ message IntensityTemplate {
 
 	oneof intensity{
 		Library library = 3; // From file
-		Lambertian lambertian = 4; // Lambertian distribution
+		Lambertian lambertian = 4; // Deprecated (use cos instead) - Lambertian distribution
 		Cos cos = 5; // Lambert cosine law distribution
-		SymmetricGaussian symmetric_gaussian = 6; // Symmetric gaussian distribution
-		AsymmetricGaussian asymmetric_gaussian = 7; // Asymmetric gaussian distribution
+		SymmetricGaussian symmetric_gaussian = 6; // Deprecated (use gaussian instead) - Symmetric gaussian distribution
+		AsymmetricGaussian asymmetric_gaussian = 7; // Deprecated (use gaussian instead) - Asymmetric gaussian distribution
+		Gaussian gaussian = 9; // Gaussian distribution
 	}
 }
 
 
-// Request to create a Intensity in IntensitysManager
+// Request to create a Intensity in IntensityTemplatesManager
 message Create_Request {
 	IntensityTemplate intensity_template = 1; // Intensity containing its basic characteristics
 }
 message Create_Response {
-	string guid = 1; // Guid of the Intensity created in IntensitysManager
+	string guid = 1; // Guid of the Intensity created in IntensityTemplatesManager
 }
-// Request to read a Intensity in IntensitysManager
+// Request to read a Intensity in IntensityTemplatesManager
 message Read_Request {
 	string guid = 1; // Guid of the Intensity to be read
 }
 message Read_Response {
 	IntensityTemplate intensity_template = 1; // Intensity corresponding to the guid given in Read_Request
 }
-// Request to update a Intensity in IntensitysManager
+// Request to update a Intensity in IntensityTemplatesManager
 message Update_Request {
 	string guid = 1; // Guid of the Intensity to be updated
 	IntensityTemplate intensity_template = 2; // Intensity that will be used for the update
 }
 message Update_Response {
 }
-// Request to delete a Intensity in IntensitysManager
+// Request to delete a Intensity in IntensityTemplatesManager
 message Delete_Request {
 	string guid = 1; // Guid of the Intensity to be deleted
 }
@@ -89,7 +98,7 @@ message Delete_Response {}
 message List_Request {
 }
 message List_Response {
-	repeated string guids = 1; // Guids of the Intensitys in IntensitysManager
+	repeated string guids = 1; // Guids of the Intensities in IntensityTemplatesManager
 }
 
 // Actions available on a IntensityTemplate

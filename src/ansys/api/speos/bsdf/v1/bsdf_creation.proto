@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 package ansys.api.speos.bsdf.v1.SpeosBsdfCreation;

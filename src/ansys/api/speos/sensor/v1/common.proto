@@ -1,11 +1,9 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 package ansys.api.speos.sensor.v1;
 
-// Integration made orthogonally with the sensor plan.
-
-// Illuminance sensor with planar integration type.
+// Integration made orthogonally with the sensor plane.
 message IlluminanceTypePlanar {}
 // Illuminance sensor with radial integration type.
 message IlluminanceTypeRadial {}
@@ -18,9 +16,9 @@ message IlluminanceTypeSemiCylindrical {}
 
 // Spectral range to use for simulation.
 message WavelengthsRange {
-	double w_start = 1; // Minimum wavelength (nm).
-	double w_end = 2; // Maximum wavelength (nm).
-	uint32 w_sampling = 3; // Number of wavelengths to be considered between the minimum and maximum wavelengths.
+	double w_start = 1; // Defines the minimum wavelength. (nm)
+	double w_end = 2; // Defines the maximum wavelength. (nm)
+	uint32 w_sampling = 3; // Defines the number of wavelengths to be taken into account between the minimum and maximum wavelengths set.
 }
 
 // Dimensions of the sensor
