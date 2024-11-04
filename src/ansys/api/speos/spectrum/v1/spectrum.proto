@@ -1,4 +1,4 @@
-// (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 package ansys.api.speos.spectrum.v1;
@@ -54,8 +54,8 @@ message Spectrum {
 	}
 
 	string name = 1; // Spectrum name
-	string description = 2; // Spectrum descrition
-	map<string, string> metadata = 8; // User defined metadatas
+	string description = 2; // Spectrum description
+	map<string, string> metadata = 8; // User defined metadata
 
 	oneof spectrum {
 		Monochromatic monochromatic = 3;
