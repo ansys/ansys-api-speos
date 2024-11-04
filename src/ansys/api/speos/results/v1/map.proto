@@ -6,10 +6,10 @@ package ansys.api.speos.results.v1;
 // Actions available with XMP and Speos360 result file.
 service MapActions {
 
-	// Merge list of XMP files into a XMP or Speos360 file. [BETA]
+	// Merge list of XMP files into a XMP or Speos360 file. [Unsupported]
 	rpc MergeXMPsToXMPOrSpeos360(MergeXMPsToXMPOrSpeos360_Request) returns (MergeXMPsToXMPOrSpeos360_Response) {}
 
-	// Merge left and right speos360 files into a stereoscopic Speos360 file. [BETA]
+	// Merge left and right speos360 files into a stereoscopic Speos360 file. [Unsupported]
 	rpc MergeSpeos360ToStereoSpeos360(MergeSpeos360ToStereoSpeos360_Request) returns (MergeSpeos360ToStereoSpeos360_Response) {}
 }
 
