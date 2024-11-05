@@ -187,7 +187,7 @@ message Scene
 			}
 		}
 		message LXPProperties {
-			uint32 nb_max_paths = 1; 
+			uint32 nb_max_paths = 1; // The Maximum paths corresponds to the maximum number of rays the Light Expert file (*.lpf or *.lp3) can contain.
 		}
 
 		string name = 1;
@@ -200,7 +200,7 @@ message Scene
 			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
 			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
 		}
-		LXPProperties lxp_properties = 30; // None -> disable lxp ; Else, enable lxp
+		LXPProperties lxp_properties = 30; // To activate lpx feature, we must fill this field
 	}
 
 	// Instance of a simulation to add in the scene
