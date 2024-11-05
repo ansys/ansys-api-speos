@@ -34,6 +34,11 @@ message SOPTemplate {
 		string plugin_sop_file_uri = 1; // *.sop plug-in
 		string parameters_file_uri = 2; // parameters file needed for the plug-in
 	}
+	// Activate texture
+	message Texture {
+		optional string bitmap_file_uri = 8; // absolute file path to bitmap 
+		optional string normalmap_file_uri = 9; // absolute file path to normalmap 
+	}
 
 	string name = 1; // SOPTemplate name
 	string description = 2; // SOPTemplate description
@@ -44,8 +49,8 @@ message SOPTemplate {
 		Library library = 5; // Based on surface optical properties file
 		Plugin plugin = 6; // Custom made plug-in
 	}
-	optional string bitmap_file_uri = 8; // absolute file path to bitmap 
-	optional string normalmap_file_uri = 9; // absolute file path to normalmap 
+
+	Texture texture = 8; // Define to activate texture - optional
 }
 
 // Request to create a SOPTemplate in SOPTemplatesManager
