@@ -200,7 +200,7 @@ message Scene
 			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
 			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
 		}
-		optional LXPProperties lxp_properties = 15; // None -> disable lxp ; Else, enable lxp
+		LXPProperties lxp_properties = 15; // None -> disable lxp ; Else, enable lxp
 	}
 
 	// Instance of a simulation to add in the scene
