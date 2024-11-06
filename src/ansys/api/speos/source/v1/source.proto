@@ -113,8 +113,8 @@ message SourceTemplate {
 	message UserDefinedRGBSpace {
 	
 		oneof White_point_type {
-						PredefinedWhitePoint = 1; 
-						UserDefinedWhitePoint = 2;
+						PredefinedWhitePoint pre_defined_white_point = 1; 
+						UserDefinedWhitePoint user_defined_white_point = 2;
 					}
 					
 		string red_spectrum_uri = 3; 
@@ -156,8 +156,8 @@ message SourceTemplate {
 		int32 nbRays = 7; //source rays number
 		
 		oneof color_space {
-						PredefinedColorSpace = 8; 
-						UserDefinedRGBSpace = 9;
+					 PredefinedColorSpace	pre_defined_color_space = 8; 
+					 UserDefinedRGBSpace	user_defined_rbg_space = 9;
 					}
 	}
 
