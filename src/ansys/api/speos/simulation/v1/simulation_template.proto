@@ -3,6 +3,8 @@ syntax = "proto3";
 
 package ansys.api.speos.simulation.v1.templates;
 
+import "ansys/api/speos/sensor/v1/common.proto";
+
 // The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
 // Activating weight means that the Weight message is present.
 // When weight is not activated, rays' energy stays constant and probability laws dictate if rays continue or stop propagating.
@@ -45,6 +47,8 @@ message InverseMCSimulationTemplate {
 	string ambient_material_uri = 11; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 }
 
+
+
 // Simulation template with its basic characteristics
 message SimulationTemplate {
 	string name = 3; // Simulation name
@@ -62,6 +66,104 @@ message SimulationTemplate {
 		Weight weight = 3; // Activates Weight. Highly recommended to fill
 		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
 		string ambient_material_uri = 5; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
+	}
+
+	// Virtual BSDF Bench
+	message VirtualBSDFBench {
+		double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
+		int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+		Weight weight = 4; // Activates Weight. Highly recommended to fill
+		EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
+		string ambient_material_uri = 8; // To keep ? To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
+
+		oneof mode {
+			RoughnessOnly roughness_only = 9; // BSDF depends on surface roughness only
+			AllCharacteristics all_characteristics = 10; // BSDF depends on all properties
+		}
+
+		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 11; // 
+
+		message SourceSamplingUniformIsotropic{
+			double theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
+		}
+		message SourceSamplingUniformAnisotropic{
+			double theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
+			double phi_sampling = 2; // Sampling following angle to X axis of axis system
+			PhiSymmetry symmetry_type = 3; // Define symmetry type, no needed if there is no symmetry in measure
+		
+			enum PhiSymmetry {
+				NoSymmetry = 0;
+				Symmetry_180 = 1; // Symmetry to plane 0 - 180
+				Symmetry_90	= 2; // Symmetry to plane 0 - 180 and 90 - 270 
+			}
+		}
+		message SourceSamplingAdaptative{
+			string file_uri = 1; // uri of incident sampling file
+		}
+
+		message Sensor{
+			double integration_angle = 1;
+			bool automatic_sampling = 2; // Set to true to optimize the final results to only keep important samples
+			oneof sampling {
+				SamplingUniform uniform = 3;
+				SamplingAdaptative adaptative = 4;
+			}
+
+			message SamplingUniform{
+				double theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
+				double phi_sampling = 2; // Sampling following angle to X axis of axis system
+			}
+			message SamplingAdaptative{
+				string file_uri = 1; // uri of incident sampling file
+			}
+		}
+
+		message RoughnessOnly{
+			oneof source_sampling{
+				SourceSamplingUniformIsotropic uniform_isotropic = 1; // oneof with adaptative
+				SourceSamplingAdaptative adaptative = 2;
+			}
+			Sensor sensor = 3; // Sensor definition, alway in reflection only
+		} 
+
+		message AllCharacteristics{	
+			bool is_bsdf180 = 1; // Set to true if BSDF depends on light incidence side, in this case theta of source will go to [0, 180] instead of [0, 90]
+			oneof iridescence_mode{
+				Iridescence iridescence = 2; // Color depends on viewing direction
+				NoIridescence no_iridescence = 3; // Color does not depend on viewing direction
+			}
+
+			bool sensor_reflection_and_transmission = 4; // Set to true to measure in reflection and transmission (theta in [0 - 180]), false for reflection only  (theta in [0 - 90])
+			Sensor sensor = 5; // Sensor definition
+
+			message Iridescence{
+				oneof source_sampling {
+					SourceSamplingUniformIsotropic uniform_isotropic = 1;
+					SourceSamplingAdaptative adaptative = 2;
+				}
+			}
+
+			message NoIridescence{
+				oneof surface_type{
+					Isotropic isotropic = 1;
+					Anisotropic anistropic = 2;
+				}
+
+				message Isotropic{
+					oneof source_sampling {
+						SourceSamplingUniformIsotropic uniform_isotropic = 1;
+						SourceSamplingAdaptative adaptative = 2;
+					}
+				}
+
+				message Anisotropic{
+					oneof source_sampling {
+						SourceSamplingUniformAnisotropic uniform_anisotropic = 1;
+						SourceSamplingAdaptative adaptative = 2;
+					}
+				}
+			}
+		}
 	}
 }
 
