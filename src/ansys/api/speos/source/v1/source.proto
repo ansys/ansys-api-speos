@@ -100,7 +100,7 @@ message SourceTemplate {
 		message SpectrumFromRayFile{}
 	}
 
-	message PredefinedColorSpace { }
+	message PredefinedColorSpace {
 	{
 		ColorSpaceType color_space_type = 1;
 		
