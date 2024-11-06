@@ -100,40 +100,34 @@ message SourceTemplate {
 		message SpectrumFromRayFile{}
 	}
 
-	enum EColorSpace
-	{
-		ColorSpaceRGB = 0; // ColorSpaceRGB use D65 white point
-		ColorSpaceAdobeRGB = 1; //ColorSpaceAdobeRGB use D65 white point
-		ColorSpaceUserDefined = 2; //User defined white point
+	// color space can be used for both ambient sources and display sources
+	message ColorSpace {
+		enum ColorSpaceType {
+			sRGB = 0; // standard and most commonly used model
+			AdobeRGB = 1; // larger gamut
+			UserDefinedRGB = 2; 
+		}
+		ColorSpaceType color_space_type = 1;
+		enum WhitePointType {
+			C = 0; // average daylight illuminant
+			D50 = 1; // natural horizon light
+			D65 = 2; // standard daylight illuminant
+			E = 3; // illuminant that gives equal weight to all wavelengths
+			UserDefined = 4;
+		}
+		WhitePointType white_point_type = 2;
+		repeated double white_point = 3; // X and Y coordinates of the white point. Only necessary when type is UserDefined
+		string red_spectrum_uri = 4; // Only necessary when type is UserDefined
+		string green_spectrum_uri = 5; // Only necessary when type is UserDefined
+		string blue_spectrum_uri = 6; // Only necessary when type is UserDefined
 	}
 
-	enum EWhitePoint
-	{
-		WhitePointD65 = 0;  //D65 white point
-		WhitePointD50 = 1; //D50 white point
-		WhitePointC = 2; //C white point
-		WhitePointE = 3; //E white point
-		WhitePointUserDefined = 4; //User defined white point
-	}
-
+	// source dimensions 
 	message SourceDimensions {
 		double x_start = 1; // (mm)
 		double x_end = 2; // (mm)
 		double y_start = 4; // (mm)
 		double y_end = 5; // (mm)
-	}// source dimensions 
-
-	message ColorSpace
-	{
-		EColorSpace color_space = 1;
-		EWhitePoint white_point = 2;
-
-		double x = 3; //x white point value
-		double y = 4; //y white point value
-
-		string r_spectrum_guid = 5; //Reg Spectrum library guid in spectrum manager
-		string g_spectrum_guid = 6; //Green Spectrum library guid in spectrum manager
-		string b_spectrum_guid = 7; //Blue Spectrum library guid in spectrum manager
 	}
 
 	message Display{
