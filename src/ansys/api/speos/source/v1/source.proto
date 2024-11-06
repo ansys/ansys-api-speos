@@ -100,34 +100,51 @@ message SourceTemplate {
 		message SpectrumFromRayFile{}
 	}
 
-	// color space can be used for both ambient sources and display sources
-	message ColorSpace {
+	message PredefinedColorSpace { }
+	{
+		ColorSpaceType color_space_type = 1;
+		
 		enum ColorSpaceType {
 			sRGB = 0; // standard and most commonly used model
 			AdobeRGB = 1; // larger gamut
-			UserDefinedRGB = 2; 
 		}
-		ColorSpaceType color_space_type = 1;
+	}
+	
+	message UserDefinedRGBSpace {
+	
+		oneof White_point_type {
+						PredefinedWhitePoint = 1; 
+						UserDefinedWhitePoint = 2;
+					}
+					
+		string red_spectrum_uri = 3; 
+		string green_spectrum_uri = 4;
+		string blue_spectrum_uri = 5;
+	}
+	
+	message PredefinedWhitePoint 
+	{
+		WhitePointType white_point_type = 1;
+		
 		enum WhitePointType {
 			C = 0; // average daylight illuminant
 			D50 = 1; // natural horizon light
 			D65 = 2; // standard daylight illuminant
 			E = 3; // illuminant that gives equal weight to all wavelengths
-			UserDefined = 4;
 		}
-		WhitePointType white_point_type = 2;
-		repeated double white_point = 3; // X and Y coordinates of the white point. Only necessary when type is UserDefined
-		string red_spectrum_uri = 4; // Only necessary when type is UserDefined
-		string green_spectrum_uri = 5; // Only necessary when type is UserDefined
-		string blue_spectrum_uri = 6; // Only necessary when type is UserDefined
+	}
+	
+	message UserDefinedWhitePoint 
+	{ 
+		repeated double white_point = 1; // X and Y coordinates of the white point. 
 	}
 
 	// source dimensions 
 	message SourceDimensions {
 		double x_start = 1; // (mm)
 		double x_end = 2; // (mm)
-		double y_start = 4; // (mm)
-		double y_end = 5; // (mm)
+		double y_start = 3; // (mm)
+		double y_end = 4; // (mm)
 	}
 
 	message Display{
@@ -139,6 +156,11 @@ message SourceTemplate {
 		string intensity_guid = 5; // Intensity guid in intensity manager
 		ColorSpace color_space = 6; // Color space
 		int32 nbRays = 7; //source rays number
+		
+		oneof color_space {
+						PredefinedColorSpace = 8; 
+						UserDefinedRGBSpace = 9;
+					}
 	}
 
 
