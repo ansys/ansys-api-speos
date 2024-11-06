@@ -310,7 +310,8 @@ message LoadFile_Response {
 // Request to LoadFile service
 message LoadLightboxFile_Request {
 	string guid = 1; // Guid of a ScenesManager element to update
-    string file_uri = 2; // File uri (path or guid from FileTransferService) 
+	string password = 2
+    string file_uri = 3; // File uri (path or guid from FileTransferService) 
 }
 // Response to LoadFile service
 message LoadLightboxFile_Response {
