@@ -32,10 +32,6 @@ message Scene
 		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 	}
 
-	
-
-	
-
 	// Instance of a textured material to apply on geometries of the scene
 	message MaterialTexturedInstance
 	{
@@ -58,8 +54,9 @@ message Scene
 		string name = 1;
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
-		map<string, MultiTexture> geo_textures = 10; // map of textures per geometry
-		optional string vop_guid = 11; // optional - Guid of the volume optical property to instantiate
+		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
+		MultiTexture texture = 11; // multi layer texture
+		GeoPaths geometries = 12; // Geometries that will use this material
 	}
 
 	// Instance of a Material to apply on geometries of the scene
