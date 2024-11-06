@@ -100,8 +100,8 @@ message SourceTemplate {
 		message SpectrumFromRayFile{}
 	}
 
-	message PredefinedColorSpace {
-	{
+	message PredefinedColorSpace { 
+
 		ColorSpaceType color_space_type = 1;
 		
 		enum ColorSpaceType {
@@ -122,8 +122,7 @@ message SourceTemplate {
 		string blue_spectrum_uri = 5;
 	}
 	
-	message PredefinedWhitePoint 
-	{
+	message PredefinedWhitePoint {
 		WhitePointType white_point_type = 1;
 		
 		enum WhitePointType {
@@ -134,8 +133,7 @@ message SourceTemplate {
 		}
 	}
 	
-	message UserDefinedWhitePoint 
-	{ 
+	message UserDefinedWhitePoint { 
 		repeated double white_point = 1; // X and Y coordinates of the white point. 
 	}
 
