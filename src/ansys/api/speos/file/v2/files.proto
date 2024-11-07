@@ -3,7 +3,7 @@ syntax = "proto3";
 
 import "google/protobuf/duration.proto";
 
-package ansys.api.speos.file.v1;
+package ansys.api.speos.file.v2;
 
 // Enumerates all types of files
 enum Types {
@@ -21,7 +21,7 @@ message FileInfo
 	uint64 size = 11; // Size of the file. (octets)
 	Types type = 12; // Type of the file
 	string sha512 = 13; // SHA512 hash file of the file
-	repeated string dependencies = 12; // Dependencies on other files
+	repeated string dependencies = 14; // Dependencies on other files
 }
 
 //////////
