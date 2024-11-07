@@ -187,6 +187,15 @@ message Scene
 			}
 		}
 
+		message Irradiance3DProperties {
+			EnumRayFileType ray_file_type = 1; // Choose type of ray file generated after the simulation.
+			oneof layer_type {
+				LayerTypeNone layer_type_none = 2; // Layer type : None
+				LayerTypeSource layer_type_source = 3; // Layer type : Source
+			}
+			GeoPaths geometries = 4; // Geometries that will use this sensor
+		}
+
 		string name = 1;
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
@@ -196,6 +205,7 @@ message Scene
 			CameraProperties camera_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
 			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
 			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
+			Irradiance3DProperties irradiance_3d_properties = 15; // To be filled if the sensor_guid corresponds to a SensorTemplate of type Irradiance3DSensorTemplate
 		}
 	}
 

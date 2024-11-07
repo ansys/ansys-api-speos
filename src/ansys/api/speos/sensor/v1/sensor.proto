@@ -46,9 +46,9 @@ message SensorTemplate {
 
 	message Irradiance3D {
 		oneof sensor_type {
-			TypePhotometric sensor_type_photometric = 1; // Sensor type : Photometric
-			TypeColorimetric sensor_type_colorimetric = 2; //  Sensor type : Colorimetric
-			TypeRadiometric sensor_type_radiometric = 3; //  Sensor type : Radiometric
+			TypePhotometric type_photometric = 1; // Sensor type : Photometric
+			TypeColorimetric type_colorimetric = 2; //  Sensor type : Colorimetric
+			TypeRadiometric type_radiometric = 3; //  Sensor type : Radiometric
 		}
 
 		message IntegrationTypeRadial {}
@@ -59,22 +59,17 @@ message SensorTemplate {
 			bool absorption = 3;
 		}
 		
-		enum IntegrationType {
-			Radial = 0;
-			Planar = 1;
-		}
-
 		message TypePhotometric{
-			oneof interrogation_type {
-				IntegrationTypeRadial interrogation_type_radial = 1;
-				IntegrationTypePlanar interrogation_type_planar = 2;
+			oneof integration_type {
+				IntegrationTypeRadial integration_type_radial = 1;
+				IntegrationTypePlanar integration_type_planar = 2;
 			}
 		}
 
 		message TypeRadiometric{
-			oneof interrogation_type {
-				IntegrationTypeRadial interrogation_type_radial = 1;
-				IntegrationTypePlanar interrogation_type_planar = 2;
+			oneof integration_type {
+				IntegrationTypeRadial integration_type_radial = 1;
+				IntegrationTypePlanar integration_type_planar = 2;
 			}
 		}
 
@@ -82,6 +77,11 @@ message SensorTemplate {
 		    double wavelength_start = 1;
 		    double wavelength_end = 2;
 			IntegrationType integration_type = 3;
+
+			enum IntegrationType {
+			    Radial = 0;
+			    Planar = 1;
+		    }
 		}
 	}
 }
