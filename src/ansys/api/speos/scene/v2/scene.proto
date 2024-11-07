@@ -317,9 +317,15 @@ message CreateFromLightboxFile_Request {
 // If the Speos Lightbox is protected, return an uri
 // Else return a guid of a created scene
 message CreateFromLightboxFile_Response {
-	oneof scene_id{
+	message SceneGuid {
 		string guid = 1; // Guid of a ScenesManager element created
+	}
+	message SceneUri {
 		string file_uri = 2; // Uri to a protected speos lightbox file
+	}
+	oneof scene_id{
+		SceneGuid scene_guid = 3;
+		SceneUri scene_uri = 4;
 	}
 }
 
