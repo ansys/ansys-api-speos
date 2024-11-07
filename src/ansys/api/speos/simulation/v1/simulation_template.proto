@@ -58,6 +58,7 @@ message SimulationTemplate {
 		DirectMCSimulationTemplate direct_mc_simulation_template = 1;
 		InverseMCSimulationTemplate inverse_mc_simulation_template = 2;
 		Interactive interactive_simulation_template = 5;
+		VirtualBSDFBench virtual_bsdf_bench_simulation_template = 6;
 	}
 
 	message Interactive {
@@ -82,19 +83,20 @@ message SimulationTemplate {
 		}
 
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 11; // 
+		Sensor sensor = 12; // Sensor definition
 
 		message SourceSamplingUniformIsotropic{
-			double theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
+			uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees, minimal value is 2
 		}
 		message SourceSamplingUniformAnisotropic{
-			double theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
-			double phi_sampling = 2; // Sampling following angle to X axis of axis system
+			uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees, minimal value is 2
+			uint32 phi_sampling = 2; // Sampling following angle to X axis of axis system, minimal value is 2
 			PhiSymmetry symmetry_type = 3; // Define symmetry type, no needed if there is no symmetry in measure
 		
 			enum PhiSymmetry {
 				NoSymmetry = 0;
-				Symmetry_180 = 1; // Symmetry to plane 0 - 180
-				Symmetry_90	= 2; // Symmetry to plane 0 - 180 and 90 - 270 
+				Symmetry_1_plane = 1; // Symmetry to plane 0 - 180
+				Symmetry_2_planes	= 2; // Symmetry to planes 0 - 180 and 90 - 270 
 			}
 		}
 		message SourceSamplingAdaptative{
@@ -104,17 +106,11 @@ message SimulationTemplate {
 		message Sensor{
 			double integration_angle = 1;
 			bool automatic_sampling = 2; // Set to true to optimize the final results to only keep important samples
-			oneof sampling {
-				SamplingUniform uniform = 3;
-				SamplingAdaptative adaptative = 4;
-			}
+			SamplingUniform sampling = 3;
 
 			message SamplingUniform{
-				double theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
-				double phi_sampling = 2; // Sampling following angle to X axis of axis system
-			}
-			message SamplingAdaptative{
-				string file_uri = 1; // uri of incident sampling file
+				uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
+				uint32 phi_sampling = 2; // Sampling following angle to X axis of axis system
 			}
 		}
 
@@ -123,7 +119,6 @@ message SimulationTemplate {
 				SourceSamplingUniformIsotropic uniform_isotropic = 1; // oneof with adaptative
 				SourceSamplingAdaptative adaptative = 2;
 			}
-			Sensor sensor = 3; // Sensor definition, alway in reflection only
 		} 
 
 		message AllCharacteristics{	
@@ -132,9 +127,7 @@ message SimulationTemplate {
 				Iridescence iridescence = 2; // Color depends on viewing direction
 				NoIridescence no_iridescence = 3; // Color does not depend on viewing direction
 			}
-
 			bool sensor_reflection_and_transmission = 4; // Set to true to measure in reflection and transmission (theta in [0 - 180]), false for reflection only  (theta in [0 - 90])
-			Sensor sensor = 5; // Sensor definition
 
 			message Iridescence{
 				oneof source_sampling {
