@@ -51,32 +51,36 @@ message SensorTemplate {
 			TypeRadiometric type_radiometric = 3; //  Sensor type : Radiometric
 		}
 
-		message IntegrationTypeRadial {}
-
+		// Integration made orthogonally with the sensor plane.
 		message IntegrationTypePlanar {
-			bool reflection = 1;
+			bool reflection = 1;  
 			bool transmission = 2; 
 			bool absorption = 3;
 		}
-		
+
+		message IntegrationTypeRadial {}
+
+		// The sensor considers the visible spectrum and gets the results in lm/m2 or lx.
 		message TypePhotometric{
 			oneof integration_type {
-				IntegrationTypeRadial integration_type_radial = 1;
-				IntegrationTypePlanar integration_type_planar = 2;
+				IntegrationTypeRadial integration_type_radial = 1; // Integration type : Radial
+				IntegrationTypePlanar integration_type_planar = 2; // Integration type : Planar
 			}
 		}
 
+		// The sensor considers the entire spectrum and gets the results in W/m2.
 		message TypeRadiometric{
 			oneof integration_type {
-				IntegrationTypeRadial integration_type_radial = 1;
-				IntegrationTypePlanar integration_type_planar = 2;
+				IntegrationTypeRadial integration_type_radial = 1; // Integration type : Radial
+				IntegrationTypePlanar integration_type_planar = 2; // Integration type : Planar
 			}
 		}
 
+		// Color results without any spectral data or layer separation (in lx or W//m2).
 		message TypeColorimetric{
-		    double wavelength_start = 1;
-		    double wavelength_end = 2;
-			IntegrationType integration_type = 3;
+		    double wavelength_start = 1; // (mm)
+		    double wavelength_end = 2; // (mm)
+			IntegrationType integration_type = 3; // will determine the integration type of the sensor between radial and planar
 
 			enum IntegrationType {
 			    Radial = 0;

@@ -38,11 +38,3 @@ message SensorTypeRadiometric {}
 message SensorTypeSpectral {
 	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
 }
-
-message IntegrationTypeRadial {}
-
-message IntegrationTypePlanar {
-	bool reflection = 1;
-	bool transmission = 2; 
-	bool absorption = 3;
-}
