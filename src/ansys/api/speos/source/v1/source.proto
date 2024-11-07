@@ -100,28 +100,6 @@ message SourceTemplate {
 		message SpectrumFromRayFile{}
 	}
 
-	message PredefinedColorSpace { 
-
-		ColorSpaceType color_space_type = 1;
-		
-		enum ColorSpaceType {
-			sRGB = 0; // standard and most commonly used model
-			AdobeRGB = 1; // larger gamut
-		}
-	}
-	
-	message UserDefinedRGBSpace {
-	
-		oneof White_point_type {
-						PredefinedWhitePoint pre_defined_white_point = 1; 
-						UserDefinedWhitePoint user_defined_white_point = 2;
-					}
-					
-		string red_spectrum_uri = 3; 
-		string green_spectrum_uri = 4;
-		string blue_spectrum_uri = 5;
-	}
-	
 	message PredefinedWhitePoint {
 		WhitePointType white_point_type = 1;
 		
@@ -136,7 +114,29 @@ message SourceTemplate {
 	message UserDefinedWhitePoint { 
 		repeated double white_point = 1; // X and Y coordinates of the white point. 
 	}
+	
+	message UserDefinedRGBSpace {
+	
+		oneof White_point_type {
+						PredefinedWhitePoint pre_defined_white_point = 1; 
+						UserDefinedWhitePoint user_defined_white_point = 2;
+					}
+					
+		string red_spectrum_guid = 3; 
+		string green_spectrum_guid = 4;
+		string blue_spectrum_guid = 5;
+	}
 
+	message PredefinedColorSpace { 
+
+		ColorSpaceType color_space_type = 1;
+		
+		enum ColorSpaceType {
+			sRGB = 0; // standard and most commonly used model
+			AdobeRGB = 1; // larger gamut
+		}
+	}
+		
 	// source dimensions 
 	message SourceDimensions {
 		double x_start = 1; // (mm)
