@@ -17,11 +17,13 @@ message FileInfo
 	string name = 1;
 	string description = 2;
 	map<string, string> metadata = 4; // User defined metadata
-	string path = 10; // Path of the file in server
-	uint64 size = 11; // Size of the file. (octets)
-	Types type = 12; // Type of the file
-	string sha512 = 13; // SHA512 hash file of the file
-	repeated string dependencies = 14; // Dependencies on other files
+	repeated string dependencies = 5; // Dependencies on other files
+
+	string path = 10; // Path of the file in server [read-only]
+	uint64 size = 11; // Size of the file (octets) [read-only]
+	Types type = 12; // Type of the file [read-only]
+	string sha512 = 13; // SHA512 hash file of the file [read-only]
+	google.protobuf.Duration uploadTime = 14; // Upload time [read-only]
 }
 
 //////////
@@ -104,8 +106,7 @@ message Upload_Request {
     Chunk blob = 2; // Binary blob of the file
 }
 message Upload_Response {
-    FileInfo info = 1; // Information about the FileSystemItem created
-    google.protobuf.Duration upload_duration = 2; // Upload time
+    FileInfo info = 1; // Information about the filesystem item created
 }
 
 message Download_Request {
@@ -119,7 +120,7 @@ message Details_Request {
     string guid = 1; // File guid to download
 }
 message Details_Response {
-	FileInfo info = 1; // Information about the FileSystemItem
+	FileInfo info = 1; // Information about the filesystem item
 	oneof source {
 		RayFileInfos ray_file_infos = 10;
 		// TODO...
