@@ -93,12 +93,12 @@ message Scene
 		}
 	message ThermicProperties{
 			oneof exitanceProperties{
-				EmissiveFacesProperties emissive_faces_properties = 1;
-				TemperatureFieldProperties temperature_field_properties = 2;
+				EmissiveFacesProperties emissive_faces_properties = 1; // source emits from faces
+				TemperatureFieldProperties temperature_field_properties = 2; // a specific OPTTemperature file is required (mesh + triangle temperature in Kelvin)
 			}
 
 			message EmissiveFacesProperties{
-				repeated GeoPath geo_paths = 1;
+				repeated GeoPath geo_paths = 1; // the list of emitting faces of the source 
 			}
 
 			message TemperatureFieldProperties{
