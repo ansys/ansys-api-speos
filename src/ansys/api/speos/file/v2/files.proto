@@ -1,6 +1,8 @@
 // (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 package ansys.api.speos.file.v2;
 
 // Enumerates all types of files
@@ -18,9 +20,11 @@ message FileInfo
 	repeated string dependencies = 5; // Dependencies on other files
 
 	string path = 10; // Path of the file in server [read-only]
-	uint64 size = 11; // Size of the file (octets) [read-only]
-	string sha512 = 12; // SHA512 hash file of the file [read-only]
-	Types type = 13; // Type of the file [read-only]
+	google.protobuf.Timestamp creation_date = 11; // Date of latest upload [read-only]
+	string creation_date_str = 12; // Date of latest upload [read-only]
+	uint64 size = 13; // Size of the file (octets) [read-only]
+	string sha512 = 14; // SHA512 hash file of the file [read-only]
+	Types type = 15; // Type of the file [read-only]
 }
 
 //////////
