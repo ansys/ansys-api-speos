@@ -1,8 +1,6 @@
 // (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
-import "google/protobuf/duration.proto";
-
 package ansys.api.speos.file.v2;
 
 // Enumerates all types of files
@@ -21,9 +19,8 @@ message FileInfo
 
 	string path = 10; // Path of the file in server [read-only]
 	uint64 size = 11; // Size of the file (octets) [read-only]
-	Types type = 12; // Type of the file [read-only]
-	string sha512 = 13; // SHA512 hash file of the file [read-only]
-	google.protobuf.Duration uploadTime = 14; // Upload time [read-only]
+	string sha512 = 12; // SHA512 hash file of the file [read-only]
+	Types type = 13; // Type of the file [read-only]
 }
 
 //////////
@@ -96,14 +93,10 @@ service FileActions {
 	rpc Details(Details_Request) returns (Details_Response) {}
 }
 
-message Chunk {
-    bytes binary = 1;
-    int64 size = 2;
-}
-
 message Upload_Request {
     string guid = 1; // File guid where to store the chunk
-    Chunk blob = 2; // Binary blob of the file
+	string file_name = 2; // Original file name
+    bytes binary = 3; // Binary blob of the file
 }
 message Upload_Response {
     FileInfo info = 1; // Information about the filesystem item created
@@ -113,7 +106,7 @@ message Download_Request {
     string guid = 1; // File guid to download
 }
 message Download_Response {
-    Chunk blob = 1; // Binary blob of the file
+    bytes binary = 1; // Binary blob of the file
 }
 
 message Details_Request {
