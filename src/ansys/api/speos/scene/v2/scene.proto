@@ -188,25 +188,16 @@ message Scene
 		}
 		message ObserverProperties{
 			message Locations {
-				double hstart = 1;	//Horizontal start value for sensors positions
-				double hend = 2;	//Horizontal end value for sensors positions
-				uint32 hsampling = 3; //Horizontal number of sensors
-				double vstart = 4;	//Vertical start value for sensors positions
-				double vend = 5;	//Vertical end value for sensors positions
-				uint32 vsampling = 6;	//Vertical number of sensors
-			}
-			message Size{
-				double hstart = 1;	//Horizontal sensors size start
-				double hend = 2;	//Horizontal sensors size end
-				uint32 hsampling = 3;	//Horizontal sensors pixel number
-				double vstart = 4;	//Vertical sensors size start
-				double vend = 5;	//Vertical sensors size end
-				uint32 vsampling = 6;	//Vertical sensors pixel number
+				double h_start = 1;	//Horizontal start value for sensors positions (in deg)
+				double h_end = 2;	//Horizontal end value for sensors positions (in deg)
+				uint32 h_sampling = 3; //Horizontal number of sensors
+				double v_start = 4;	//Vertical start value for sensors positions (in deg)
+				double v_end = 5;	//Vertical end value for sensors positions (in deg)
+				uint32 v_sampling = 6;	//Vertical number of sensors
 			}
 			
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			Locations locations = 2; // Locations of the sensors
-			Size size = 3;	// Size of the sensors
+			Locations sensors_locations = 2; // Locations of the sensors on the sphere
 			double distance = 4; //radius of sphere on which the sensors wuill placed
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 5; // Layer type : None
@@ -217,7 +208,12 @@ message Scene
 		}
 		message ImmersiveProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			repeated bool faces = 2; // faces to include or exlude : front, back, top, bottom, left, right
+			bool exclude_front_face;	// Exclude front face
+			bool exclude_back_face;		// Exclude back face
+			bool exclude_left_face;		// Exclude left face
+			bool exclude_right_face;	// Exclude right face
+			bool exclude_top_face;		// Exclude top face
+			bool exclude_bottom_face;	// Exclude bottom face
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 3; // Layer type : None
 				LayerTypeSource layer_type_source = 4; // Layer type : Source

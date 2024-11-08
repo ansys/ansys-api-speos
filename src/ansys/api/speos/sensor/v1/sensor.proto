@@ -44,16 +44,19 @@ message SensorTemplate {
 		double integration_angle = 7; // Integration angle, in degree
 		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 8; // Dimensions of the sensor
 	}
+	message InterocularDistance
+	{
+		double interocular_distance = 1; // distance between viewpoints in mm. To use, make sure that front direction is horizontal and top vertical
+	}
+
 	message Observer{
 		Radiance radiance = 1;
-		bool stereo = 2;
-		double interocular_distance = 3; // will only be used when stereo is true, should be in mm
+		InterocularDistance interocular_distance = 2;
 
 	}
 	message Immersive {
 		uint32 sampling = 1;
-		bool stereo = 2; // true to define an interocular distance, false otherwise. When in stereo make sure that front direction is horizontal and top vertical
-		double interocular_distance = 3; // will only be used when stereo is true, should be in mm
+		InterocularDistance interocular_distance = 2;
 		double integration_angle = 4; // integration angle in degrees for direct simulations
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 5; // Spectral excursion to use for simulation
 	}
