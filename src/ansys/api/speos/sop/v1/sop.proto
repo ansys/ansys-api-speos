@@ -36,8 +36,26 @@ message SOPTemplate {
 	}
 	// Activate texture
 	message Texture {
-		optional string bitmap_file_uri = 8; // absolute file path to bitmap 
-		optional string normalmap_file_uri = 9; // absolute file path to normalmap 
+		Image image = 1;
+		NormalMap normal_map = 2;
+
+		message Image {
+			string bitmap_file_uri = 1; // Bitmap
+		}
+		message NormalMap {
+			oneof type {
+				FromImage from_image = 1;
+				FromNormalMap from_normal_map = 2;
+			}
+			float roughness = 5;
+
+			message FromImage {
+				string bitmap_file_uri = 1; // Bitmap used to build normal map.
+			}
+			message FromNormalMap {
+				string normal_map_file_uri = 1; // Normal map file.
+			}
+		}
 	}
 
 	string name = 1; // SOPTemplate name
