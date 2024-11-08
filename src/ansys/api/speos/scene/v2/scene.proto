@@ -208,15 +208,15 @@ message Scene
 		}
 		message ImmersiveProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			bool exclude_front_face;	// Exclude front face
-			bool exclude_back_face;		// Exclude back face
-			bool exclude_left_face;		// Exclude left face
-			bool exclude_right_face;	// Exclude right face
-			bool exclude_top_face;		// Exclude top face
-			bool exclude_bottom_face;	// Exclude bottom face
+			bool exclude_front_face = 2;	// Exclude front face
+			bool exclude_back_face = 3;		// Exclude back face
+			bool exclude_left_face = 4;		// Exclude left face
+			bool exclude_right_face = 5;	// Exclude right face
+			bool exclude_top_face = 6;		// Exclude top face
+			bool exclude_bottom_face = 7;	// Exclude bottom face
 			oneof layer_type {
-				LayerTypeNone layer_type_none = 3; // Layer type : None
-				LayerTypeSource layer_type_source = 4; // Layer type : Source
+				LayerTypeNone layer_type_none = 8; // Layer type : None
+				LayerTypeSource layer_type_source = 9; // Layer type : Source
 			}
 		}
 
