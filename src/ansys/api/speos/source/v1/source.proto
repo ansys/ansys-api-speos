@@ -101,25 +101,41 @@ message SourceTemplate {
 	}
 
 	// color space can be used for both ambient sources and display sources
-	message ColorSpace {
-		enum ColorSpaceType {
-			sRGB = 0; // standard and most commonly used model
-			AdobeRGB = 1; // larger gamut
-			UserDefinedRGB = 2; 
-		}
-		ColorSpaceType color_space_type = 1;
+	message PredefinedWhitePoint {
+		WhitePointType white_point_type = 1; // pre-defined white point type
+
 		enum WhitePointType {
 			C = 0; // average daylight illuminant
 			D50 = 1; // natural horizon light
 			D65 = 2; // standard daylight illuminant
 			E = 3; // illuminant that gives equal weight to all wavelengths
-			UserDefined = 4;
 		}
-		WhitePointType white_point_type = 2;
-		repeated double white_point = 3; // X and Y coordinates of the white point. Only necessary when type is UserDefined
-		string red_spectrum_uri = 4; // Only necessary when type is UserDefined
-		string green_spectrum_uri = 5; // Only necessary when type is UserDefined
-		string blue_spectrum_uri = 6; // Only necessary when type is UserDefined
+	}
+
+	message UserDefinedWhitePoint { 
+		repeated double white_point = 1; // X and Y coordinates of the white point. 
+	}
+
+	message UserDefinedRGBSpace {
+
+		oneof White_point_type {
+						PredefinedWhitePoint pre_defined_white_point = 1; // pre-defined white point
+						UserDefinedWhitePoint user_defined_white_point = 2; //custom Y and X white point coordinates
+					}
+
+		string red_spectrum_guid = 3;  // red Spectrum guid in spectrum manager
+		string green_spectrum_guid = 4;  //green Spectrum guid in spectrum manager
+		string blue_spectrum_guid = 5;  //blue Spectrum guid in spectrum manager
+	}
+
+	message PredefinedColorSpace { 
+
+		ColorSpaceType color_space_type = 1;  // pre-defined color space type
+
+		enum ColorSpaceType {
+			sRGB = 0; // standard and most commonly used model
+			AdobeRGB = 1; // larger gamut
+		}
 	}
 
 	message Ambient {
@@ -170,7 +186,10 @@ message SourceTemplate {
 			message EnvironmentMap {
 				double luminance = 1; // Luminance in cd per squared meter
 				string image_uri = 2; // image file or HDRI. HDRIs have relative luminance values, so the lumiance value will be applied to the (1,1,1) pixels and all other colors will be defined relatively
-				ColorSpace color_space = 3;
+				oneof color_space {
+					PredefinedColorSpace predefined_color_space = 3; // pre-defined color space
+					UserDefinedRGBSpace user_defined_rgb_space = 4; // custom RGB space with either pre-defined or custom white point
+				}
 			}
 	}
 
