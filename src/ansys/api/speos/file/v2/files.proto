@@ -5,12 +5,6 @@ import "google/protobuf/timestamp.proto";
 
 package ansys.api.speos.file.v2;
 
-// Enumerates all types of files
-enum Types {
-	Unknown = 0; // Unknown file
-	RayFile = 1; // Any files that represent a ray file
-}
-
 // Informations on a specific file
 message FileInfo
 {
@@ -24,7 +18,6 @@ message FileInfo
 	string creation_date_str = 12; // Date of latest upload [read-only]
 	uint64 size = 13; // Size of the file (octets) [read-only]
 	string sha512 = 14; // SHA512 hash file of the file [read-only]
-	Types type = 15; // Type of the file [read-only]
 }
 
 //////////
@@ -93,8 +86,6 @@ service FileActions {
     rpc Upload(stream Upload_Request) returns (Upload_Response) {}
     // Download a file
     rpc Download(Download_Request) returns (stream Download_Response) {}
-	// Details on a File
-	rpc Details(Details_Request) returns (Details_Response) {}
 }
 
 message Upload_Request {
@@ -111,23 +102,4 @@ message Download_Request {
 }
 message Download_Response {
     bytes binary = 1; // Binary blob of the file
-}
-
-message Details_Request {
-    string guid = 1; // File guid to download
-}
-message Details_Response {
-	FileInfo info = 1; // Information about the filesystem item
-	oneof source {
-		RayFileInfos ray_file_infos = 10;
-		// TODO...
-	}
-
-	message RayFileInfos {
-		bool is_spectral = 1;
-		double flux = 2;
-		bool is_flux_in_Watt = 3;
-		bool is_flux_in_Lumen = 4;
-		bool is_optimized = 5;
-	}
 }
