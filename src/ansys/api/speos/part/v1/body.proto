@@ -26,7 +26,8 @@ service BodiesManager {
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
 	// List all bodies in manager
 	rpc List(List_Request) returns (List_Response) {}
-	// read the whole database, use with field_mask
+	// Read the whole database, use a field mask in message grpc request metadata (key = read_masks) to only get needed fields.
+	// i.e.: bodies.*.name -> would only return the names of the bodies in the message
 	rpc ReadAll(ReadAll_Request) returns (ReadAll_Response){}
 }
 
