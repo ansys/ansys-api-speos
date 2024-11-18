@@ -3,9 +3,6 @@ syntax = "proto3";
 
 package ansys.api.speos.body.v1;
 
-//////////
-// CRUD //
-//////////
 // Body definition made of faces
 message Body
 {
@@ -79,11 +76,4 @@ message ReadAll_Request{
 // Response to read all bodies
 message ReadAll_Response{
 	map<string, Body> bodies = 1; // Read bodies with their Guids
-}
-
-/////////////
-// ACTIONS //
-/////////////
-// Actions available on a body
-service BodyActions {
 }
