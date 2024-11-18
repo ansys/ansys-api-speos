@@ -35,7 +35,7 @@ message InverseMCSimulationTemplate {
 	uint32 number_of_gathering_rays_per_source = 8; // This number pilots the number of shadow rays to target at each source.
 	uint32 maximum_gathering_error = 9; // This value defines the level below which a source can be neglected. 0, the default value means that no approximation will be done. 
 	bool fast_transmission_gathering = 10; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
-	string ambient_material_uri = 11; To select an ambient material *.material  
+	string ambient_material_uri = 11; // To select an ambient material *.material  
 }
 
 // Simulation template with its basic characteristics
