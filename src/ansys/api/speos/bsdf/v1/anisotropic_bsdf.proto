@@ -141,7 +141,7 @@ message SpectrumImport
 {
 	double incidence_angle = 1;		// radians in [0, pi/2]
 	double anisotropy_angle = 2;	// radians in [0, 2*pi]
-	string file_name = 3;
+	string file_name = 3; // *.spectrum
 }
 
 message ConoscopicMap
