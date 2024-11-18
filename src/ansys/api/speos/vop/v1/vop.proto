@@ -49,7 +49,7 @@ message VOPTemplate {
 
 // Request to create a VOPTemplate in VOPTemplatesManager
 message Create_Request {
-	VOPTemplate vop_template = 1; 
+	VOPTemplate vop_template = 1; // VOPTemplate containing its basic characteristics
 }
 message Create_Response {
 	string guid = 1; // Guid of the VOPTemplate created in VOPTemplatesManager
