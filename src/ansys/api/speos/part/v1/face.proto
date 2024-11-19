@@ -126,9 +126,22 @@ message Upload_Response {
 message Download_Request {
 	string guid = 1; // Guid of a FacesManager element
 }
+message ReserveFace_Response{
+	repeated string guid = 1; // guids of the created faces, in the order sent
+}
+
+message ReserveFace_Request{
+	repeated Chunk.FaceHeader face = 1; // repeated face headers
+}
 
 // Actions available on a face
 service FaceActions {
+	// allocate faces with their headers before filling their geometry with Upload.
+	// this allows to then stream each faces content separately,
+	// and is faster than FaceManager.Create when there are a huge amount of faces
+	// it is a stream as I expect that the metadata will still take a huge chunk of data
+	// We reuse FaceHeader here, but since the face are to be allocated guid is expected to be empty.
+	rpc ReserveFaces(stream ReserveFace_Request) returns(ReserveFace_Response){}
 	// Update a face via streaming
 	rpc Upload(stream Chunk) returns (Upload_Response) {}
 	// Read a face via streaming
