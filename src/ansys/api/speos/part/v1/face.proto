@@ -127,11 +127,11 @@ message Download_Request {
 	string guid = 1; // Guid of a FacesManager element
 }
 message ReserveFace_Response{
-	repeated string guid = 1; // guids of the created faces, in the order sent
+	repeated string guids = 1; // guids of the created faces, in the order sent
 }
 
 message ReserveFace_Request{
-	repeated Chunk.FaceHeader face = 1; // repeated face headers
+	repeated Face faces = 1; // repeated face headers
 }
 
 // Actions available on a face
