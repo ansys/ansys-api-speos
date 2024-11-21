@@ -141,7 +141,7 @@ service FaceActions {
 	// and is faster than FaceManager.Create when there are a huge amount of faces
 	// it is a stream as I expect that the metadata will still take a huge chunk of data
 	// We reuse FaceHeader here, but since the face are to be allocated guid is expected to be empty.
-	rpc ReserveFaces(stream ReserveFace_Request) returns(ReserveFace_Response){}
+	rpc ReserveFaces(stream ReserveFace_Request) returns(stream ReserveFace_Response){}
 	// Update a face via streaming
 	rpc Upload(stream Chunk) returns (Upload_Response) {}
 	// Read a face via streaming
