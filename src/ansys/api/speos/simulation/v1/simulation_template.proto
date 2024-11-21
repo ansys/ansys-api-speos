@@ -26,7 +26,7 @@ message DirectMCSimulationTemplate {
 message InverseMCSimulationTemplate {
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
 	int32 max_impact = 3; // To define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops. 
-	Weight weight = 4; // To activate Weight 
+	Weight weight = 4; // To activate Weight The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
 	EnumColorimetricStandard colorimetric_standard = 5; // To define the Colorimetric Standard 
 	bool dispersion = 6; // To activate the dispersion calculation. 
 	bool splitting = 7; // To split each propagated ray into several paths at their first impact after leaving the observer point.
