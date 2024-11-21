@@ -12,8 +12,6 @@ enum EnumColorimetricStandard {
 	CIE_1931 = 0; // 2 degrees CIE Standard Colorimetric Observer Data.
 	CIE_1964 = 1; // 10 degrees CIE Standard Colorimetric Observer Data.
 }
-// Online documentation 
-https://ansyshelp.ansys.com/account/secured?returnurl=/Views/Secured/corp/v242/en/Optis_UG_ASP/Optis/UG_ASP/simulations_179503.html
 
 message DirectMCSimulationTemplate {
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent
