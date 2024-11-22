@@ -3,11 +3,6 @@ syntax = "proto3";
 
 package ansys.api.speos.part.v1;
 
-
-//////////
-// CRUD //
-//////////
-
 // Part definition, a Part is related to a CAD part file (scdocx, prt, ...) made of meshed bodies and faces
 message Part
 {
@@ -92,11 +87,6 @@ message ReadAll_Request{
 message ReadAll_Response{
 	map<string, Part> parts = 1; // Read parts with their Guids
 }
-
-
-/////////////
-// ACTIONS //
-/////////////
 
 // Actions available on a Part
 service PartActions {
