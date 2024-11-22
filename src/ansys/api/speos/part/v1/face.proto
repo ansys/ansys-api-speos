@@ -126,6 +126,7 @@ message Upload_Response {
 message Download_Request {
 	string guid = 1; // Guid of a FacesManager element
 	repeated string guids = 2; // Guids of FacesManager elements to download.
+	optional bool only_face_header = 3; // If this optional boolean is set to true, only the FaceHeader will be returned in answer stream.
 }
 
 // Actions available on a face
