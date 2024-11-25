@@ -3,10 +3,6 @@ syntax = "proto3";
 
 package ansys.api.speos.face.v1;
 
-//////////
-// CRUD //
-//////////
-
 // Face definition with meshing information
 message Face
 {
@@ -84,9 +80,6 @@ message List_Response {
 	repeated string guids = 1; // Guids of all faces
 }
 
-/////////////
-// ACTIONS //
-/////////////
 // Chunk of a Face
 message Chunk {
 	oneof data {
