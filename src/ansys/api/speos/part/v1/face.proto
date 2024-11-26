@@ -119,9 +119,19 @@ message Upload_Response {
 message Download_Request {
 	string guid = 1; // Guid of a FacesManager element
 }
+message ReserveFace_Response{
+	repeated string guids = 1; // guids of the created faces, in the order sent
+}
+
+message ReserveFace_Request{
+	repeated Face faces = 1; // repeated face headers
+}
 
 // Actions available on a face
 service FaceActions {
+	// allocate faces before uploading them.
+	// to have maximum benefit, only the name, description and metadata should be filled
+	rpc ReserveFaces(stream ReserveFace_Request) returns(stream ReserveFace_Response){}
 	// Update a face via streaming
 	rpc Upload(stream Chunk) returns (Upload_Response) {}
 	// Read a face via streaming
