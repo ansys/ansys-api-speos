@@ -136,11 +136,8 @@ message ReserveFace_Request{
 
 // Actions available on a face
 service FaceActions {
-	// allocate faces with their headers before filling their geometry with Upload.
-	// this allows to then stream each faces content separately,
-	// and is faster than FaceManager.Create when there are a huge amount of faces
-	// it is a stream as I expect that the metadata will still take a huge chunk of data
-	// We reuse FaceHeader here, but since the face are to be allocated guid is expected to be empty.
+	// allocate faces before uploading them.
+	// to have maximum benefit, only the name, description and metadata should be filled
 	rpc ReserveFaces(stream ReserveFace_Request) returns(stream ReserveFace_Response){}
 	// Update a face via streaming
 	rpc Upload(stream Chunk) returns (Upload_Response) {}
