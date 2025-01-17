@@ -3,9 +3,6 @@ syntax = "proto3";
 
 package ansys.api.speos.body.v1;
 
-//////////
-// CRUD //
-//////////
 // Body definition made of faces
 message Body
 {
@@ -26,6 +23,9 @@ service BodiesManager {
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
 	// List all bodies in manager
 	rpc List(List_Request) returns (List_Response) {}
+	// Read the whole database, use a field mask in message grpc request metadata (key = read_masks) to only get needed fields.
+	// i.e.: bodies.*.name -> would only return the names of the bodies in the message
+	rpc ReadAll(ReadAll_Request) returns (ReadAll_Response){}
 }
 
 
@@ -70,9 +70,14 @@ message List_Response {
 	repeated string guids = 1; // Guids of all bodies
 }
 
-/////////////
-// ACTIONS //
-/////////////
+// Request to read all bodies
+message ReadAll_Request{
+}
+// Response to read all bodies
+message ReadAll_Response{
+	map<string, Body> bodies = 1; // Read bodies with their Guids
+}
+
 // Actions available on a body
 service BodyActions {
 }
