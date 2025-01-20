@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+env:
+  MAIN_PYTHON_VERSION: '3.10'
+
 jobs:
   build:
     name: Build package
