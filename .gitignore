@@ -40,3 +40,4 @@ MANIFEST
 # virtual environment
 .venv
 venv
+/.vs
