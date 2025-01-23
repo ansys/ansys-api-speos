@@ -97,12 +97,6 @@ message Scene
 			IntensityProperties intensity_properties = 3;
 		}
 
-		// future break scene v2 to be reused for surface sources (see above)
-		message GeoPath {
-			string geo_path = 1; // Geometry that will use this surfacic source ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
-			optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
-		}
-
 		message RayFileProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
@@ -115,7 +109,6 @@ message Scene
 		oneof properties {
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
-
 			RayFileProperties rayfile_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type RayFile
 		}
 	}
