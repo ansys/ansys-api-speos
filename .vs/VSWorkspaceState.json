@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\ansys",
+    "\\src\\ansys\\api",
+    "\\src\\ansys\\api\\speos",
+    "\\src\\ansys\\api\\speos\\scene",
+    "\\src\\ansys\\api\\speos\\scene\\v1",
+    "\\src\\ansys\\api\\speos\\scene\\v2"
+  ],
+  "SelectedNode": "\\src\\ansys\\api\\speos\\scene\\v1\\scene.proto",
+  "PreviewInSolutionExplorer": false
+}

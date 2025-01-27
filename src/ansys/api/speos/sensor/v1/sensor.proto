@@ -53,9 +53,9 @@ message SensorTemplate {
 
 		// Integration made orthogonally with the sensor plane.
 		message IntegrationTypePlanar {
-			bool reflection = 1;  
-			bool transmission = 2; 
-			bool absorption = 3;
+			bool reflection = 1;  // Reflection is taking into account for the integrating faces of the sensor.
+			bool transmission = 2; // Transmission is taking into account for the integrating faces of the sensor.
+			bool absorption = 3; // Absorption is taking into account for the integrating faces of the sensor.
 		}
 
 		message IntegrationTypeRadial {}
@@ -82,9 +82,10 @@ message SensorTemplate {
 		    double wavelength_end = 2; // (mm)
 			IntegrationType integration_type = 3; // will determine the integration type of the sensor between radial and planar
 
+			// Defines how the illuminance is integrated in the sensor
 			enum IntegrationType {
-			    Radial = 0;
-			    Planar = 1;
+			    Radial = 0; // Integration type : Radial
+			    Planar = 1; // Integration type : Planar
 		    }
 		}
 	}
