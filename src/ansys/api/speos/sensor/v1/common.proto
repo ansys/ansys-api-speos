@@ -44,6 +44,22 @@ message SensorTypeSpectral {
 	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
 }
 
+// Dimensions of the non conoscopic intensity sensor
+message IntensityDimensions {
+	double x_start = 1; // Start angle along X direction (deg).
+	double x_end = 2; // End angle along X direction (deg).
+	uint32 x_sampling = 3; // Number of pixels along X direction.
+	double y_start = 4; // Start angle along Y direction (deg).
+	double y_end = 5; // End angle along Y direction (deg).
+	uint32 y_sampling = 6; // Number of pixels along Y direction.
+}
+
+// Dimensions of the conoscopic intensity sensor
+message ConoscopicIntensityDimensions {
+	double theta_max = 1; // Maximum theta angle (deg).	
+	uint32 sampling = 2; // Number of pixels along Theta.	
+}
+
 // The sensor considers X direction as meridian and Y direction as parallel.
 message IntensityOrientationXAsMeridian {
 	IntensityDimensions intensity_dimensions = 1; // Dimensions for non conoscopic sensor
@@ -75,22 +91,6 @@ message SensorNearField {
 // Intensity result viewing direction
 message FromSourceLookingAtSensor {}
 message FromSensorLookingAtSource {}
-
-// Dimensions of the non conoscopic intensity sensor
-message IntensityDimensions {
-	double x_start = 1; // Start angle along X direction (deg).
-	double x_end = 2; // End angle along X direction (deg).
-	uint32 x_sampling = 3; // Number of pixels along X direction.
-	double y_start = 4; // Start angle along Y direction (deg).
-	double y_end = 5; // End angle along Y direction (deg).
-	uint32 y_sampling = 6; // Number of pixels along Y direction.
-}
-
-// Dimensions of the conoscopic intensity sensor
-message ConoscopicIntensityDimensions {
-	double theta_max = 1; // Maximum theta angle (deg).	
-	uint32 sampling = 2; // Number of pixels along Theta.	
-}
 
 // Dimensions of the conoscopic intensity sensor
 message PolarIntensityDimensions {	
