@@ -45,11 +45,17 @@ message SensorTypeSpectral {
 }
 
 // The sensor considers X direction as meridian and Y direction as parallel.
-message IntensityOrientationXAsMeridian {}
+message IntensityOrientationXAsMeridian {
+	IntensityDimensions intensity_dimensions = 1; // Dimensions for non conoscopic sensor
+}
 // The sensor considers X direction as parallel and Y direction as meridian.
-message IntensityOrientationXAsParallel {}
+message IntensityOrientationXAsParallel {
+	IntensityDimensions intensity_dimensions = 1; // Dimensions for non conoscopic sensor
+}
 // The sensor considers conoscopic orientation.
-message IntensityOrientationConoscopic {}
+message IntensityOrientationConoscopic {
+	ConoscopicIntensityDimensions conoscopic_intensity_dimensions = 1; // Dimensions for non conoscopic sensor
+}
 
 // The polar intensity sensor generates an Iesna A type file.
 message PolarIntensityIesnaA {}

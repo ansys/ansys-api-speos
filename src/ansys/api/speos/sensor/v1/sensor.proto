@@ -56,10 +56,6 @@ message SensorTemplate {
 			ansys.api.speos.sensor.v1.IntensityOrientationXAsParallel intensity_orientation_x_as_parallel = 7; // Orientation type: X As Parallel, Y as Meridian
 			ansys.api.speos.sensor.v1.IntensityOrientationConoscopic intensity_orientation_conoscopic = 8; // Orientation type: Conoscopic
 		}
-		oneof dimensions {
-			ansys.api.speos.sensor.v1.IntensityDimensions intensity_dimensions = 9; // Dimensions for non conoscopic sensor
-			ansys.api.speos.sensor.v1.ConoscopicIntensityDimensions conoscopic_dimensions = 13; // Dimensions for conoscopic sensor
-		}
 		
 		ansys.api.speos.sensor.v1.SensorNearField near_field = 10; // Activates Near field. When not set, near field is disabled for the sensor
 
@@ -75,8 +71,10 @@ message SensorTemplate {
 			ansys.api.speos.sensor.v1.PolarIntensityIesnaC iesna_c = 3; // Sensor format: Iesna C type
 			ansys.api.speos.sensor.v1.PolarIntensityEulumdat eulumdat = 4; // Sensor format: Eulumdat
 		}
-		ansys.api.speos.sensor.v1.PolarIntensityDimensions dimensions = 5; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file
-		string adaptive_sampling_uri = 6; // Path to the adaptive sampling file
+		oneof sampling {
+			ansys.api.speos.sensor.v1.PolarIntensityDimensions dimensions = 5; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file
+			string adaptive_sampling_uri = 6; // Path to the adaptive sampling file
+		}
 		oneof field {
 			SensorFarField far_field = 8; // Far field, only used when near field is disabled for the sensor. It permits to set the integration angle.
 			ansys.api.speos.sensor.v1.SensorNearField near_field = 7; // Near field parameters: cell distance and diameter. Integration angle needs to be calculated from these parameters.
