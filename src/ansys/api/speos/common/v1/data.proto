@@ -57,6 +57,8 @@ enum Unit {
 	radians = 124; // rad
 	degrees = 125; // deg
 	steradians = 126; // sr
+
+	ray_per_pixel = 127; // rays/pixel
 }
 
 // magnitudes in Speos data
@@ -84,6 +86,7 @@ enum Magnitude {
 	ratio = 27; // magnitude ratio
 
 	color = 37; // color
+	ray_sampling = 38; // rays sampling
 }
 
 // arrays values of doubles

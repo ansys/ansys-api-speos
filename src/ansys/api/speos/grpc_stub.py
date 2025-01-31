@@ -1,4 +1,4 @@
-# (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+# (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 """Module to handle gRPC stub.
 
 This module allows to get gRPC stub
