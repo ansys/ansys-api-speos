@@ -1,4 +1,4 @@
-# (c) 2024 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+# (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 """Installation file for the ansys-api-speos package"""
 
 import os
@@ -16,8 +16,11 @@ with open(os.path.join(HERE, "README.md"), encoding="utf-8") as f:
 product = "speos"
 library = ""
 package_info = ["ansys", "api", product, library, ""]
-with open(os.path.join(HERE, "src", "ansys", "api", product, library, "VERSION"), encoding="utf-8") as f:
-    version = f.read().strip()
+with open(os.path.join(HERE, "src", "ansys", "api", product, library, "_version.py"), encoding="utf-8") as f:
+    # Parse the version from the _version.py file
+    version_file_vars = {}
+    exec(f.read(), version_file_vars)
+    version = version_file_vars["__version__"]
 
 package_name = "ansys-api-speos"
 dot_package_name = '.'.join(filter(None, package_info))
@@ -40,7 +43,7 @@ if __name__ == "__main__":
         package_dir = {"": "src"},
         packages=setuptools.find_namespace_packages("src", include=("ansys.*",)),
         package_data={
-            "": ["*.proto", "*.pyi", "py.typed", "VERSION"],
+            "": ["*.proto", "*.pyi", "py.typed", "_version.py"],
         },
         entry_points={
             "ansys.tools.protoc_helper.proto_provider": [

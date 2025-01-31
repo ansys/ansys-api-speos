@@ -26,15 +26,15 @@ message SensorDimensions {
 	uint32 y_sampling = 6; // Corresponds to the number of pixels of the XMP map.
 }
 
-// The sensor considers the visible spectrum and gets the results in lm/m2 or lx.
+// The sensor considers the visible spectrum and gets the results.
 message SensorTypePhotometric {}
-// Color results without any spectral data or layer separation (in lx or W//m2).
+// Color results without any spectral data or layer separation.
 message SensorTypeColorimetric {
 	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
 }
-// The sensor considers the entire spectrum and gets the results in W/m2.
+// The sensor considers the entire spectrum and gets the results.
 message SensorTypeRadiometric {}
-// Color results and spectral data separated by wavelength (in lx or W/m2).
+// Color results and spectral data separated by wavelength.
 message SensorTypeSpectral {
 	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
 }
