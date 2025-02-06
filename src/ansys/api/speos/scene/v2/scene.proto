@@ -125,7 +125,7 @@ message Scene
 				}
 			}
 			message UniformAmbientProperties {
-				SunAxisSystem sun_axis_system = 1;
+				ManualSun manual_sun = 1; // sets the sun position and direction from scene
 			}
 			message CieOvercastProperties {}
 			message CieGeneralProperties {
