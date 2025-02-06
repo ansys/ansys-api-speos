@@ -104,6 +104,11 @@ message Scene
 				EnvironmentMapProperties environment_map_properties = 15;
 			}
 
+			message ManualSun {
+				repeated double sun_direction = 1; // (X Y Z) direction of the sun
+				bool reverse_sun = 2;  // optional - if not set or false : normal is not reversed
+			}
+			
 			message SunAxisSystem {
 				oneof sun_type {
 					AutomaticSun automatic_sun = 1; // calculates the sun position according to the north direction and time zone location set
@@ -118,10 +123,6 @@ message Scene
 					int32 minute = 6;
 					float longitude = 7;
 					float latitude = 8;
-				}
-				message ManualSun {
-					repeated double sun_direction = 1; // (X Y Z) direction of the sun
-					bool reverse_sun = 2;  // optional - if not set or false : normal is not reversed
 				}
 			}
 			message UniformAmbientProperties {
