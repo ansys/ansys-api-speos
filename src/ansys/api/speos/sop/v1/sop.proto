@@ -34,6 +34,7 @@ message SOPTemplate {
 		string plugin_sop_file_uri = 1; // *.sop plug-in
 		string parameters_file_uri = 2; // parameters file needed for the plug-in
 	}
+
 	// Activate texture
 	message Texture {
 		Image image = 1;
@@ -41,13 +42,18 @@ message SOPTemplate {
 
 		message Image {
 			string bitmap_file_uri = 1; // Bitmap
+			bool repeat_along_u = 2; // Activate/deactivate the repeatability of the texture image on U axe.
+			bool repeat_along_v = 3; // Activate/deactivate the repeatability of the texture image on V axe.
 		}
+
 		message NormalMap {
 			oneof type {
 				FromImage from_image = 1;
 				FromNormalMap from_normal_map = 2;
 			}
 			float roughness = 5;
+			bool repeat_along_u = 6; // Activate/deactivate the repeatability of the texture normal map on U axe.
+			bool repeat_along_v = 7; // Activate/deactivate the repeatability of the texture normal map on V axe.
 
 			message FromImage {
 				string bitmap_file_uri = 1; // Bitmap used to build normal map.
