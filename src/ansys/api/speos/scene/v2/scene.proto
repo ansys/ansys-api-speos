@@ -31,9 +31,9 @@ message Scene
 	// Instance of a textured material to apply on geometries of the scene
 	message MaterialTexturedInstance
 	{
-		message MultiTexture
+		message Texture
 		{
-			repeated Layer layers = 1; // List of texture layers
+			repeated Layer layers = 1; // List of texture layers (also called multi texture in case of several layers)
 
 			message Layer 
 			{
@@ -51,7 +51,7 @@ message Scene
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
-		MultiTexture texture = 11; // Multi layer texture
+		Texture texture = 11; // Surface optical property to instantiate using texture (can be composed of several layers)
 		GeoPaths geometries = 12; // Geometries that will use this material
 	}
 
