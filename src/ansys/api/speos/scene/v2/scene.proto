@@ -35,15 +35,60 @@ message Scene
 		{
 			repeated Layer layers = 1; // List of texture layers (also called multi texture in case of several layers)
 
+			message MappingOperator {
+				oneof type {
+					Planar planar = 1;
+					Cubic cubic = 2;
+					Spherical spherical = 3;
+					Cylindrical cylindrical = 4;
+				}
+
+				repeated double axis_system = 10; // Reference for the mapping operator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+				double u_offset = 11; // Shift on U direction (mm)
+				double v_offset = 12; // Shift on V direction (mm)
+				double u_scale_factor = 13; // Scale factor on U dimension
+				double v_scale_factor = 14; // Scale factor on V dimension
+				double u_length = 15; // Dimension on U direction (mm)
+				double v_length = 16; // Dimension on V direction (mm)
+				double rotation = 17; // Rotation of UVs (degree) ]-360, 360[
+
+				message Planar {}
+				message Cubic {}
+				message Spherical {
+					double sphere_perimeter = 1;
+				}
+				message Cylindrical {
+					double base_perimeter = 1;
+				}
+			}
+
 			message Layer 
 			{
 				string sop_guid = 1; // Guid of the surface optical property to bind to geometry
-				optional uint32 colormap_channel_id = 2; // optional - texture coordinates channel for color map
-				optional uint32 normalmap_channel_id = 3; // optional - texture coordinates channel for normal map 
-				//optional uint32 normalmap_tangent_channel_id = 4; // optional - texture coordinates channel for tangent of normal map
-				optional uint32 anisotropymap_channel_id = 5; // optional - texture coordinates channel for anisotropy map
-				//optional uint32 anisotropymap_tangent_channel_id = 6; // optional - texture coordinates channel for tangent of anisotropy map
-				optional bool reverse_normal = 7; // optional - if not set or false : normal is not reversed.
+				ImageProperties image_properties = 2; // To be filled if the SOPTemplate/Texture contains an Image data
+				NormalMapProperties normal_map_properties = 3; // To be filled if the SOPTemplate/Texture contains a NormalMap data
+				AnisotropyMapProperties anisotropy_map_properties = 4; // To be filled if the SOPTemplate has an anisotropicbsdf as Library file uri
+
+				message ImageProperties {
+					oneof uv_map {
+						MappingOperator mapping_operator = 1;
+						uint32 channel_id = 2; // texture coordinates channel id (from Face) for color map
+					}
+				}
+				message NormalMapProperties {
+					oneof uv_map {
+						MappingOperator mapping_operator = 1;
+						uint32 channel_id = 2; // texture coordinates channel id (from Face) for normal map
+					}
+					//optional uint32 tangent_channel_id = 3; // optional - texture coordinates channel for tangent of normal map
+				}
+				message AnisotropyMapProperties {
+					oneof uv_map {
+						MappingOperator mapping_operator = 1;
+						uint32 channel_id = 2; // texture coordinates channel id (from Face) for anisotropy map
+					}
+					//optional uint32 tangent_channel_id = 3; // optional - texture coordinates channel for tangent of anisotropy map
+				}
 			}
 		}
 
