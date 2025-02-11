@@ -65,29 +65,15 @@ message Scene
 			message Layer 
 			{
 				string sop_guid = 1; // Guid of the surface optical property to bind to geometry
-				ImageProperties image_properties = 2; // To be filled if the SOPTemplate/Texture contains an Image data
-				NormalMapProperties normal_map_properties = 3; // To be filled if the SOPTemplate/Texture contains a NormalMap data
-				AnisotropyMapProperties anisotropy_map_properties = 4; // To be filled if the SOPTemplate has an anisotropicbsdf as Library file uri
+				TextureMappingInfo image_properties = 2; // To be filled if the SOPTemplate/Texture contains an Image data
+				TextureMappingInfo normal_map_properties = 3; // To be filled if the SOPTemplate/Texture contains a NormalMap data
+				TextureMappingInfo anisotropy_map_properties = 4; // To be filled if the SOPTemplate has an anisotropicbsdf as Library file uri
 
-				message ImageProperties {
+				message TextureMappingInfo {
 					oneof uv_map {
-						MappingOperator mapping_operator = 1;
-						uint32 channel_id = 2; // texture coordinates channel id (from Face) for color map
+						MappingOperator mapping_operator = 1; // Mapping operator to create UV in face's vertices infos
+						uint32 vertice_infos_index = 2; // Index in face's vertices infos where UV are stored
 					}
-				}
-				message NormalMapProperties {
-					oneof uv_map {
-						MappingOperator mapping_operator = 1;
-						uint32 channel_id = 2; // texture coordinates channel id (from Face) for normal map
-					}
-					//optional uint32 tangent_channel_id = 3; // optional - texture coordinates channel for tangent of normal map
-				}
-				message AnisotropyMapProperties {
-					oneof uv_map {
-						MappingOperator mapping_operator = 1;
-						uint32 channel_id = 2; // texture coordinates channel id (from Face) for anisotropy map
-					}
-					//optional uint32 tangent_channel_id = 3; // optional - texture coordinates channel for tangent of anisotropy map
 				}
 			}
 		}
