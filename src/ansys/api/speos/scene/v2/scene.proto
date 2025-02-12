@@ -147,12 +147,6 @@ message Scene
 			message EnvironmentMapProperties {
 				repeated double north_direction = 1;
 				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
-				GroundPlane ground = 3;
-
-				message GroundPlane{
-					repeated double ground_origin = 1; // 3D point in the geometry. HDR image is displayed on the ground plane
-					double ground_height = 2; // height of the environment shooting (unit mm)
-				}
 			}
 		}
 
@@ -281,6 +275,13 @@ message Scene
 		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) 
 	}
 
+	message GroundPlane
+	{
+		repeated double ground_origin = 1; // 3D point in the geometry. HDR image is displayed on the ground plane
+		repeated double zenith_direction = 2; // line normal to the ground or Z direction
+		double ground_height = 3; // height of the environment shooting (unit mm)
+	}
+
 	string name = 1;
 	string description = 2;
 	map<string, string> metadata = 3; // User defined metadata
@@ -292,6 +293,7 @@ message Scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
 	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
+	GroundPlane ground = 21;
 }
 
 // Manager for Scenes
