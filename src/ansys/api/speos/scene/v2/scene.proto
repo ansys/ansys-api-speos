@@ -147,8 +147,12 @@ message Scene
 			message EnvironmentMapProperties {
 				repeated double north_direction = 1;
 				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
-				repeated double ground_origin = 3; // 3D point in the geometry. HDR image is displayed on the ground plane
-				double ground_height = 4; // height of the environment shooting (unit mm)
+				GroundPlane ground = 3;
+
+				message GroundPlane{
+					repeated double ground_origin = 1; // 3D point in the geometry. HDR image is displayed on the ground plane
+					double ground_height = 2; // height of the environment shooting (unit mm)
+				}
 			}
 		}
 
