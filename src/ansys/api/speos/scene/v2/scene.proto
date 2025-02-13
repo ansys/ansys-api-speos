@@ -95,7 +95,7 @@ message Scene
 		message AmbientProperties {
 			repeated double zenith_direction = 1; // line normal to the ground or Z direction
 			bool reverse_zenith = 2;  // optional - if not set or false : normal is not reversed
-			oneof source_properties {
+			oneof source_properties { // Type of Ambient Sources
 				UniformAmbientProperties uniform_ambient_properties = 10;
 				CieOvercastProperties cie_overcast_properties = 11;
 				CieGeneralProperties cie_general_properties = 12;
@@ -105,7 +105,7 @@ message Scene
 			}
 
 			message ManualSun {
-				repeated double sun_direction = 1; // (X Y Z) direction of the sun
+				repeated double sun_direction = 1; // (X Y Z) direction to the sun
 				bool reverse_sun = 2;  // optional - if not set or false : normal is not reversed
 			}
 			
@@ -115,8 +115,8 @@ message Scene
 					ManualSun manual_sun = 2; // sets the sun position and direction from scene
 				}
 				message AutomaticSun {
-					string time_zone_uri = 1;
-					int32 year = 2;
+					string time_zone_uri = 1; 
+					int32 year = 2; 
 					int32 month = 3;
 					int32 day = 4;
 					int32 hour = 5;
@@ -130,22 +130,22 @@ message Scene
 			}
 			message CieOvercastProperties {}
 			message CieGeneralProperties {
-				repeated double north_direction = 1;
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
 				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
-				SunAxisSystem sun_axis_system = 3;
+				SunAxisSystem sun_axis_system = 3; // Set the Sun direction
 			}
 			message NaturalLightProperties {
-				repeated double north_direction = 1; 
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
 				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
-				SunAxisSystem sun_axis_system = 3;
+				SunAxisSystem sun_axis_system = 3; // Set the Sun direction
 			}
 			message UsStandardProperties {
-				repeated double north_direction = 1;
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
 				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
-				SunAxisSystem sun_axis_system = 3;
+				SunAxisSystem sun_axis_system = 3; // Set the Sun direction
 			}
 			message EnvironmentMapProperties {
-				repeated double north_direction = 1;
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
 				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
 			}
 		}
@@ -293,7 +293,7 @@ message Scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
 	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
-	GroundPlane ground = 21;
+	GroundPlane ground = 21; // Optional - Only usable when there is at least one Ambient Environment Source Template that has selected a HDR image file. 
 }
 
 // Manager for Scenes
