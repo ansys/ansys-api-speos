@@ -99,7 +99,7 @@ message Chunk {
 		string name = 2;
 		string description = 3;
 		map<string, string> metadata = 4;
-		repeated int32 sizes = 5; // total sizes for vectors: (vertices_normals_size, facets_size, vertices_data_size, facets_data_size) - vertices and normals vectors have same size, that's why it is gathered in vertices_normals_size
+		repeated int32 sizes = 5; // total sizes for vectors in Face: (vertices_normals_size, facets_size, vertices_data_size, facets_data_size) - vertices and normals vectors have same size, that's why it is gathered in vertices_normals_size
 	}
 	
 	message Vertices {
@@ -117,12 +117,14 @@ message Chunk {
 	message VerticesData {
 		bool new_layer = 1; // Boolean to express a new layer for vertices_data in the face is started.
 		string name = 2; // Identifier name (uv, temperature...)
-		repeated float data = 3; // Raw data for each vertice
+		int32 size = 3; // Total size for vector in MeshData: data_size
+		repeated float data = 4; // Raw data for each vertice
 	}
 	message FacetsData {
 		bool new_layer = 1; // Boolean to express a new layer for facets_data in the face is started.
 		string name = 2; // Identifier name (uv, temperature...)
-		repeated float data = 3; // Raw data for each facet
+		int32 size = 3; // Total size for vector in MeshData: data_size
+		repeated float data = 4; // Raw data for each facet
 	}
 }
 message Upload_Response {
