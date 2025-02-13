@@ -144,7 +144,7 @@ message SourceTemplate {
 			CieOvercast cie_overcast = 2; // generates a specific distribution for the sky according to a luminance value and CIE standard overcast model
 			CieGeneral cie_general = 3; // generates a specific distribution for the sky according to a luminance value and sky model 
 			NaturalLight natural_light = 4; // generates natural lighting based on a day time or night time model
-			UsStandard us_standard = 5;
+			UsStandard us_standard = 5; // The U.S. Standard Atmosphere Ambient Source follows a specific atmospheric model to simulate a sky radiation ranging from 280nm into ultraviolet to 4μm into infrared.
 			EnvironmentMap environment_map = 6; // creates a background using an image file
 		}
 
