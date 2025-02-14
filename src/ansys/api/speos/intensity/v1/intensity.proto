@@ -105,6 +105,7 @@ message List_Response {
 service IntensityTemplateActions {
 	// Get information about intensity library template
 	rpc GetLibraryTypeInfo(GetLibraryTypeInfo_Request) returns (GetLibraryTypeInfo_Response) {}
+	rpc GetIntensityDistribution(GetIntensityDistribution_Request) returns (GetIntensityDistribution_Response) {}
 }
 
 // Request of GetLibraryTypeInfo
@@ -115,4 +116,12 @@ message GetLibraryTypeInfo_Request {
 // Response of GetLibraryTypeInfo
 message GetLibraryTypeInfo_Response {
 	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the intensity file
+}
+
+message GetIntensityDistribution_Request {
+	string guid = 1; // Guid of the IntensityTemplate to get information about intensity file (example: flux). Only for IntensityTemplate of type Library.
+}
+
+message GetIntensityDistribution_Response {
+	repeated double point_coordinates = 1; // 
 }
