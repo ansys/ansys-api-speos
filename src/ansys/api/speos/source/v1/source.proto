@@ -34,7 +34,7 @@ message SourceTemplate {
 		Display display = 8;
 	}
 
-	// Flux messages
+	// Take flux from intensity file provided
 	message FromIntensityFile{}; 
 	message Luminous{
 		double luminous_value = 1; // Luminous flux in lumens
@@ -70,15 +70,15 @@ message SourceTemplate {
 		}
 		message ExitanceConstant{} 
 
-		// Spectrum messages
+		// Take spectrum from xmp file provided
 		message SpectrumFromXMPFile{}
 	}
 
 	message Luminaire{
 		oneof flux{ // Flux value
 			FromIntensityFile flux_from_intensity_file = 1; // Take flux from intensity file provided
-			Luminous luminous_flux = 2; // Luminous flux in lumens, must be positive
-			Radiant radiant_flux = 3; // Radiant flux in watts, must be positive
+			Luminous luminous_flux = 2; // Luminous flux in lumens, value >=0
+			Radiant radiant_flux = 3; // Radiant flux in watts, value >=0
 		}
 		string intensity_file_uri = 4; // IES or EULUMDAT format file uri 
 		string spectrum_guid = 5; // Spectrum guid in spectrum manager
@@ -88,8 +88,8 @@ message SourceTemplate {
 		string ray_file_uri = 1; // Rayfile format file uri (.ray or .tm25ray files expected)
 		oneof flux{ // Flux value
 			FromRayFile flux_from_ray_file = 2; // Take flux from ray file provided
-			Luminous luminous_flux = 3; // Luminous flux in lumens, must be positive
-			Radiant radiant_flux = 4; // Radiant flux in watts, must be positive
+			Luminous luminous_flux = 3; // Luminous flux in lumens, value >=0
+			Radiant radiant_flux = 4; // Radiant flux in watts, value >=0
 		}
 		oneof spectrum{
 			SpectrumFromRayFile spectrum_from_ray_file = 5; // Take spectrum from ray file provided
@@ -252,4 +252,5 @@ message GetRayFileInfo_Request {
 // Response of GetRayFileInfo
 message GetRayFileInfo_Response {
 	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the ray file
+	bool has_spectral_data = 2; // The ray file contains Spectrum information
 }
