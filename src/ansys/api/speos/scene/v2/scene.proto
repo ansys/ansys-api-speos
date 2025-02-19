@@ -28,8 +28,8 @@ message Scene
 		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 	}
 
-	// Instance of a textured material to apply on geometries of the scene
-	message MaterialTexturedInstance
+	// Instance of a material to apply on geometries of the scene
+	message MaterialInstance
 	{
 		message Texture
 		{
@@ -82,18 +82,11 @@ message Scene
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
-		Texture texture = 11; // Surface optical property to instantiate using texture (can be composed of several layers)
-		GeoPaths geometries = 12; // Geometries that will use this material
-	}
-
-	// Instance of a Material to apply on geometries of the scene
-	message MaterialInstance
-	{
-		string name = 1;
-		string description = 2;
-		map<string, string> metadata = 3; // User defined metadata
-		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
-		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instantiate
+		repeated string sop_guids = 11; // Deprecated - Better use sop oneof field (either sop_guid or texture)
+		oneof sop {
+			string sop_guid = 13; // Guid of the surface optical property to instantiate
+			Texture texture = 14; // Surface optical property to instantiate using texture (can be composed of several layers)
+		}
 		GeoPaths geometries = 12; // Geometries that will use this material
 	}
 
@@ -284,7 +277,6 @@ message Scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
 	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
-	repeated MaterialTexturedInstance texMaterials = 17; // The materials (volume + textures) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
 }
 
