@@ -1,4 +1,25 @@
-# (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Installation file for the ansys-api-speos package"""
 
 import os
@@ -32,13 +53,13 @@ if __name__ == "__main__":
         name=package_name,
         version=version,
         author="ANSYS, Inc.",
-        author_email='support@ansys.com',
+        author_email="pyansys.support@ansys.com",
         description=description,
         long_description=long_description,
         long_description_content_type='text/markdown',
         url=f"https://github.com/ansys/{package_name}",
         license="MIT",
-        python_requires=">=3.8",
+        python_requires=">=3.10",
         install_requires=["grpcio~=1.48", "protobuf>=3.20,<6"],
         package_dir = {"": "src"},
         packages=setuptools.find_namespace_packages("src", include=("ansys.*",)),
@@ -50,5 +71,10 @@ if __name__ == "__main__":
                 f"{dot_package_name}={dot_package_name}"
             ],
         },
-        cmdclass=CMDCLASS_OVERRIDE
+        cmdclass=CMDCLASS_OVERRIDE,
+        project_urls={
+            "Documentation": "https://github.com/ansys/ansys-api-speos/#readme",
+            "Source": "https://github.com/ansys/ansys-api-speos/",
+            "Tracker": "https://github.com/ansys/ansys-api-speos/issues/",
+        },
     )
