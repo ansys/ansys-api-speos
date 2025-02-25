@@ -189,4 +189,5 @@ message GetRayFileInfo_Request {
 // Response of GetRayFileInfo
 message GetRayFileInfo_Response {
 	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the ray file
+	bool has_spectral_data = 2; // The ray file contains Spectrum information
 }
