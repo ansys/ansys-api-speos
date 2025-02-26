@@ -10,3 +10,4 @@
 ## Individual Contributors
 
 * [Revathy Venugopal](https://github.com/Revathyvenugopal162)
+* [Sébastien Morais](https://github.com/SMoraisAnsys)
