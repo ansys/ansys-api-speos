@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "pyansys-ci-bot"
+    commit-message:
+      prefix: "build"
+    groups:
+       pip-deps:
+          patterns:
+            - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "pyansys-ci-bot"
+    commit-message:
+      prefix: "ci"
+    groups:
+       actions-deps:
+          patterns:
+            - "*"
