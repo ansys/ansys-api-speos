@@ -49,7 +49,7 @@ message Scene
 				double u_scale_factor = 13; // Scale factor on U dimension
 				double v_scale_factor = 14; // Scale factor on V dimension
 				double u_length = 15; // Dimension on U direction (mm)
-				double v_length = 16; // Dimension on V direction (mm)
+				optional double v_length = 16; // Optional - Dimension on V direction (mm). If not filled, then the image ratio is used to define v_length from u_length.
 				double rotation = 17; // Rotation of UVs (degree) ]-360, 360[
 
 				message Planar {}
@@ -67,7 +67,7 @@ message Scene
 				string sop_guid = 1; // Guid of the surface optical property to bind to geometry
 				TextureMappingInfo image_properties = 2; // To be filled if the SOPTemplate/Texture contains an Image data
 				TextureMappingInfo normal_map_properties = 3; // To be filled if the SOPTemplate/Texture contains a NormalMap data
-				TextureMappingInfo anisotropy_map_properties = 4; // To be filled if the SOPTemplate has an anisotropicbsdf as Library file uri
+				TextureMappingInfo anisotropy_map_properties = 4; // To be filled if the SOPTemplate is anisotropic (for example an anisotropicbsdf as Library file uri)
 
 				message TextureMappingInfo {
 					oneof uv_map {
