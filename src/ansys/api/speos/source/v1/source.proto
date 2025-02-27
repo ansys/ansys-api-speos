@@ -149,7 +149,7 @@ message SourceTemplate {
 
 		string image_file_uri = 1; //png,jpeg,bmp,tiff or rgb format file uri
 		SourceDimensions source_dimensions = 2; //horizontal and vertical dimensions (mm)
-		double luminous_flux = 3; //luminace in cd/m²
+		double luminous_flux = 3; //luminace in cd/m
 		optional int32 contrast_ratio = 4; //Contrast ratio, infitine if not defined
 		string intensity_guid = 5; // Intensity guid in intensity manager
 		int32 nbRays = 6; //source rays number
