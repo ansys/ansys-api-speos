@@ -61,7 +61,7 @@ jobs:
       contents: write
     steps:
       - name: "Release to the private PyPI repository"
-        uses: ansys/actions/release-pypi-private@v8.0
+        uses: ansys/actions/release-pypi-private@8.2
         with:
           library-name: "ansys-api-speos"
           twine-username: "__token__"
