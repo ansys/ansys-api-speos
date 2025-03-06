@@ -26,8 +26,8 @@ jobs:
 
       - name: Install build requirements
         run: |
-          pip install -U pip
-          pip install build
+          python -m pip install -U pip
+          python -m pip install build
 
       - name: Build
         run: python -m build
