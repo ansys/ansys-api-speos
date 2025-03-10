@@ -31,7 +31,8 @@ message Scene
 	// Instance of a Material to apply on geometries of the scene
 	message MaterialInstance
 	{
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
@@ -92,7 +93,8 @@ message Scene
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
 		}
 
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string source_guid = 10; // Guid of the SourceTemplate in SourceTemplatesManager to instantiate
@@ -183,7 +185,8 @@ message Scene
 			}
 		}
 
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string sensor_guid = 10; // Guid of the SensorTemplate in SensorTemplatesManager to instantiate
@@ -198,7 +201,8 @@ message Scene
 	// Instance of a simulation to add in the scene
 	message SimulationInstance
 	{
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string simulation_guid = 10; // Guid of the element to instantiate
@@ -209,7 +213,8 @@ message Scene
 
 	message SceneInstance
 	{
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string scene_guid = 10; // Guid of the element to instantiate
