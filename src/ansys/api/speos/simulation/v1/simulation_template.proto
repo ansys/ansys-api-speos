@@ -21,30 +21,28 @@ enum EnumColorimetricStandard {
 	CIE_1964 = 1; // 10 degrees CIE Standard Colorimetric Observer Data.
 }
 
-// The Direct Simulation is commonly used to analyze standard optical systems.
 message DirectMCSimulationTemplate {
-	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
-	int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
-	Weight weight = 4; // Activates Weight. Highly recommended to fill
-	EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
-	bool dispersion = 6; // To activate the dispersion calculation.
-	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
-	string ambient_material_uri = 8; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
+	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent
+	int32 max_impact = 3; // To define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+	Weight weight = 4; // To activate Weight. The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
+	EnumColorimetricStandard colorimetric_standard = 5; // To define the Colorimetric Standard
+	bool dispersion = 6; // To activate the dispersion calculation. 
+	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface. 
+	string ambient_material_uri = 8; // To select an ambient material *.material  
 }
 
-// The Inverse Simulation allows to reverse the light trajectory direction. 
-// The propagation is done from the sensors to the sources. It is useful when needing to analyze optical systems where the sensors are small and the sources are diffuse.
 message InverseMCSimulationTemplate {
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
-	int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
-	Weight weight = 4; // Activates Weight. Highly recommended to fill
-	EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
-	bool dispersion = 6; // To activate the dispersion calculation.
+	int32 max_impact = 3; // To define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops. 
+	Weight weight = 4; // To activate Weight. The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
+	EnumColorimetricStandard colorimetric_standard = 5; // To define the Colorimetric Standard 
+	bool dispersion = 6; // To activate the dispersion calculation. 
 	bool splitting = 7; // To split each propagated ray into several paths at their first impact after leaving the observer point.
 	uint32 number_of_gathering_rays_per_source = 8; // This number pilots the number of shadow rays to target at each source.
-	uint32 maximum_gathering_error = 9; // This value defines the level below which a source can be neglected. 0, the default value means that no approximation will be done.
+	uint32 maximum_gathering_error = 9; // Deprecated - Better use maximum_gathering_error_percentage.
+	double maximum_gathering_error_percentage = 12; // This value defines the level below which a source can be neglected. 0, the default value means that no approximation will be done. 
 	bool fast_transmission_gathering = 10; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
-	string ambient_material_uri = 11; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
+	string ambient_material_uri = 11; // To select an ambient material *.material  
 }
 
 

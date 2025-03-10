@@ -3,10 +3,6 @@ syntax = "proto3";
 
 package ansys.api.speos.face.v1;
 
-//////////
-// CRUD //
-//////////
-
 // Face definition with meshing information
 message Face
 {
@@ -84,13 +80,10 @@ message List_Response {
 	repeated string guids = 1; // Guids of all faces
 }
 
-/////////////
-// ACTIONS //
-/////////////
 // Chunk of a Face
 message Chunk {
 	oneof data {
-		FaceHeader face_header = 1; // Common face data - Field used only in first Chunk (to take advantage of vectors sizes)
+		FaceHeader face_header = 1; // Common face data - Field used only in first Chunk (to take advantage of vectors sizes) - If several faces are uploaded/downloaded, then this message determines the start of a new face streaming.
 		Vertices vertices = 2; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
 		Facets facets = 3; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
 		Normals normals = 4; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
@@ -125,10 +118,22 @@ message Upload_Response {
 }
 message Download_Request {
 	string guid = 1; // Guid of a FacesManager element
+	repeated string guids = 2; // Guids of FacesManager elements to download.
+	optional bool only_face_header = 3; // If this optional boolean is set to true, only the FaceHeader will be returned in answer stream.
+}
+message ReserveFace_Response{
+	repeated string guids = 1; // guids of the created faces, in the order sent
+}
+
+message ReserveFace_Request{
+	repeated Face faces = 1; // repeated face headers
 }
 
 // Actions available on a face
 service FaceActions {
+	// allocate faces before uploading them.
+	// to have maximum benefit, only the name, description and metadata should be filled
+	rpc ReserveFaces(stream ReserveFace_Request) returns(stream ReserveFace_Response){}
 	// Update a face via streaming
 	rpc Upload(stream Chunk) returns (Upload_Response) {}
 	// Read a face via streaming
