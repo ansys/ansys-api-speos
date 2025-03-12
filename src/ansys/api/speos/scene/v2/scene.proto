@@ -31,10 +31,17 @@ message Scene
 	// Instance of a Material to apply on geometries of the scene
 	message MaterialInstance
 	{
+		message NonHomogeneousProperties {
+			repeated double axis_system = 1; // Position of the non homogeneous vop (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+		}
+
 		string name = 1;
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
+		oneof vop_properties {
+			NonHomogeneousProperties non_homogeneous_properties = 15; // To be filled if the vop_guid corresponds to a VOPTemplate of type NonHomogeneous
+		}
 		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instantiate
 		GeoPaths geometries = 12; // Geometries that will use this material
 	}
