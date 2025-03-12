@@ -111,7 +111,7 @@ message SourceTemplate {
 		} 
 		message TemperatureField{
 			string temperature_field_uri = 1; // file with meshed data and temperature for each triangle
-			string sop_guid = 2; // SOP for geometry, must have absorption, required with temp field
+			string sop_guid = 2; // SOP for geometry, must have absorption, required with temperature field
 		}
 	}
 }
