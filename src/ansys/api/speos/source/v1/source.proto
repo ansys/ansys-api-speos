@@ -31,6 +31,7 @@ message SourceTemplate {
 		Luminaire luminaire = 3;
 		Surface surface = 4;
 		RayFile rayfile = 6;
+		Thermic thermic = 7;
 	}
 
 	// Take flux from intensity file provided
@@ -99,46 +100,20 @@ message SourceTemplate {
 		message SpectrumFromRayFile{}
 	}
 
-//	message Thermic{
-//		Flux flux = 1;
-//
-//		oneof emitance {
-//				TemperatureField temperature_field = 2;
-//				EmissiveFaces emissives_faces = 3;
-//		}
-//
-//		oneof intensity{
-//			Lambertian lambertian = 5;
-//			CosN cos = 6;
-//		}
-//
-//		// not input - used to compute flux via COptSourceThermicItf::ComputeFluxValue
-//		// and then print value in UI
-//		// So not in source template - maybe in source instance
-//		message Flux{
-//			oneof type{
-//				Luminous luminous = 1;
-//				Radiant radiant = 2;	
-//			}
-//		}
-//		message TemperatureField{
-//			string temperature_file_uri = 1;
-//			string material_guid = 2;
-//		}
-//		
-//		message EmissiveFaces{
-//			double temperature = 1;
-//		}
-//
-//		message Lambertian{}
-//		message CosN{
-//			double N = 1;
-//		}
-//
-//		// So not in source template - maybe in source instance
-//		message Luminous{};
-//		message Radiant{};
-//	}
+	message Thermic{
+		oneof exitance{
+			EmissiveFaces emissives_faces = 1; // black body with temperature on each face
+			TemperatureField temperature_field = 2; // file with meshed data and triangle temperature
+		}
+		string intensity_guid = 3; // Intensity guid in intensity manager Lambertian or cos only
+		message EmissiveFaces{
+			double temperature = 1; // the temperature in Kelvin of the blackbody (Kirchhoff's law) for every face
+		} 
+		message TemperatureField{
+			string temperature_field_uri = 1; // file with meshed data and temperature for each triangle
+			string sop_guid = 2; // SOP for geometry, must have absorption, required with temperature field
+		}
+	}
 }
 
 // Request to create a SourceTemplate in SourceTemplatesManager
