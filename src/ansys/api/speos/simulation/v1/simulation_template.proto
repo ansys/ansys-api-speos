@@ -103,12 +103,17 @@ message SimulationTemplate {
 
 		message Sensor{
 			double integration_angle = 1;
-			bool automatic_sampling = 2; // Set to true to optimize the final results to only keep important samples
-			SamplingUniform sampling = 3;
+			oneof sampling_mode{
+				SensorSamplingUniform uniform = 2;
+				SensorSamplingAutomatic automatic = 3;
+			}
 
-			message SamplingUniform{
+			message SensorSamplingUniform{
 				uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
 				uint32 phi_sampling = 2; // Sampling following angle to X axis of axis system
+			}
+
+			message SensorSamplingAutomatic{
 			}
 		}
 
