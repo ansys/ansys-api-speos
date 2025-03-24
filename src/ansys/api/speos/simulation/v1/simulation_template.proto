@@ -54,6 +54,7 @@ message SimulationTemplate {
 		DirectMCSimulationTemplate direct_mc_simulation_template = 1;
 		InverseMCSimulationTemplate inverse_mc_simulation_template = 2;
 		Interactive interactive_simulation_template = 5;
+		VirtualBSDFBench virtual_bsdf_bench_simulation_template = 6;
 	}
 
 	message Interactive {
@@ -107,7 +108,9 @@ message SimulationTemplate {
 
 			message SensorSamplingUniform{
 				uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
-				uint32 phi_sampling = 2; // Sampling following angle to X axis of axis system
+				uint32 theta_incident_index = 2; // Sampling following angle to normal Theta wich will be in range [0,90] degrees
+				uint32 phi_sampling = 3; // Sampling following angle to X axis of axis system
+				uint32 phi_incident_index = 4; // Sampling following angle to X axis of axis system
 			}
 
 			message SensorSamplingAutomatic{
