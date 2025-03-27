@@ -120,8 +120,8 @@ message SensorTemplate {
 
 		// Color results without any spectral data or layer separation (in lx or W//m2).
 		message TypeColorimetric{
-		    double wavelength_start = 1; // (mm)
-		    double wavelength_end = 2; // (mm)
+		    double wavelength_start = 1; // (nm)
+		    double wavelength_end = 2; // (nm)
 			IntegrationType integration_type = 3; // will determine the integration type of the sensor between radial and planar
 
 			// Defines how the illuminance is integrated in the sensor
