@@ -32,6 +32,7 @@ message SensorTemplate {
 		Radiance radiance_sensor_template = 3;
 		Intensity intensity_sensor_template = 7;
 		PolarIntensity polar_intensity_sensor_template = 8;
+		Irradiance3D irradiance_3d = 9;
 	}
 	message Radiance {
 		oneof sensor_type {
@@ -84,6 +85,52 @@ message SensorTemplate {
 			double integration_angle = 1; // Integration angle (deg)
 		}		
 	}	
+
+	message Irradiance3D {
+		oneof sensor_type {
+			TypePhotometric type_photometric = 1; // Sensor type : Photometric
+			TypeColorimetric type_colorimetric = 2; //  Sensor type : Colorimetric
+			TypeRadiometric type_radiometric = 3; //  Sensor type : Radiometric
+		}
+
+		// Integration made orthogonally with the sensor plane.
+		message IntegrationTypePlanar {
+			bool reflection = 1;  // Reflection is taking into account for the integrating faces of the sensor.
+			bool transmission = 2; // Transmission is taking into account for the integrating faces of the sensor.
+			bool absorption = 3; // Absorption is taking into account for the integrating faces of the sensor.
+		}
+
+		message IntegrationTypeRadial {}
+
+		// The sensor considers the visible spectrum and gets the results in lm/m2 or lx.
+		message TypePhotometric{
+			oneof integration_type {
+				IntegrationTypeRadial integration_type_radial = 1; // Integration type : Radial
+				IntegrationTypePlanar integration_type_planar = 2; // Integration type : Planar
+			}
+		}
+
+		// The sensor considers the entire spectrum and gets the results in W/m2.
+		message TypeRadiometric{
+			oneof integration_type {
+				IntegrationTypeRadial integration_type_radial = 1; // Integration type : Radial
+				IntegrationTypePlanar integration_type_planar = 2; // Integration type : Planar
+			}
+		}
+
+		// Color results without any spectral data or layer separation (in lx or W//m2).
+		message TypeColorimetric{
+		    double wavelength_start = 1; // (nm)
+		    double wavelength_end = 2; // (nm)
+			IntegrationType integration_type = 3; // will determine the integration type of the sensor between radial and planar
+
+			// Defines how the illuminance is integrated in the sensor
+			enum IntegrationType {
+			    Radial = 0; // Integration type : Radial
+			    Planar = 1; // Integration type : Planar
+		    }
+		}
+	}
 }
 
 // Request to create a SensorTemplate in SensorTemplatesManager
