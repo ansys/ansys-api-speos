@@ -165,10 +165,9 @@ message SourceTemplate {
 
 		string image_file_uri = 1; //png,jpeg,bmp,tiff or rgb format file uri
 		SourceDimensions source_dimensions = 2; //horizontal and vertical dimensions (mm)
-		double luminous_flux = 3; //luminace in cd/m
+		double luminous_flux = 3; //luminace in cd/m2
 		optional int32 contrast_ratio = 4; //Contrast ratio, infitine if not defined
 		string intensity_guid = 5; // Intensity guid in intensity manager
-		int32 nbRays = 6; //source rays number
 		
 		oneof color_space {
 					 PredefinedColorSpace	pre_defined_color_space = 7; //pre-defined color space
