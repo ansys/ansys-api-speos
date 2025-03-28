@@ -105,6 +105,10 @@ message Scene
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
 		}
+		message DisplayProperties{
+			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+			IntensityProperties intensity_properties = 3;
+		}
 
 		string name = 1;
 		string description = 2;
@@ -115,6 +119,7 @@ message Scene
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
 			RayFileProperties rayfile_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type RayFile
 			ThermicProperties thermic_properties = 14; // To be filled if the source_guid corresponds to a SourceTemplate of type Thermic Source
+			DisplayProperties display_properties = 15; // To be filled if the source_guid corresponds to a SourceTemplate of type Display
 		}
 	}
 
