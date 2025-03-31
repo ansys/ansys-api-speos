@@ -178,47 +178,6 @@ message SourceTemplate {
 
 }
 
-//	message Thermic{
-//		Flux flux = 1;
-//
-//		oneof emitance {
-//				TemperatureField temperature_field = 2;
-//				EmissiveFaces emissives_faces = 3;
-//		}
-//
-//		oneof intensity{
-//			Lambertian lambertian = 5;
-//			CosN cos = 6;
-//		}
-//
-//		// not input - used to compute flux via COptSourceThermicItf::ComputeFluxValue
-//		// and then print value in UI
-//		// So not in source template - maybe in source instance
-//		message Flux{
-//			oneof type{
-//				Luminous luminous = 1;
-//				Radiant radiant = 2;	
-//			}
-//		}
-//		message TemperatureField{
-//			string temperature_file_uri = 1;
-//			string material_guid = 2;
-//		}
-//		
-//		message EmissiveFaces{
-//			double temperature = 1;
-//		}
-//
-//		message Lambertian{}
-//		message CosN{
-//			double N = 1;
-//		}
-//
-//		// So not in source template - maybe in source instance
-//		message Luminous{};
-//		message Radiant{};
-//	}
-
 // Request to create a SourceTemplate in SourceTemplatesManager
 message Create_Request {
 	SourceTemplate source_template = 1; // SourceTemplate containing its basic characteristics
