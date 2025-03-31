@@ -31,6 +31,7 @@ message SourceTemplate {
 		Luminaire luminaire = 3;
 		Surface surface = 4;
 		RayFile rayfile = 6;
+		Thermic thermic = 7;
 		Display display = 8;
 	}
 
@@ -98,6 +99,21 @@ message SourceTemplate {
 
 		// Spectrum messages
 		message SpectrumFromRayFile{}
+	}
+
+	message Thermic{
+		oneof exitance{
+			EmissiveFaces emissives_faces = 1; // black body with temperature on each face
+			TemperatureField temperature_field = 2; // file with meshed data and triangle temperature
+		}
+		string intensity_guid = 3; // Intensity guid in intensity manager Lambertian or cos only
+		message EmissiveFaces{
+			double temperature = 1; // the temperature in Kelvin of the blackbody (Kirchhoff's law) for every face
+		} 
+		message TemperatureField{
+			string temperature_field_uri = 1; // file with meshed data and temperature for each triangle
+			string sop_guid = 2; // SOP for geometry, must have absorption, required with temperature field
+		}
 	}
 
 	message PredefinedWhitePoint {
