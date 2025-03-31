@@ -32,7 +32,8 @@ message SourceTemplate {
 		Surface surface = 4;
 		RayFile rayfile = 6;
 		Thermic thermic = 7;
-		Ambient ambient = 8;
+		Display display = 8;
+		Ambient ambient = 9;
 	}
 
 	// Take flux from intensity file provided
@@ -115,10 +116,11 @@ message SourceTemplate {
 			string sop_guid = 2; // SOP for geometry, must have absorption, required with temperature field
 		}
 	}
+
 	// color space can be used for both ambient sources and display sources
 	message PredefinedWhitePoint {
 		WhitePointType white_point_type = 1; // pre-defined white point type
-
+		
 		enum WhitePointType {
 			C = 0; // average daylight illuminant
 			D50 = 1; // natural horizon light
@@ -126,18 +128,18 @@ message SourceTemplate {
 			E = 3; // illuminant that gives equal weight to all wavelengths
 		}
 	}
-
+	
 	message UserDefinedWhitePoint { 
 		repeated double white_point = 1; // X and Y coordinates of the white point. 
 	}
-
+	
 	message UserDefinedRGBSpace {
-
+	
 		oneof White_point_type {
 						PredefinedWhitePoint pre_defined_white_point = 1; // pre-defined white point
 						UserDefinedWhitePoint user_defined_white_point = 2; //custom Y and X white point coordinates
 					}
-
+					
 		string red_spectrum_guid = 3;  // red Spectrum guid in spectrum manager
 		string green_spectrum_guid = 4;  //green Spectrum guid in spectrum manager
 		string blue_spectrum_guid = 5;  //blue Spectrum guid in spectrum manager
@@ -146,11 +148,33 @@ message SourceTemplate {
 	message PredefinedColorSpace { 
 
 		ColorSpaceType color_space_type = 1;  // pre-defined color space type
-
+		
 		enum ColorSpaceType {
 			sRGB = 0; // standard and most commonly used model
 			AdobeRGB = 1; // larger gamut
 		}
+	}
+		
+	// source dimensions 
+	message SourceDimensions {
+		double x_start = 1; // (mm)
+		double x_end = 2; // (mm)
+		double y_start = 3; // (mm)
+		double y_end = 4; // (mm)
+	}
+
+	message Display{
+
+		string image_file_uri = 1; //png,jpeg,bmp,tiff or rgb format file uri
+		SourceDimensions source_dimensions = 2; //horizontal and vertical dimensions (mm)
+		double luminous_flux = 3; //luminace in cd/m2
+		optional int32 contrast_ratio = 4; //Contrast ratio, infitine if not defined
+		string intensity_guid = 5; // Intensity guid in intensity manager
+		
+		oneof color_space {
+					 PredefinedColorSpace	pre_defined_color_space = 7; //pre-defined color space
+					 UserDefinedRGBSpace	user_defined_rbg_space = 8; //custom rgb color space with pre-defined or custom withe point
+					}
 	}
 
 	message Ambient {
