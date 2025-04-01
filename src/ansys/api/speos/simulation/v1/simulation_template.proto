@@ -87,10 +87,8 @@ message SimulationTemplate {
 		}
 		message SourceSamplingUniformAnisotropic{
 			uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees, minimal value is 2
-			uint32 theta_incident_position = 3; // To do 
-			uint32 phi_sampling = 4; // Sampling following angle to X axis of axis system, minimal value is 2
-			uint32 phi_incident_position = 5; // To do 
-			PhiSymmetry symmetry_type = 6; // Define symmetry type, no needed if there is no symmetry in measure
+			uint32 phi_sampling = 2; // Sampling following angle to X axis of axis system, minimal value is 2
+			PhiSymmetry symmetry_type = 3; // Define symmetry type, no needed if there is no symmetry in measure
 
 			enum PhiSymmetry {
 				NoSymmetry = 0;
