@@ -88,9 +88,27 @@ message Scene
 			}
 			IntensityProperties intensity_properties = 3;
 		}
+	message ThermicProperties{
+			oneof exitanceProperties{
+				EmissiveFacesProperties emissive_faces_properties = 1; // source emits from faces
+				TemperatureFieldProperties temperature_field_properties = 2; // a specific OPTTemperature file is required (mesh + triangle temperature in Kelvin)
+			}
+
+			message EmissiveFacesProperties{
+				repeated GeoPath geo_paths = 1; // the list of emitting faces of the source 
+			}
+
+			message TemperatureFieldProperties{
+				repeated double axis_plane = 1; // Position of the exitance map (Ox Oy Oz Xx Xy Xz Yx Yy Yz)
+			}
+		}
 		message RayFileProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
+		}
+		message DisplayProperties{
+			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+			IntensityProperties intensity_properties = 3;
 		}
 
 		string name = 1; // Unique identifier in the scene
@@ -102,6 +120,8 @@ message Scene
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
 			SurfaceProperties surface_properties = 12; // To be filled if the source_guid corresponds to a SourceTemplate of type Surface
 			RayFileProperties rayfile_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type RayFile
+			ThermicProperties thermic_properties = 14; // To be filled if the source_guid corresponds to a SourceTemplate of type Thermic Source
+			DisplayProperties display_properties = 15; // To be filled if the source_guid corresponds to a SourceTemplate of type Display
 		}
 	}
 
@@ -184,6 +204,31 @@ message Scene
 				LayerTypeSequence layer_type_sequence = 6; // Layer type : Sequence								
 			}
 		}
+		message LXPProperties {
+			uint32 nb_max_paths = 1; // The Maximum paths corresponds to the maximum number of rays the Light Expert file (*.lpf or *.lp3) can contain.
+		}
+		
+		message IntensityProperties {
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)		
+			oneof layer_type {
+				LayerTypeNone layer_type_none = 3; // Layer type: None
+				LayerTypeSource layer_type_source = 4; // Layer type: Source
+				LayerTypeFace layer_type_face = 5; // Layer type: Face
+				LayerTypeSequence layer_type_sequence = 6; // Layer type: Sequence
+			}			
+		}
+		message PolarIntensityProperties {
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)					
+		}
+
+		message Irradiance3DProperties {
+			EnumRayFileType ray_file_type = 1; // Choose type of ray file generated after the simulation.
+			oneof layer_type {
+				LayerTypeNone layer_type_none = 2; // Layer type : None
+				LayerTypeSource layer_type_source = 3; // Layer type : Source
+			}
+			GeoPaths geometries = 4; // Geometries that will use this sensor
+		}
 
 		string name = 1; // Unique identifier in the scene
 		string display_name = 4; // User name to be displayed
@@ -195,7 +240,11 @@ message Scene
 			CameraProperties camera_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
 			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
 			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
+			IntensityProperties intensity_properties = 15; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IntensitySensorTemplate
+			PolarIntensityProperties polar_intensity_properties = 16; // To be filled if the sensor_guid corresponds to a SensorTemplate of type PolarIntensitySensorTemplate	
+			Irradiance3DProperties irradiance_3d_properties = 17; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Irradiance3D
 		}
+		LXPProperties lxp_properties = 30; // To activate lxp feature, we must fill this field
 	}
 
 	// Instance of a simulation to add in the scene
