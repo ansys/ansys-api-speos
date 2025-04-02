@@ -22,7 +22,6 @@ message Scene
 	message VOPInstance
 	{
 		string name = 1; // Unique identifier in the scene
-		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string vop_guid = 10; // Guid of the element to instantiate
@@ -33,7 +32,6 @@ message Scene
 	message SOPInstance
 	{
 		string name = 1; // Unique identifier in the scene
-		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string sop_guid = 10; // Guid of the element to instantiate
