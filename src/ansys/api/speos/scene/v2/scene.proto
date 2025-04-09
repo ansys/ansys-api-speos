@@ -85,13 +85,13 @@ message Scene
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
+		oneof vop_properties {
+			NonHomogeneousProperties non_homogeneous_properties = 15; // To be filled if the vop_guid corresponds to a VOPTemplate of type NonHomogeneous
+		}
 		repeated string sop_guids = 11; // Deprecated - Better use sop oneof field (either sop_guid or texture)
 		oneof sop {
 			string sop_guid = 13; // Guid of the surface optical property to instantiate
 			Texture texture = 14; // Surface optical property to instantiate using texture (can be composed of several layers)
-		}
-		oneof vop_properties {
-			NonHomogeneousProperties non_homogeneous_properties = 15; // To be filled if the vop_guid corresponds to a VOPTemplate of type NonHomogeneous
 		}
 		GeoPaths geometries = 12; // Geometries that will use this material
 	}
