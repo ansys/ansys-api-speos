@@ -31,10 +31,18 @@ message Scene
 	// Instance of a Material to apply on geometries of the scene
 	message MaterialInstance
 	{
-		string name = 1;
+		message NonHomogeneousProperties {
+			repeated double axis_system = 1; // Position of the non homogeneous vop (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+		}
+
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		optional string vop_guid = 10; // optional - Guid of the volume optical property to instantiate
+		oneof vop_properties {
+			NonHomogeneousProperties non_homogeneous_properties = 15; // To be filled if the vop_guid corresponds to a VOPTemplate of type NonHomogeneous
+		}
 		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instantiate
 		GeoPaths geometries = 12; // Geometries that will use this material
 	}
@@ -110,7 +118,66 @@ message Scene
 			IntensityProperties intensity_properties = 3;
 		}
 
-		string name = 1;
+		message AmbientProperties {
+			repeated double zenith_direction = 1; // line normal to the ground or Z direction
+			bool reverse_zenith = 2;  // optional - if not set or false : normal is not reversed
+			oneof source_properties { // Type of Ambient Sources
+				UniformAmbientProperties uniform_ambient_properties = 10;
+				CieOvercastProperties cie_overcast_properties = 11;
+				CieGeneralProperties cie_general_properties = 12;
+				NaturalLightProperties natural_light_properties = 13;
+				UsStandardProperties us_standard_properties = 14;
+				EnvironmentMapProperties environment_map_properties = 15;
+			}
+
+			message ManualSun {
+				repeated double sun_direction = 1; // (X Y Z) direction to the sun
+				bool reverse_sun = 2;  // optional - if not set or false : normal is not reversed
+			}
+			
+			message SunAxisSystem {
+				oneof sun_type {
+					AutomaticSun automatic_sun = 1; // calculates the sun position according to the north direction and time zone location set
+					ManualSun manual_sun = 2; // sets the sun position and direction from scene
+				}
+				message AutomaticSun {
+					string time_zone_uri = 1; 
+					int32 year = 2; 
+					int32 month = 3;
+					int32 day = 4;
+					int32 hour = 5;
+					int32 minute = 6;
+					float longitude = 7;
+					float latitude = 8;
+				}
+			}
+			message UniformAmbientProperties {
+				ManualSun manual_sun = 1; // sets the sun position and direction from scene
+			}
+			message CieOvercastProperties {}
+			message CieGeneralProperties {
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+				SunAxisSystem sun_axis_system = 3; // Set the Sun direction
+			}
+			message NaturalLightProperties {
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+				SunAxisSystem sun_axis_system = 3; // Set the Sun direction
+			}
+			message UsStandardProperties {
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+				SunAxisSystem sun_axis_system = 3; // Set the Sun direction
+			}
+			message EnvironmentMapProperties {
+				repeated double north_direction = 1; // (X Y Z) Direction to the North
+				bool reverse_north = 2;  // optional - if not set or false : normal is not reversed
+			}
+		}
+
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string source_guid = 10; // Guid of the SourceTemplate in SourceTemplatesManager to instantiate
@@ -120,6 +187,7 @@ message Scene
 			RayFileProperties rayfile_properties = 13; // To be filled if the source_guid corresponds to a SourceTemplate of type RayFile
 			ThermicProperties thermic_properties = 14; // To be filled if the source_guid corresponds to a SourceTemplate of type Thermic Source
 			DisplayProperties display_properties = 15; // To be filled if the source_guid corresponds to a SourceTemplate of type Display
+			AmbientProperties ambient_properties = 16; // To be filled if the source_guid corresponds to a SourceTemplate of type Ambient
 		}
 	}
 
@@ -228,7 +296,8 @@ message Scene
 			GeoPaths geometries = 4; // Geometries that will use this sensor
 		}
 
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string sensor_guid = 10; // Guid of the SensorTemplate in SensorTemplatesManager to instantiate
@@ -247,7 +316,8 @@ message Scene
 	// Instance of a simulation to add in the scene
 	message SimulationInstance
 	{
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string simulation_guid = 10; // Guid of the element to instantiate
@@ -267,11 +337,19 @@ message Scene
 
 	message SceneInstance
 	{
-		string name = 1;
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string scene_guid = 10; // Guid of the element to instantiate
 		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) 
+	}
+
+	message GroundPlane
+	{
+		repeated double ground_origin = 1; // 3D point in the geometry. HDR image is displayed on the ground plane
+		repeated double zenith_direction = 2; // line normal to the ground or Z direction
+		double ground_height = 3; // height of the environment shooting (unit mm)
 	}
 
 	string name = 1;
@@ -285,6 +363,7 @@ message Scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
 	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
+	GroundPlane ground = 21; // Optional - Only usable when there is at least one Ambient Environment Source Template that has selected a HDR image file. 
 }
 
 // Manager for Scenes
