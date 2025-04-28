@@ -11,3 +11,4 @@
 
 * [Revathy Venugopal](https://github.com/Revathyvenugopal162)
 * [Sébastien Morais](https://github.com/SMoraisAnsys)
+* [Thomas Auzinger](https://github.com/ThomasAuzinger)

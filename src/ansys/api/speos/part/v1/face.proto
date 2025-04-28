@@ -6,7 +6,8 @@ package ansys.api.speos.face.v1;
 // Face definition with meshing information
 message Face
 {
-	string name = 1;
+	string name = 1; // Unique identifier in its Body
+	string display_name = 4; // User name to be displayed
 	string description = 2;
 	map<string, string> metadata = 3; // user defined metadata
 	repeated float vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
@@ -93,6 +94,7 @@ message Chunk {
 	message FaceHeader {
 		string guid = 1; // Guid of a FacesManager element - Used for FaceActions.Upload rpc
 		string name = 2;
+		string display_name = 6;
 		string description = 3;
 		map<string, string> metadata = 4;
 		repeated int32 sizes = 5; // total sizes for vectors: (vertices_normals_size, facets_size, texture_coordinates_channels_size) - vertices and normals vectors have same size, that's why it is gathered in vertices_normals_size
