@@ -255,7 +255,7 @@ message Scene
 				LayerTypePolarization layer_type_polarization = 7; // Layer type : Polarization
 				LayerTypeIncidenceAngle layer_type_incidence_angle = 8; // Layer type : Incidence angle
 			}
-			repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is normal to sensor plane (anti-normal of the sensor)) and only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type
+			repeated double integration_direction = 9; // Sensor global integration direction [x,y,z], optional (default direction is Z axis of axis_system). Note: Contrary to any visualization of integration directions within Speos Software or its documentation the integration direction must be set in the anti-rays direction to integrate their signal. Integration direction is only settable for sensor template with IlluminanceTypePlanar or IlluminanceTypeSemiCylindrical as illuminance_type.
 			GeoPaths output_face_geometries = 10; // List of output faces for inverse simulation optimization
 		}
 		message RadianceProperties {
