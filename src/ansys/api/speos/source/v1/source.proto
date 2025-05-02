@@ -31,6 +31,9 @@ message SourceTemplate {
 		Luminaire luminaire = 3;
 		Surface surface = 4;
 		RayFile rayfile = 6;
+		Thermic thermic = 7;
+		Display display = 8;
+		Ambient ambient = 9;
 	}
 
 	// Take flux from intensity file provided
@@ -99,46 +102,136 @@ message SourceTemplate {
 		message SpectrumFromRayFile{}
 	}
 
-//	message Thermic{
-//		Flux flux = 1;
-//
-//		oneof emitance {
-//				TemperatureField temperature_field = 2;
-//				EmissiveFaces emissives_faces = 3;
-//		}
-//
-//		oneof intensity{
-//			Lambertian lambertian = 5;
-//			CosN cos = 6;
-//		}
-//
-//		// not input - used to compute flux via COptSourceThermicItf::ComputeFluxValue
-//		// and then print value in UI
-//		// So not in source template - maybe in source instance
-//		message Flux{
-//			oneof type{
-//				Luminous luminous = 1;
-//				Radiant radiant = 2;	
-//			}
-//		}
-//		message TemperatureField{
-//			string temperature_file_uri = 1;
-//			string material_guid = 2;
-//		}
-//		
-//		message EmissiveFaces{
-//			double temperature = 1;
-//		}
-//
-//		message Lambertian{}
-//		message CosN{
-//			double N = 1;
-//		}
-//
-//		// So not in source template - maybe in source instance
-//		message Luminous{};
-//		message Radiant{};
-//	}
+	message Thermic{
+		oneof exitance{
+			EmissiveFaces emissives_faces = 1; // black body with temperature on each face
+			TemperatureField temperature_field = 2; // file with meshed data and triangle temperature
+		}
+		string intensity_guid = 3; // Intensity guid in intensity manager Lambertian or cos only
+		message EmissiveFaces{
+			double temperature = 1; // the temperature in Kelvin of the blackbody (Kirchhoff's law) for every face
+		} 
+		message TemperatureField{
+			string temperature_field_uri = 1; // file with meshed data and temperature for each triangle
+			string sop_guid = 2; // SOP for geometry, must have absorption, required with temperature field
+		}
+	}
+
+	// color space can be used for both ambient sources and display sources
+	message PredefinedWhitePoint {
+		WhitePointType white_point_type = 1; // pre-defined white point type
+		
+		enum WhitePointType {
+			C = 0; // average daylight illuminant
+			D50 = 1; // natural horizon light
+			D65 = 2; // standard daylight illuminant
+			E = 3; // illuminant that gives equal weight to all wavelengths
+		}
+	}
+	
+	message UserDefinedWhitePoint { 
+		repeated double white_point = 1; // X and Y coordinates of the white point. 
+	}
+	
+	message UserDefinedRGBSpace {
+	
+		oneof White_point_type {
+						PredefinedWhitePoint pre_defined_white_point = 1; // pre-defined white point
+						UserDefinedWhitePoint user_defined_white_point = 2; //custom Y and X white point coordinates
+					}
+					
+		string red_spectrum_guid = 3;  // red Spectrum guid in spectrum manager
+		string green_spectrum_guid = 4;  //green Spectrum guid in spectrum manager
+		string blue_spectrum_guid = 5;  //blue Spectrum guid in spectrum manager
+	}
+
+	message PredefinedColorSpace { 
+
+		ColorSpaceType color_space_type = 1;  // pre-defined color space type
+		
+		enum ColorSpaceType {
+			sRGB = 0; // standard and most commonly used model
+			AdobeRGB = 1; // larger gamut
+		}
+	}
+		
+	// source dimensions 
+	message SourceDimensions {
+		double x_start = 1; // (mm)
+		double x_end = 2; // (mm)
+		double y_start = 3; // (mm)
+		double y_end = 4; // (mm)
+	}
+
+	message Display{
+
+		string image_file_uri = 1; //png,jpeg,bmp,tiff or rgb format file uri
+		SourceDimensions source_dimensions = 2; //horizontal and vertical dimensions (mm)
+		double luminous_flux = 3; //luminace in cd/m2
+		optional int32 contrast_ratio = 4; //Contrast ratio, infitine if not defined
+		string intensity_guid = 5; // Intensity guid in intensity manager
+		
+		oneof color_space {
+					 PredefinedColorSpace	pre_defined_color_space = 7; //pre-defined color space
+					 UserDefinedRGBSpace	user_defined_rbg_space = 8; //custom rgb color space with pre-defined or custom withe point
+					}
+	}
+
+	message Ambient {
+		oneof source{
+			UniformAmbient uniform_ambient = 1; // sets a specific and common luminance for the entire sky without any contribution of the sun. The sun has a specific value calculated according to its position
+			CieOvercast cie_overcast = 2; // generates a specific distribution for the sky according to a luminance value and CIE standard overcast model
+			CieGeneral cie_general = 3; // generates a specific distribution for the sky according to a luminance value and sky model 
+			NaturalLight natural_light = 4; // generates natural lighting based on a day time or night time model
+			UsStandard us_standard = 5; // The U.S. Standard Atmosphere Ambient Source follows a specific atmospheric model to simulate a sky radiation ranging from 280nm into ultraviolet to 4μm into infrared.
+			EnvironmentMap environment_map = 6; // creates a background using an image file
+		}
+
+		message UniformAmbient {
+			double luminance = 1; // Luminance in cd per squared meter
+			bool mirrored_extent = 2; // if true then the ambient light covers all space, if false only covers the upper half space
+			string spectrum_guid = 3; // blackbody or library spectra only
+		}
+		message CieOvercast {
+			double luminance = 1; // Luminance in cd per squared meter
+			string spectrum_guid = 2; // blackbody or library spectra only
+		}
+		message CieGeneral {
+			double luminance = 1; // Luminance in cd per squared meter
+			enum CieType {
+				standard_overcast = 0;
+				overcast_steep_gradation = 1;
+				overcast_azimuthal_uniformity = 2;
+				overcast_slight_brightening = 3;
+				uniform_luminance = 4;
+				cloudy_slight_brightening = 5;
+				cloudy_nogradation_circumsolar = 6;
+				cloudy_solar_corona = 7;
+				cloudy_obscured_sun = 8;
+				cloudy_circumsolar_region = 9;
+				white_blue_distinct = 10;
+				standard_low_luminance = 11;
+				standard_polluted_atmosphere = 12;
+				cloudless_turbid_corona = 13;
+				white_blue_broad = 14;
+			}
+			CieType cie_type = 2; // sky model 
+			}
+			message NaturalLight {
+				double turbidity = 1; // cloudiness of the environment. The lower the value the clearer the environment. Varies between 1.9 and 9.9
+				bool with_sky = 2; // if false, only the sun is used in the simulation. If true, both ambient sky model and sun are used in the simulation
+			}
+			message UsStandard {}
+			message EnvironmentMap {
+				double luminance = 1; // Luminance in cd per squared meter
+				string image_uri = 2; // image file or HDRI. HDRIs have relative luminance values, so the lumiance value will be applied to the (1,1,1) pixels and all other colors will be defined relatively
+				oneof color_space {
+					PredefinedColorSpace predefined_color_space = 3; // pre-defined color space
+					UserDefinedRGBSpace user_defined_rgb_space = 4; // custom RGB space with either pre-defined or custom white point
+				}
+			}
+	}
+
 }
 
 // Request to create a SourceTemplate in SourceTemplatesManager
