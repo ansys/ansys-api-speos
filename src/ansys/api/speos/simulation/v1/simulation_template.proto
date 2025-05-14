@@ -4,7 +4,7 @@ syntax = "proto3";
 package ansys.api.speos.simulation.v1.templates;
 
 message Weight {
-	double minimum_energy_percentage = 1; // The Minimum energy percentage parameter defines the minimum energy ratio to continue to propagate a ray with weight. 
+	double minimum_energy_percentage = 1; // The Minimum energy percentage parameter defines the minimum energy ratio to continue to propagate a ray with weight. 1 = 100%.
 }
 
 // Default Colorimetric Standard
