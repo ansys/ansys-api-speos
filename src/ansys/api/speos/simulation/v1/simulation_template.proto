@@ -12,7 +12,7 @@ import "ansys/api/speos/sensor/v1/common.proto";
 // It is highly recommended to fill this parameter excepted in interactive simulation.
 // Not fill this parameter is useful to understand certain phenomena as absorption.
 message Weight {
-	double minimum_energy_percentage = 1; // The Minimum energy percentage parameter defines the minimum energy ratio to continue to propagate a ray with weight. 
+	double minimum_energy_percentage = 1; // The Minimum energy percentage parameter defines the minimum energy ratio to continue to propagate a ray with weight. 1 = 100%.
 }
 
 // Default Colorimetric Standard
