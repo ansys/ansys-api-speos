@@ -103,7 +103,7 @@ def upload_folder(
     folder_path: str,
     main_file_name: str,
     reserved_main_file_uri: str = "",
-) -> [file_transfer__v1__pb2.Upload_Response]:
+) -> list[file_transfer__v1__pb2.Upload_Response]:
     """Upload several files to a server.
 
     Parameters
@@ -154,10 +154,10 @@ def upload_folder(
 
         upload_response = file_transfer__v1__pb2.Upload_Response()
         if os.path.basename(file_to_upload) == os.path.basename(main_file_path):
-            upload_response = upload_file(file_transfer_service_stub, file_to_upload, reserved_main_file_uri)
+            upload_response = upload_file(file_transfer_service_stub, str(file_to_upload), reserved_main_file_uri)
             add_dependencies_request.uri = upload_response.info.uri
         else:
-            upload_response = upload_file(file_transfer_service_stub, file_to_upload)
+            upload_response = upload_file(file_transfer_service_stub, str(file_to_upload))
             add_dependencies_request.dependency_uris.append(upload_response.info.uri)
         upload_responses.append(upload_response)
 
@@ -237,7 +237,7 @@ def download_folder(
     file_transfer_service_stub: file_transfer__v1__pb2_grpc.FileTransferServiceStub,
     main_file_uri: str,
     download_location: str,
-) -> [file_transfer__v1__pb2.Download_Response]:
+) -> list[file_transfer__v1__pb2.Download_Response]:
     """Download several files from a server.
 
     Parameters
