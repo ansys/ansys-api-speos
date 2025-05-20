@@ -41,6 +41,7 @@ enum Unit {
 	lumens_per_square_centimeter = 59; // lm/cm2
 
 	percent = 60; // %
+	no_unit = 61; // no unit
 
 	color_XYZ = 70; // XYZ CIE
 	color_xyY = 71; // xy CIE
@@ -99,6 +100,7 @@ enum Magnitude {
 	radiant_flux = 16; // radiometric flux
 	luminous_flux = 17; // photometric flux
 
+	percentage = 26; //percentage
 	ratio = 27; // magnitude ratio
 
 	color = 37; // color
