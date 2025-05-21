@@ -99,7 +99,7 @@ enum Magnitude {
 	radiant_flux = 16; // radiometric flux
 	luminous_flux = 17; // photometric flux
 
-	wavelength = 26; //wavelength
+	wavelength = 26; // wavelength
 	ratio = 27; // magnitude ratio
 
 	color = 37; // color
