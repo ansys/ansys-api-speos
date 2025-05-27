@@ -71,8 +71,8 @@ message Scene
 
 				message TextureMappingInfo {
 					oneof uv_map {
-						MappingOperator mapping_operator = 1; // Mapping operator to create UV in face's vertices infos
-						uint32 vertice_infos_index = 2; // Index in face's vertices infos where UV are stored
+						MappingOperator mapping_operator = 1; // Mapping operator to create UV mapping in corresponding face
+						uint32 vertices_data_index = 2; // Index in face's vertices_data where UV mapping are stored
 					}
 				}
 			}
