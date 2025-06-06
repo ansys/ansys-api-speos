@@ -15,13 +15,14 @@ enum EnumColorimetricStandard {
 
 // If texture have been applied in the scene, fill Texture message.
 message Texture {
-	EnumTextureNormalization texture_normalization = 1; // Rendering of the texture.
+	TextureNormalization texture_normalization = 1; // Rendering of the texture.
 	bool normal_map = 2; // To activate normal map.
 
-	enum EnumTextureNormalization {
-		NONE = 0; // The simulation result uses both the image texture and the texture mapping optical properties.
-		COLOR_FROM_TEXTURE = 1; // The simulation result uses the color and the color lightness of the image texture.
-		COLOR_FROM_BSDF = 2; // The simulation result uses the BSDF information of the texture mapping optical properties.
+	enum TextureNormalization {
+		TEXTURE_NORMALIZATION_UNSPECIFIED = 0;
+		TEXTURE_NORMALIZATION_NONE = 1; // The simulation result uses both the image texture and the texture mapping optical properties.
+		TEXTURE_NORMALIZATION_COLOR_FROM_TEXTURE = 2; // The simulation result uses the color and the color lightness of the image texture.
+		TEXTURE_NORMALIZATION_COLOR_FROM_BSDF = 3; // The simulation result uses the BSDF information of the texture mapping optical properties.
 	}
 }
 
