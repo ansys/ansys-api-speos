@@ -71,7 +71,6 @@ message SimulationTemplate {
 		int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 		Weight weight = 4; // Activates Weight. Highly recommended to fill
 		EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
-		string ambient_material_uri = 8; // To keep ? To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 
 		oneof mode {
 			RoughnessOnly roughness_only = 9; // BSDF depends on surface roughness only
