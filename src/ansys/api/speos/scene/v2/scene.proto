@@ -28,9 +28,55 @@ message Scene
 		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 	}
 
-	// Instance of a Material to apply on geometries of the scene
+	// Instance of a material to apply on geometries of the scene
 	message MaterialInstance
 	{
+		message Texture
+		{
+			repeated Layer layers = 1; // List of texture layers (also called multi texture in case of several layers)
+
+			message MappingOperator {
+				oneof type {
+					Planar planar = 1;
+					Cubic cubic = 2;
+					Spherical spherical = 3;
+					Cylindrical cylindrical = 4;
+				}
+
+				repeated double axis_system = 10; // Reference for the mapping operator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+				double u_offset = 11; // Shift on U direction (mm)
+				double v_offset = 12; // Shift on V direction (mm)
+				double u_scale_factor = 13; // Scale factor on U dimension
+				double v_scale_factor = 14; // Scale factor on V dimension
+				double u_length = 15; // Dimension on U direction (mm)
+				optional double v_length = 16; // Optional - Dimension on V direction (mm). If not filled, then the image ratio is used to define v_length from u_length.
+				double rotation = 17; // Rotation of UVs (degree) ]-360, 360[
+
+				message Planar {}
+				message Cubic {}
+				message Spherical {
+					double sphere_perimeter = 1;
+				}
+				message Cylindrical {
+					double base_perimeter = 1;
+				}
+			}
+
+			message Layer 
+			{
+				string sop_guid = 1; // Guid of the surface optical property to bind to geometry
+				TextureMappingInfo image_properties = 2; // To be filled if the SOPTemplate/Texture contains an Image data
+				TextureMappingInfo normal_map_properties = 3; // To be filled if the SOPTemplate/Texture contains a NormalMap data
+				TextureMappingInfo anisotropy_map_properties = 4; // To be filled if the SOPTemplate is anisotropic (for example an anisotropicbsdf as Library file uri)
+
+				message TextureMappingInfo {
+					oneof uv_map {
+						MappingOperator mapping_operator = 1; // Mapping operator to create UV mapping in corresponding face
+						uint32 vertices_data_index = 2; // Index in face's vertices_data where UV mapping are stored
+					}
+				}
+			}
+		}
 		message NonHomogeneousProperties {
 			repeated double axis_system = 1; // Position of the non homogeneous vop (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
 		}
@@ -43,7 +89,11 @@ message Scene
 		oneof vop_properties {
 			NonHomogeneousProperties non_homogeneous_properties = 15; // To be filled if the vop_guid corresponds to a VOPTemplate of type NonHomogeneous
 		}
-		repeated string sop_guids = 11; // Guid(s) of the surface optical property(ies) to instantiate
+		repeated string sop_guids = 11; // Deprecated - Better use sop oneof field (either sop_guid or texture)
+		oneof sop {
+			string sop_guid = 13; // Guid of the surface optical property to instantiate
+			Texture texture = 14; // Surface optical property to instantiate using texture (can be composed of several layers)
+		}
 		GeoPaths geometries = 12; // Geometries that will use this material
 	}
 

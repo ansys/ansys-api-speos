@@ -21,6 +21,19 @@ enum EnumColorimetricStandard {
 	CIE_1964 = 1; // 10 degrees CIE Standard Colorimetric Observer Data.
 }
 
+// If texture have been applied in the scene, fill Texture message.
+message Texture {
+	TextureNormalization texture_normalization = 1; // Rendering of the texture.
+	bool normal_map = 2; // To activate normal map.
+
+	enum TextureNormalization {
+		TEXTURE_NORMALIZATION_UNSPECIFIED = 0;
+		TEXTURE_NORMALIZATION_NONE = 1; // The simulation result uses both the image texture and the texture mapping optical properties.
+		TEXTURE_NORMALIZATION_COLOR_FROM_TEXTURE = 2; // The simulation result uses the color and the color lightness of the image texture.
+		TEXTURE_NORMALIZATION_COLOR_FROM_BSDF = 3; // The simulation result uses the BSDF information of the texture mapping optical properties.
+	}
+}
+
 message DirectMCSimulationTemplate {
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent
 	int32 max_impact = 3; // To define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
@@ -29,6 +42,7 @@ message DirectMCSimulationTemplate {
 	bool dispersion = 6; // To activate the dispersion calculation. 
 	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface. 
 	string ambient_material_uri = 8; // To select an ambient material *.material  
+	Texture texture = 9; // To activate texture.
 }
 
 message InverseMCSimulationTemplate {
@@ -42,7 +56,8 @@ message InverseMCSimulationTemplate {
 	uint32 maximum_gathering_error = 9; // Deprecated - Better use maximum_gathering_error_percentage.
 	double maximum_gathering_error_percentage = 12; // This value defines the level below which a source can be neglected. 0, the default value means that no approximation will be done. 
 	bool fast_transmission_gathering = 10; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
-	string ambient_material_uri = 11; // To select an ambient material *.material  
+	string ambient_material_uri = 11; // To select an ambient material *.material
+	Texture texture = 13; // To activate texture.
 }
 
 // Simulation template with its basic characteristics
@@ -63,6 +78,7 @@ message SimulationTemplate {
 		Weight weight = 3; // Activates Weight. Highly recommended to fill
 		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
 		string ambient_material_uri = 5; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
+		Texture texture = 6; // To activate texture.
 	}
 
 	// Virtual BSDF Bench
