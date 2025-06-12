@@ -98,7 +98,6 @@ message SimulationTemplate {
 
 		message SourceSamplingUniformIsotropic{
 			uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees, minimal value is 2
-			uint32 theta_incident_position = 2; // To do 
 		}
 		message SourceSamplingUniformAnisotropic{
 			uint32 theta_sampling = 1; // Sampling following angle to normal Theta wich will be in range [0,90] degrees, minimal value is 2
@@ -111,7 +110,7 @@ message SimulationTemplate {
 				Symmetry_2_planes	= 2; // Symmetry to planes 0 - 180 and 90 - 270 
 			}
 		}
-		message SourceSamplingAdaptative{
+		message SourceSamplingAdaptive{
 			string file_uri = 1; // uri of incident sampling file
 		}
 
@@ -133,8 +132,8 @@ message SimulationTemplate {
 
 		message RoughnessOnly{
 			oneof source_sampling{
-				SourceSamplingUniformIsotropic uniform_isotropic = 1; // oneof with adaptative
-				SourceSamplingAdaptative adaptative = 2;
+				SourceSamplingUniformIsotropic uniform_isotropic = 1; // oneof with adaptive
+				SourceSamplingAdaptive adaptive = 2;
 			}
 		} 
 
@@ -149,27 +148,27 @@ message SimulationTemplate {
 			message Iridescence{
 				oneof source_sampling {
 					SourceSamplingUniformIsotropic uniform_isotropic = 1;
-					SourceSamplingAdaptative adaptative = 2;
+					SourceSamplingAdaptive adaptive = 2;
 				}
 			}
 
 			message NoIridescence{
 				oneof surface_type{
 					Isotropic isotropic = 1;
-					Anisotropic anistropic = 2;
+					Anisotropic anisotropic = 2;
 				}
 
 				message Isotropic{
 					oneof source_sampling {
 						SourceSamplingUniformIsotropic uniform_isotropic = 1;
-						SourceSamplingAdaptative adaptative = 2;
+						SourceSamplingAdaptive adaptive = 2;
 					}
 				}
 
 				message Anisotropic{
 					oneof source_sampling {
 						SourceSamplingUniformAnisotropic uniform_anisotropic = 1;
-						SourceSamplingAdaptative adaptative = 2;
+						SourceSamplingAdaptive adaptive = 2;
 					}
 				}
 			}
