@@ -87,7 +87,8 @@ message SimulationTemplate {
 		int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
 		Weight weight = 4; // Activates Weight. Highly recommended to fill
 		EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
-
+		Texture texture = 6; // To activate texture.
+		
 		oneof mode {
 			RoughnessOnly roughness_only = 9; // BSDF depends on surface roughness only
 			AllCharacteristics all_characteristics = 10; // BSDF depends on all properties
