@@ -65,14 +65,14 @@ message Scene
 			message Layer 
 			{
 				string sop_guid = 1; // Guid of the surface optical property to bind to geometry
-				TextureMappingInfo image_properties = 2; // To be filled if the SOPTemplate/Texture contains an Image data
-				TextureMappingInfo normal_map_properties = 3; // To be filled if the SOPTemplate/Texture contains a NormalMap data
+				TextureMappingInfo image_properties = 2; // To be filled if the SOPTemplate/Texture contains image field
+				TextureMappingInfo normal_map_properties = 3; // To be filled if the SOPTemplate/Texture contains normal_map field
 				TextureMappingInfo anisotropy_map_properties = 4; // To be filled if the SOPTemplate is anisotropic (for example an anisotropicbsdf as Library file uri)
 
 				message TextureMappingInfo {
 					oneof uv_map {
 						MappingOperator mapping_operator = 1; // Mapping operator to create UV mapping in corresponding face
-						uint32 vertices_data_index = 2; // Index in face's vertices_data where UV mapping are stored
+						uint32 vertices_data_index = 2; // Index in face's vertices_data where UV mapping is stored
 					}
 				}
 			}
