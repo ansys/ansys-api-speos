@@ -16,6 +16,8 @@ enum Unit {
 	watts_per_square_meters_steradians = 4; // W/(m2.sr)
 	watts_per_steradians_nanometers = 5; // W/(sr.nm)
 	watts_per_square_meters_nanometers = 6; // W/(m2.nm)
+	watts_per_square_foot = 7; // W/ft2
+	watts_per_square_foot_nanometer = 8; // W/(ft2.nm)
 
 	joules = 16; // J
 	joules_per_nanometers = 17; // J/(nm)
@@ -36,6 +38,7 @@ enum Unit {
 	lumens_seconds = 56; // lm.s
 	lumens_per_nanometers = 57; // lm/(nm)
 	lumens_per_square_meters_nanometers = 49; // lm/(m2.nm) 
+	lumens_per_square_centimeter = 59; // lm/cm2
 
 	percent = 60; // %
 
@@ -49,6 +52,9 @@ enum Unit {
 	color_rgb = 77; // rgb
 	color_rgba = 79; // rgba
 
+	foot_candles = 90; // fc
+	foot_candles_per_nanometer = 91; // fc/nm
+
 	nanometers = 120; // nm
 
 	micrometers = 121; // um
@@ -59,9 +65,19 @@ enum Unit {
 	steradians = 126; // sr
 
 	ray_per_pixel = 127; // rays/pixel
+
+	square_meters = 140; // m2
+	square_centimeters = 141; // cm2
+	square_millimeters = 142; // mm2
+	square_micrometers = 143; // micron2
+	square_nanometers = 144; // nm2
+	square_feet = 145; // ft2
+	square_inches = 146; // inch2
+
+	no_unit = 160; // 
 }
 
-// magnitudes in Speos data
+// Magnitude represent a physical quantity
 enum Magnitude {
 	irradiance = 0; // radiometric irradiance 
 	illuminance = 1; // photometric irradiance
@@ -83,10 +99,51 @@ enum Magnitude {
 	radiant_flux = 16; // radiometric flux
 	luminous_flux = 17; // photometric flux
 
+	wavelength = 26; // wavelength
 	ratio = 27; // magnitude ratio
 
 	color = 37; // color
 	ray_sampling = 38; // rays sampling
+
+	distance = 48; // distance
+	dimension = 49; // dimension
+	plane_angle = 50; // plane angle
+	curvature = 51; // curvature
+	curvature_product = 52; // curvature product
+
+	photometric_power_density = 62; // photometric power density
+	radiometric_power_density = 63; // radiometric power density
+	spherical_probability_density = 64; // spherical probability density
+	
+	temperature_elevation = 74; // temperature elevation
+
+	colorimetric_error = 84; // colorimetric error
+	signal_to_noise_ratio = 85; // SNR
+	precision = 86; // precision
+	relative_standard_error = 87; // relative standard error
+
+	refractive_power = 97; // refractive power
+	refractive_index = 98; // refractive index
+	absorption = 99; // absorption
+
+	x_color = 109; // xyY color space
+	y_color = 110; // xyY color space
+	u_color = 111; // uvY color space
+	v_color = 112; // uvY color space
+	u_prime_color = 113; // u'v'Y color space
+	v_prime_color = 114; // u'v'Y color space
+	u_star_color = 115; // L*u*v* color space
+	v_star_color = 116; // L*u*v* color space
+	a_star_color = 117; // L*a*b* color space
+	b_star_color = 118; // L*a*b* color space
+	uppercase_c_star_color = 119; // L*C*h color space
+	h_color = 120; // L*C*h color space
+	uppercase_x_color = 121; // XYZ color space
+	uppercase_y_color = 122; // XYZ color space
+	uppercase_z_color = 123; // XYZ color space
+	uppercase_l_star_color = 124; // L*u*v* color space
+
+	glare = 134; // glare
 }
 
 // arrays values of doubles

@@ -14,12 +14,15 @@ message Face
 	repeated uint32 facets = 11; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
 	repeated float normals = 12; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
 
-	message TextureCoordinates
+	// Store named data on meshed
+	message MeshData
 	{
-		repeated float uv = 1; // coordinates (u_1 v_1 ... u_NbPoints v_NbPoints) representating bridge between vertices and point on texture 
+		string name = 1; // Identifier name (uv, temperature...)
+		repeated float data = 2; // Raw data for each mesh
 	}
 
-	repeated TextureCoordinates texture_coordinates_channels = 13; // if we want apply textures on this face, we have to set a TextureCoordinates per texture
+	repeated MeshData vertices_data = 20; // List of data applied to vertices (like texture coordinates uv)
+	repeated MeshData facets_data = 21; // List of data applied to facets (like temperature)
 
 	// tangents ?
 	// bitangents ?
@@ -88,7 +91,8 @@ message Chunk {
 		Vertices vertices = 2; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
 		Facets facets = 3; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
 		Normals normals = 4; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
-		TextureCoordinatesChannels texture_coordinates_channels = 5;
+		VerticesData vertices_data = 5; // List of data applied to vertices (like texture coordinates uv)
+		FacetsData facets_data = 6; // List of data applied to facets (like temperature)
 	}
 
 	message FaceHeader {
@@ -97,7 +101,7 @@ message Chunk {
 		string display_name = 6;
 		string description = 3;
 		map<string, string> metadata = 4;
-		repeated int32 sizes = 5; // total sizes for vectors: (vertices_normals_size, facets_size, texture_coordinates_channels_size) - vertices and normals vectors have same size, that's why it is gathered in vertices_normals_size
+		repeated int32 sizes = 5; // vectors sizes in Face: (vertices_normals_size, facets_size, vertices_data_size, facets_data_size) - vertices and normals vectors have same size, therefore they are grouped in vertices_normals_size
 	}
 	
 	message Vertices {
@@ -112,8 +116,17 @@ message Chunk {
 		repeated float data = 1;
 	}
 
-	message TextureCoordinatesChannels {
-		repeated Face.TextureCoordinates data = 1;
+	message VerticesData {
+		bool new_layer = 1; // Boolean to express a new layer (MeshData) for vertices_data.
+		string name = 2; // Identifier name (uv, temperature...)
+		int32 size = 3; // Total size for vector in MeshData: data_size
+		repeated float data = 4; // Raw data for each vertice
+	}
+	message FacetsData {
+		bool new_layer = 1; // Boolean to express a new layer (MeshData) for facets_data.
+		string name = 2; // Identifier name (uv, temperature...)
+		int32 size = 3; // Total size for vector in MeshData: data_size
+		repeated float data = 4; // Raw data for each facet
 	}
 }
 message Upload_Response {
