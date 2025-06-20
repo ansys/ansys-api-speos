@@ -12,6 +12,8 @@ service FileTransferService {
     // Mandatory Client's Metadata:
     // key: "file-name" - value: file name
     // key: "file-size" - value: size of the file in bytes
+    // Optional Client's Metadata:
+    // key: "reserved-file-uri" - value: FileSystemItem reserved uri
     rpc Upload(stream Chunk) returns (Upload_Response) {}
     // Download a FileSystemItem
     // Server's' Initial Metadata:
@@ -26,7 +28,9 @@ service FileTransferService {
     rpc ListDependencies(ListDependencies_Request) returns (ListDependencies_Response) {}
 }
 
-message Reserve_Request {}
+message Reserve_Request {
+    string file_name = 1; // FileSystemItem's name
+}
 message Reserve_Response {
     string uri = 1; // uri of the FileSystemItem reserved
 }
