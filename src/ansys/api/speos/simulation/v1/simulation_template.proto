@@ -21,7 +21,7 @@ enum EnumColorimetricStandard {
 	CIE_1964 = 1; // 10 degrees CIE Standard Colorimetric Observer Data.
 }
 
-// If texture have been applied in the scene, fill Texture message.
+// If texture has been applied in the scene, fill Texture message.
 message Texture {
 	TextureNormalization texture_normalization = 1; // Rendering of the texture.
 	bool normal_map = 2; // To activate normal map.
