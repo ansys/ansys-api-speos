@@ -379,7 +379,7 @@ message Scene
 		}
 
 		message VirtualBSDFBenchProperties{
-			repeated double axis_system = 1; // Axis system of measurment (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz), O will be the measurment position, Z will be the normal axis (theta angle reference) and X the orientation on the surface (phi angle reference)
+			repeated double axis_system = 1; // Axis system of measurement (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz), O will be the measurement position, Z will be the normal axis (theta angle reference) and X the orientation on the surface (phi angle reference)
 			double analysis_x_ratio = 2; // Ratio to reduce the analysis area following x, must be in range ]0., 100.]
 			double analysis_y_ratio = 3; // Ratio to reduce the analysis area following y, must be in range ]0., 100.]
 		}

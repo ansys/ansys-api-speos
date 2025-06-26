@@ -100,7 +100,7 @@ message Job {
 
 	// If no stop condition is set, the simulation ends when you stop the process.
 	message VirtualBSDFBenchSimulationProperties {
-		int64 stop_condition_rays_number = 1; // Number of ray sent per configuration, meaning number of rays per angle incident (and wavelength in iridescence case)
+		int64 stop_condition_rays_number = 1; // Number of rays sent per configuration, meaning number of rays per angle incident (and wavelength in iridescence case)
 	}
 }
 
