@@ -106,9 +106,10 @@ message SimulationTemplate {
 			PhiSymmetry symmetry_type = 3; // Define symmetry type. Not needed if there is no symmetry in measure.
 
 			enum PhiSymmetry {
-				PHI_SYMMETRY_NO = 0;
-				PHI_SYMMETRY_1_PLANE = 1; // Symmetry to plane 0 - 180
-				PHI_SYMMETRY_2_PLANES	= 2; // Symmetry to planes 0 - 180 and 90 - 270 
+				PHI_SYMMETRY_UNSPECIFIED = 0;
+				PHI_SYMMETRY_NONE = 1;
+				PHI_SYMMETRY_1_PLANE = 2; // Symmetry to plane 0 - 180
+				PHI_SYMMETRY_2_PLANES = 3; // Symmetry to planes 0 - 180 and 90 - 270 
 			}
 		}
 		message SourceSamplingAdaptive{
