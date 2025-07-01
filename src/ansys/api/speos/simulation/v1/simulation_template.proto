@@ -3,6 +3,14 @@ syntax = "proto3";
 
 package ansys.api.speos.simulation.v1.templates;
 
+import "ansys/api/speos/sensor/v1/common.proto";
+
+// The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
+// Activating weight means that the Weight message is present.
+// When weight is not activated, rays' energy stays constant and probability laws dictate if rays continue or stop propagating.
+// When weight is activated, rays' energy evolves with interactions until rays reach the sensors.
+// It is highly recommended to activate Weight, except in Interactive simulation.
+// Not activating Weight is useful to understand certain phenomena as absorption.
 message Weight {
 	double minimum_energy_percentage = 1; // The Minimum energy percentage parameter defines the minimum energy ratio to continue to propagate a ray with weight. 1 = 100%.
 }
@@ -61,6 +69,7 @@ message SimulationTemplate {
 		DirectMCSimulationTemplate direct_mc_simulation_template = 1;
 		InverseMCSimulationTemplate inverse_mc_simulation_template = 2;
 		Interactive interactive_simulation_template = 5;
+		VirtualBSDFBench virtual_bsdf_bench_simulation_template = 6;
 	}
 
 	message Interactive {
@@ -70,6 +79,101 @@ message SimulationTemplate {
 		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
 		string ambient_material_uri = 5; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 		Texture texture = 6; // To activate texture.
+	}
+
+	// Virtual BSDF Bench
+	message VirtualBSDFBench {
+		double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent.
+		int32 max_impact = 3; // Defines a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
+		Weight weight = 4; // Activates Weight. It is highly recommended to activate.
+		EnumColorimetricStandard colorimetric_standard = 5; // Default Colorimetric Standard
+		Texture texture = 6; // Activates texture.
+		
+		oneof mode {
+			RoughnessOnly roughness_only = 9; // BSDF depends on surface roughness only
+			AllCharacteristics all_characteristics = 10; // BSDF depends on all properties
+		}
+
+		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 11; // 
+		Sensor sensor = 12; // Sensor definition
+
+		message SourceSamplingUniformIsotropic{
+			uint32 theta_sampling = 1; // Number of samples created along the polar angle Theta (around the normal Z-axis) in the range [0,90] degrees, with a minimum value of 2 degrees. Each sample represents the position of the source on Theta.
+		}
+		message SourceSamplingUniformAnisotropic{
+			uint32 theta_sampling = 1; // Number of samples created along the polar angle Theta (around the normal Z-axis) in the range [0,90] degrees, with a minimum value of 2 degrees. Each sample represents the position of the source on Theta.
+			uint32 phi_sampling = 2; // Number of samples created along the azimuthal angle Phi (around the X-axis). Each sample represents the position of the source on Phi.
+			PhiSymmetry symmetry_type = 3; // Define symmetry type. Not needed if there is no symmetry in measure.
+
+			enum PhiSymmetry {
+				PHI_SYMMETRY_UNSPECIFIED = 0;
+				PHI_SYMMETRY_NONE = 1;
+				PHI_SYMMETRY_1_PLANE = 2; // Symmetry to plane 0 - 180
+				PHI_SYMMETRY_2_PLANES = 3; // Symmetry to planes 0 - 180 and 90 - 270 
+			}
+		}
+		message SourceSamplingAdaptive{
+			string file_uri = 1; // uri of incident sampling file
+		}
+
+		message Sensor{
+			double integration_angle = 1;
+			oneof sampling_mode{
+				SensorSamplingUniform uniform = 2;
+				SensorSamplingAutomatic automatic = 3;
+			}
+
+			message SensorSamplingUniform{
+				uint32 theta_sampling = 1; // Number of samples created along the polar angle Theta (around the normal Z-axis) in the range [0,90] degrees. Each sample represents the position of the sensor on Theta.
+				uint32 phi_sampling = 2; // Number of samples created along the azimuthal angle Phi (around the X-axis). Each sample represents the position of the sensor on Phi.
+			}
+
+			message SensorSamplingAutomatic{
+			}
+		}
+
+		message RoughnessOnly{
+			oneof source_sampling{
+				SourceSamplingUniformIsotropic uniform_isotropic = 1; // oneof with adaptive
+				SourceSamplingAdaptive adaptive = 2;
+			}
+		} 
+
+		message AllCharacteristics{	
+			bool is_bsdf180 = 1; // Corresponds to the parameter "BSDF depends on light incidence side". When set to true, the Theta sampling for the source is defined on [0,180] instead of [0,90].
+			oneof iridescence_mode{
+				Iridescence iridescence = 2; // Color depends on viewing direction
+				NoIridescence no_iridescence = 3; // Color does not depend on viewing direction
+			}
+			bool sensor_reflection_and_transmission = 4; // When set to true, it measures the reflection and transmission (theta in [0,180]). When set to false, it measures the reflection only (theta in [0,90]).
+			message Iridescence{
+				oneof source_sampling {
+					SourceSamplingUniformIsotropic uniform_isotropic = 1;
+					SourceSamplingAdaptive adaptive = 2;
+				}
+			}
+
+			message NoIridescence{
+				oneof surface_type{
+					Isotropic isotropic = 1;
+					Anisotropic anisotropic = 2;
+				}
+
+				message Isotropic{
+					oneof source_sampling {
+						SourceSamplingUniformIsotropic uniform_isotropic = 1;
+						SourceSamplingAdaptive adaptive = 2;
+					}
+				}
+
+				message Anisotropic{
+					oneof source_sampling {
+						SourceSamplingUniformAnisotropic uniform_anisotropic = 1;
+						SourceSamplingAdaptive adaptive = 2;
+					}
+				}
+			}
+		}
 	}
 }
 
