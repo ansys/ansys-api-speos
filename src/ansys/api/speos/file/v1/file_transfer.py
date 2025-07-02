@@ -171,6 +171,9 @@ def _chunks_to_file(chunks, download_location):
         if file is not None:
             file.write(chunk.binary)
 
+    if file is not None:
+        file.close()
+
     return file_path
 
 def download_file(
