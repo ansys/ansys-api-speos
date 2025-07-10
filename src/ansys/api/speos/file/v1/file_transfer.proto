@@ -10,14 +10,12 @@ service FileTransferService {
     rpc Reserve(Reserve_Request) returns (Reserve_Response) {}
     // Upload a file 
     // Mandatory Client's Metadata:
-    // key: "file-name" - value: file name
     // key: "file-size" - value: size of the file in bytes
     // Optional Client's Metadata:
     // key: "reserved-file-uri" - value: FileSystemItem reserved uri
     rpc Upload(stream Chunk) returns (Upload_Response) {}
     // Download a FileSystemItem
     // Server's' Initial Metadata:
-    // key: "file-name" - value: file name
     // key: "file-size" - value: size of the file in bytes
     rpc Download(Download_Request) returns (stream Chunk) {}
     // Delete a FileSystemItem
@@ -44,6 +42,7 @@ message FileSystemItemInformation {
 message Chunk {
     bytes binary = 1;
     int64 size = 2;
+    string file_name = 3; // file name. Mandatory in the first chunk exchanged.
 }
 
 message Upload_Response {
