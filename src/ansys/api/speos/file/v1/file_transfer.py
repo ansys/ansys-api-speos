@@ -81,7 +81,7 @@ def upload_file(
     with open(file_path, "rb") as file:
         chunk_iterator = _file_to_chunks(file, os.path.basename(file_path))
 
-        metadata = [("file-size", str(os.path.getsize(file_path)))] # Don't use file-name metadata as metadata does not support special characters
+        metadata = [("file-size", str(os.path.getsize(file_path)))]
         if reserved_file_uri:
             metadata.append(("reserved-file-uri", reserved_file_uri))
         upload_response = file_transfer_service_stub.Upload(chunk_iterator, metadata=metadata)
