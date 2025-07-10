@@ -10,14 +10,12 @@ service FileTransferService {
     rpc Reserve(Reserve_Request) returns (Reserve_Response) {}
     // Upload a file 
     // Mandatory Client's Metadata:
-    // key: "file-name" - value: file name - WARNING deprecated as metadata does not support special caracters - better use Chunk.file_name.
     // key: "file-size" - value: size of the file in bytes
     // Optional Client's Metadata:
     // key: "reserved-file-uri" - value: FileSystemItem reserved uri
     rpc Upload(stream Chunk) returns (Upload_Response) {}
     // Download a FileSystemItem
     // Server's' Initial Metadata:
-    // key: "file-name" - value: file name - WARNING deprecated as metadata does not support special caracters - Chunk.file_name used instead.
     // key: "file-size" - value: size of the file in bytes
     rpc Download(Download_Request) returns (stream Chunk) {}
     // Delete a FileSystemItem
