@@ -60,7 +60,7 @@ if __name__ == "__main__":
         url=f"https://github.com/ansys/{package_name}",
         license="MIT",
         python_requires=">=3.10",
-        install_requires=["grpcio~=1.48", "protobuf>=3.20,<7"],
+        install_requires=["grpcio>=1.50.0,<1.73", "protobuf>=3.20,<7"],
         package_dir = {"": "src"},
         packages=setuptools.find_namespace_packages("src", include=("ansys.*",)),
         package_data={
