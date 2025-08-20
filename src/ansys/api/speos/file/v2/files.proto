@@ -90,25 +90,34 @@ service FileActions {
 	rpc Check(Check_Request) returns (Check_Response) {}
 }
 
+// Request to upload a file
 message Upload_Request {
 	string guid = 1; // File guid where to store the chunk
 	string file_name = 2; // Original file name
 	bytes binary = 3; // Binary blob of the file
 }
+// Response to upload a file
 message Upload_Response {
 	FileInfo info = 1; // Information about the filesystem item created
 }
 
+// Request to download a file
 message Download_Request {
 	string guid = 1; // File guid to download
 }
+// Response to download a file
 message Download_Response {
 	bytes binary = 1; // Binary blob of the file
 }
 
+// Request to check of file consistency
 message Check_Request {
-	string guid = 1; // File guid to check
+	repeated string guid = 1; // File guids to check
 }
+// Response to check of file consistency
 message Check_Response {
-	// TODO ? Add vector of errors, can be useful to check the whose db ?
+	message ErrorList {
+		repeated string error = 1; // Error message
+	}
+	map<string, ErrorList> errors = 1; // Map of errors associated to guids
 }
