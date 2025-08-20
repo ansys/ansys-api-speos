@@ -107,8 +107,8 @@ message Download_Response {
 }
 
 message Check_Request {
-    string guid = 1; // File guid to check
+	string guid = 1; // File guid to check
 }
 message Check_Response {
-	// TODO ? Add vector of errors
+	// TODO ? Add vector of errors, can be useful to check the whose db ?
 }
