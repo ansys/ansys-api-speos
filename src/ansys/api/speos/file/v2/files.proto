@@ -42,7 +42,7 @@ message Create_Request {}
 // Response to create a file
 message Create_Response {
 	string guid = 1; // Guid of the created file
-    FileInfo info = 2; // Information about the created file
+	FileInfo info = 2; // Information about the created file
 }
 
 // Request to read a file
@@ -82,24 +82,33 @@ message List_Response {
 /////////////
 // Actions available on a file
 service FileActions {
-    // Upload a file
-    rpc Upload(stream Upload_Request) returns (Upload_Response) {}
-    // Download a file
-    rpc Download(Download_Request) returns (stream Download_Response) {}
+	// Upload a file
+	rpc Upload(stream Upload_Request) returns (Upload_Response) {}
+	// Download a file
+	rpc Download(Download_Request) returns (stream Download_Response) {}
+	// Check file
+	rpc Check(Check_Request) returns (Check_Response) {}
 }
 
 message Upload_Request {
-    string guid = 1; // File guid where to store the chunk
+	string guid = 1; // File guid where to store the chunk
 	string file_name = 2; // Original file name
-    bytes binary = 3; // Binary blob of the file
+	bytes binary = 3; // Binary blob of the file
 }
 message Upload_Response {
-    FileInfo info = 1; // Information about the filesystem item created
+	FileInfo info = 1; // Information about the filesystem item created
 }
 
 message Download_Request {
-    string guid = 1; // File guid to download
+	string guid = 1; // File guid to download
 }
 message Download_Response {
-    bytes binary = 1; // Binary blob of the file
+	bytes binary = 1; // Binary blob of the file
+}
+
+message Check_Request {
+    string guid = 1; // File guid to check
+}
+message Check_Response {
+	// TODO ? Add vector of errors
 }
