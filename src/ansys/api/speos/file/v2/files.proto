@@ -51,7 +51,7 @@ message Read_Request {
 }
 // Response to read a file
 message Read_Response {
-	FileInfo info = 1; // file corresponding to the guid given in Read_Request
+	FileInfo info = 1; // file corresponding to the guid
 }
 
 // Request to update a file
