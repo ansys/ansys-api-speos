@@ -107,6 +107,7 @@ message Job {
 // Request to create a Job in JobsManager
 message Create_Request {
 	Job job = 3; // Job characteristics
+	optional string guid = 4; // Optional field to specify the guid used in the database. If not set a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 message Create_Response {
 	string guid = 1; // Guid of the Job created in JobsManager

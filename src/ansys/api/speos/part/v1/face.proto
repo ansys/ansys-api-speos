@@ -46,6 +46,7 @@ service FacesManager {
 // Request to create a face
 message Create_Request {
     Face face = 1; // face to create
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 // Response to create a face
 message Create_Response {
