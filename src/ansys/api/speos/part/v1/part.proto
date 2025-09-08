@@ -44,7 +44,7 @@ service PartsManager {
 // Request to create an element
 message Create_Request {
     Part part = 1; // Element to create
-	optional string guid = 2; // Optional field to specify the guid used in the database. If not set a unique guid will be generated for that entry and sent back in the Create_Response.
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 // Response to create an element
 message Create_Response {

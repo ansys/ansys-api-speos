@@ -80,7 +80,7 @@ message SOPTemplate {
 // Request to create a SOPTemplate in SOPTemplatesManager
 message Create_Request {
 	SOPTemplate sop_template = 1; // SOPTemplate containing its basic characteristics
-	optional string guid = 2; // Optional field to specify the guid used in the database. If not set a unique guid will be generated for that entry and sent back in the Create_Response.
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 message Create_Response {
 	string guid = 1; // Guid of the SOPTemplate created in SOPTemplatesManager
