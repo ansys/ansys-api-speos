@@ -193,6 +193,7 @@ service SimulationTemplatesManager {
 // Request to create a SimulationTemplate in SimulationTemplatesManager
 message Create_Request {
 	SimulationTemplate simulation_template = 1; // SimulationTemplate containing its basic characteristics
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 message Create_Response {
 	string guid = 1; // Guid of the SimulationTemplate created in SimulationTemplatesManager
