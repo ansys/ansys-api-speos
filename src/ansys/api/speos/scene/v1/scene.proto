@@ -4,10 +4,6 @@ import "ansys/api/speos/results/v1/ray_path.proto";
 
 package ansys.api.speos.scene.v1;
 
-//////////
-// CRUD //
-//////////
-
 // Optical scene definition made of parts, optical properties, sources, sensors and simulations
 message Scene
 {
@@ -81,7 +77,7 @@ message Scene
 		message LuminaireProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 		}
-		
+
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
 				message GeoPath {
@@ -140,7 +136,7 @@ message Scene
 				IntersectedOneTime = 1;
 			}
 			message Layer {
-				string name = 1; // Name of the layer (will appear for example in Virtual Photometric Lab)
+				string name = 1; // Name of the layer 
 				GeoPaths geometries = 2; // Surface selected.
 			}
 
@@ -291,11 +287,6 @@ message List_Request {}
 message List_Response {
 	repeated string guids = 1; // Guids of the Scenes in ScenesManager
 }
-
-
-/////////////
-// ACTIONS //
-/////////////
 
 // Actions available on a Scene
 service SceneActions {

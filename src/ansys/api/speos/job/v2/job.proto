@@ -32,6 +32,7 @@ message Job {
 		DirectMCSimulationProperties direct_mc_simulation_properties = 4; // Properties to be filled for simulation based on DirectMCSimulationTemplate
 		InverseMCSimulationProperties inverse_mc_simulation_properties = 5; // Properties to be filled for simulation based on InverseMCSimulationTemplate 
 		InteractiveSimulationProperties interactive_simulation_properties = 6; // Properties to be filled for simulation based on Interactive 
+		VirtualBSDFBenchSimulationProperties virtualbsdfbench_simulation_properties = 10;  // Properties to be filled for simulation based on VirtualBSDFBench 
 	}
 
 	enum Type {
@@ -96,11 +97,17 @@ message Job {
 			optional uint32 rays_nb = 3; // Number of rays sent by the source referenced via its source_path. Default 100
 		}
 	}
+
+	// If no stop condition is set, the simulation ends when you stop the process.
+	message VirtualBSDFBenchSimulationProperties {
+		int64 stop_condition_rays_number = 1; // Number of rays sent per configuration, meaning number of rays per angle incident (and wavelength in iridescence case)
+	}
 }
 
 // Request to create a Job in JobsManager
 message Create_Request {
 	Job job = 3; // Job characteristics
+	optional string guid = 4; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 message Create_Response {
 	string guid = 1; // Guid of the Job created in JobsManager
