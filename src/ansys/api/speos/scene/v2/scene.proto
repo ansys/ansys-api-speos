@@ -495,7 +495,8 @@ service SceneActions {
 // Request to LoadFile service
 message LoadFile_Request {
 	string guid = 1; // Guid of a ScenesManager element to update
-    string file_uri = 2; // File uri (path or guid from FileTransferService) 
+	string file_uri = 2; // File uri (path or guid from FileTransferService)
+	string password = 3;
 }
 // Response to LoadFile service
 message LoadFile_Response {
