@@ -134,21 +134,40 @@ message SensorTemplate {
 		}
 	}
 
-	message InterocularDistance
+	message Stereo
 	{
 		double interocular_distance = 1; // distance between viewpoints in mm. To use, make sure that front direction is horizontal and top vertical
 	}
 
 	message Observer{
-		Radiance radiance = 1;
-		InterocularDistance interocular_distance = 2;
+		//
+		double focal = 1; // Distance between the sensor radiance plan and the observer point. The larger the focal, the closer to the object.
+		double integration_angle = 2; // integration angle in degrees for direct simulations
+		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 3; // Spectral excursion to use for simulation
+		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 4; // Dimensions of the sensor
+		Stereo stereo = 5; // Allows to set the interocular distance.
 
+		double distance = 6; // Radius of the sphere on which the sensors will be placed
+		ansys.api.speos.sensor.v1.AngularRange sensors_locations = 7; // Locations of the sensors on the sphere. x corresponds to Horizontal direction. y corresponds to Vertical direction.
 	}
+
 	message Immersive {
-		uint32 sampling = 1;
-		InterocularDistance interocular_distance = 2;
-		double integration_angle = 4; // integration angle in degrees for direct simulations
-		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 5; // Spectral excursion to use for simulation
+		// 
+		uint32 sampling = 1; // Pixel sampling for a face.
+		Stereo stereo = 2; // Allows to set the interocular distance.
+		double integration_angle = 3; // integration angle in degrees for direct simulations
+		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 4; // Spectral excursion to use for simulation
+		ExcludeFaces exclude_faces = 5; // Possibility to exclude some faces.
+
+		message ExcludeFaces
+		{
+			bool front = 1;	// Exclude front face if true
+			bool back = 2; // Exclude back face if true
+			bool left = 3; // Exclude left face if true
+			bool right = 4;	// Exclude right face if true
+			bool top = 5; // Exclude top face if true
+			bool bottom = 6; // Exclude bottom face if true
+		}
 	}
 }
 

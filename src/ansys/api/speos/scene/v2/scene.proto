@@ -346,35 +346,18 @@ message Scene
 			GeoPaths geometries = 4; // Geometries that will use this sensor
 		}
 
-		message ObserverProperties{
-			message Locations {
-				double h_start = 1;	//Horizontal start value for sensors positions (in deg)
-				double h_end = 2;	//Horizontal end value for sensors positions (in deg)
-				uint32 h_sampling = 3; //Horizontal number of sensors
-				double v_start = 4;	//Vertical start value for sensors positions (in deg)
-				double v_end = 5;	//Vertical end value for sensors positions (in deg)
-				uint32 v_sampling = 6;	//Vertical number of sensors
-			}
-			
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			Locations sensors_locations = 2; // Locations of the sensors on the sphere
-			double distance = 4; //radius of sphere on which the sensors wuill placed
+		message ObserverProperties{		
+			repeated double axis_system = 1; // Observed object/scene position. (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Horizontal direction. Y corresponds to Vertical direction.
 			oneof layer_type {
-				LayerTypeNone layer_type_none = 5; // Layer type : None
-				LayerTypeSource layer_type_source = 6; // Layer type : Source							
+				LayerTypeNone layer_type_none = 2; // Layer type : None
+				LayerTypeSource layer_type_source = 3; // Layer type : Source							
 			}
 		}
 		message ImmersiveProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			bool exclude_front_face = 2;	// Exclude front face
-			bool exclude_back_face = 3;		// Exclude back face
-			bool exclude_left_face = 4;		// Exclude left face
-			bool exclude_right_face = 5;	// Exclude right face
-			bool exclude_top_face = 6;		// Exclude top face
-			bool exclude_bottom_face = 7;	// Exclude bottom face
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Front direction. Y corresponds to Top direction. Z corresponds to Right direction.
 			oneof layer_type {
-				LayerTypeNone layer_type_none = 8; // Layer type : None
-				LayerTypeSource layer_type_source = 9; // Layer type : Source
+				LayerTypeNone layer_type_none = 2; // Layer type : None
+				LayerTypeSource layer_type_source = 3; // Layer type : Source
 			}
 		}
 
