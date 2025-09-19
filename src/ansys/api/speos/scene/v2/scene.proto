@@ -408,6 +408,8 @@ message Scene
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
 	
+	repeated double anchor_axis_system = 11; // Represents the axis system to be attached to the one describing the scene instance. If the coordinate system is not orthonormal, it will be automatically orthonormalized
+	
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
