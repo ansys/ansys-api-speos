@@ -424,6 +424,8 @@ message Scene
 	map<string, string> metadata = 3; // User defined metadata
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
+
+	repeated double sub_scene_anchor_axis_system = 11; // Only used for sub-scene - Represents the axis system to be attached to the one describing the scene instance. If the coordinate system is not orthonormal, it will be automatically orthonormalized
 	
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
