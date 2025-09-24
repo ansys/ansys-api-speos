@@ -140,19 +140,17 @@ message SensorTemplate {
 	}
 
 	message Observer{
-		//
-		double focal = 1; // Distance between the sensor radiance plan and the observer point. The larger the focal, the closer to the object.
+		double focal = 1; // Distance between the sensor radiance plan and the observer point. The larger the focal, the closer to the object. (mm)
 		double integration_angle = 2; // integration angle in degrees for direct simulations
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 3; // Spectral excursion to use for simulation
 		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 4; // Dimensions of the sensor
 		Stereo stereo = 5; // Allows to set the interocular distance.
 
-		double distance = 6; // Radius of the sphere on which the sensors will be placed
+		double distance = 6; // Radius of the sphere on which the sensors will be placed. (mm)
 		ansys.api.speos.sensor.v1.AngularRange sensors_locations = 7; // Locations of the sensors on the sphere. x corresponds to Horizontal direction. y corresponds to Vertical direction.
 	}
 
 	message Immersive {
-		// 
 		uint32 sampling = 1; // Pixel sampling for a face.
 		Stereo stereo = 2; // Allows to set the interocular distance.
 		double integration_angle = 3; // integration angle in degrees for direct simulations
