@@ -486,7 +486,7 @@ message List_Response {
 
 // Actions available on a Scene
 service SceneActions {
-	// Load .speos file
+	// Load .speos, .SPEOSLightBox file
 	rpc LoadFile(LoadFile_Request) returns (LoadFile_Response) {} 
 	// Save .speos file
 	rpc SaveFile(SaveFile_Request) returns (SaveFile_Response) {} 
@@ -497,8 +497,8 @@ service SceneActions {
 // Request to LoadFile service
 message LoadFile_Request {
 	string guid = 1; // Guid of a ScenesManager element to update
-	string file_uri = 2; // File uri (path or guid from FileTransferService)
-	string password = 3;
+    string file_uri = 2; // File uri (path or guid from FileTransferService) 
+	string password = 3; // Password needed to open the speos lightbox file (only necessary if user protects the speos light box with a password)
 }
 // Response to LoadFile service
 message LoadFile_Response {
