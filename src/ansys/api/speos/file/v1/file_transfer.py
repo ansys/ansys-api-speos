@@ -28,24 +28,15 @@ import ansys.api.speos.file.v1.file_transfer_pb2_grpc as file_transfer__v1__pb2_
 import google.protobuf.duration_pb2 as duration_pb2
 
 
-def file_to_chunks(file, chunk_size=4000000):
-    """Cut a file into chunks of specified chunk_size.
-
-    Parameters
-    ----------
-    file : file object
-    chunk_size : size
-        number of bytes max in the chunk - default to 4000000
-
-    Examples
-    --------
-    >>> from ansys.api.speos.file.v1 import file_transfer
-    >>> with open("path/to/file", "rb") as file:
-    >>>     chunk_iterator = file_transfer.file_to_chunks(file=file)
-    >>>     # do something with chunk iterator
-    """
+def _file_to_chunks(file, file_name, chunk_size=4000000):
+    first_chunk = True
     while buffer := file.read(chunk_size):
         chunk = file_transfer__v1__pb2.Chunk(binary=buffer, size=len(buffer))
+
+        if first_chunk:
+            chunk.file_name = file_name
+            first_chunk = False
+
         yield chunk
 
 
@@ -88,9 +79,9 @@ def upload_file(
         raise ValueError("incorrect file_path : " + file_path)
     
     with open(file_path, "rb") as file:
-        chunk_iterator = file_to_chunks(file)
+        chunk_iterator = _file_to_chunks(file, os.path.basename(file_path))
 
-        metadata = [("file-name", os.path.basename(file_path)), ("file-size", str(os.path.getsize(file_path)))]
+        metadata = [("file-size", str(os.path.getsize(file_path)))]
         if reserved_file_uri:
             metadata.append(("reserved-file-uri", reserved_file_uri))
         upload_response = file_transfer_service_stub.Upload(chunk_iterator, metadata=metadata)
@@ -167,6 +158,23 @@ def upload_folder(
 
     return upload_responses
 
+def _chunks_to_file(chunks, download_location):
+    first_chunk = True
+    file_path = None
+    file = None
+    for chunk in chunks:
+        if first_chunk and chunk.file_name != "":
+            file_path = os.path.join(download_location, chunk.file_name)
+            file = open(file_path, "wb")
+            first_chunk = False
+        
+        if file is not None:
+            file.write(chunk.binary)
+
+    if file is not None:
+        file.close()
+
+    return file_path
 
 def download_file(
     file_transfer_service_stub: file_transfer__v1__pb2_grpc.FileTransferServiceStub,
@@ -209,12 +217,10 @@ def download_file(
         raise ValueError("incorrect download_location : " + download_location)
 
     chunks = file_transfer_service_stub.Download(file_transfer__v1__pb2.Download_Request(uri=file_uri))
-    server_initial_metadata = dict(chunks.initial_metadata())
-    file_path = os.path.join(download_location, server_initial_metadata["file-name"])
-    with open(file_path, "wb") as file:
-        for chunk in chunks:
-            file.write(chunk.binary)
+    
+    file_path = _chunks_to_file(chunks, download_location)
 
+    server_initial_metadata = dict(chunks.initial_metadata())
     if int(server_initial_metadata["file-size"]) != os.path.getsize(file_path):
         raise ValueError("File download incomplete : " + file_path)
 
@@ -224,7 +230,7 @@ def download_file(
     # Fill response
     download_response = file_transfer__v1__pb2.Download_Response()
     download_response.info.uri = file_uri
-    download_response.info.file_name = server_initial_metadata["file-name"]
+    download_response.info.file_name = os.path.basename(file_path)
     download_response.info.file_size = int(server_initial_metadata["file-size"])
     s = int(download_duration.total_seconds())
     download_response.download_duration.seconds = s

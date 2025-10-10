@@ -408,6 +408,8 @@ message Scene
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
 	
+	repeated double sub_scene_anchor_axis_system = 11; // Only used for sub-scene - Represents the axis system to be attached to the one describing the scene instance. If the coordinate system is not orthonormal, it will be automatically orthonormalized
+	
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
@@ -433,6 +435,7 @@ service ScenesManager {
 // Request to create a Scene in ScenesManager
 message Create_Request {
 	Scene scene = 1;
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 message Create_Response {
 	string guid = 1; // Guid of the Scene created in ScenesManager
@@ -466,7 +469,7 @@ message List_Response {
 
 // Actions available on a Scene
 service SceneActions {
-	// Load .speos file
+	// Load .speos, .SPEOSLightBox file
 	rpc LoadFile(LoadFile_Request) returns (LoadFile_Response) {} 
 	// Save .speos file
 	rpc SaveFile(SaveFile_Request) returns (SaveFile_Response) {} 
@@ -478,6 +481,7 @@ service SceneActions {
 message LoadFile_Request {
 	string guid = 1; // Guid of a ScenesManager element to update
     string file_uri = 2; // File uri (path or guid from FileTransferService) 
+	string password = 3; // Password needed to open the speos lightbox file (only necessary if user protects the speos light box with a password)
 }
 // Response to LoadFile service
 message LoadFile_Response {
