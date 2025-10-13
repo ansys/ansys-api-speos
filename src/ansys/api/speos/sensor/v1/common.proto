@@ -54,7 +54,7 @@ message IntensityDimensions {
 	uint32 y_sampling = 6; // Number of pixels along Y direction.
 }
 
-// Angular range and sampling along two directions
+// Angular range and sampling along two directions.
 message AngularRange {
 	double x_start = 1; // Start angle along X direction (deg).
 	double x_end = 2; // End angle along X direction (deg).
