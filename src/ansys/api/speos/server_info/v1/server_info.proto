@@ -1,0 +1,15 @@
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.server_info.v1;
+
+service ServerInfo {
+	// Get the server version
+	rpc GetVersion(GetVersion_Request) returns (GetVersion_Response) {}
+}
+
+message GetVersion_Request {}
+
+message GetVersion_Response {
+	string version = 1; // Version of the server. Format: "major.minor.patch.build". Example "2025.2.1.31394".
+}
