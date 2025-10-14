@@ -35,13 +35,13 @@ message SensorDimensions {
 message SensorTypePhotometric {}
 // Color results without any spectral data or layer separation.
 message SensorTypeColorimetric {
-	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+	WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
 }
 // The sensor considers the entire spectrum and gets the results.
 message SensorTypeRadiometric {}
 // Color results and spectral data separated by wavelength.
 message SensorTypeSpectral {
-	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+	WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
 }
 
 // Dimensions of the non conoscopic intensity sensor

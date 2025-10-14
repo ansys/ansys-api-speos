@@ -142,7 +142,7 @@ message SensorTemplate {
 	message Observer{
 		double focal = 1; // Distance between the sensor radiance plan and the observer point. The larger the focal, the closer to the object. (mm)
 		double integration_angle = 2; // Integration angle in degrees for direct simulations.
-		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 3; // Spectral excursion to use for simulation.
+		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 3; // Spectral range to use for simulation.
 		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 4; // Dimensions of the sensor.
 		Stereo stereo = 5; // Allows to set the interocular distance.
 
@@ -154,7 +154,7 @@ message SensorTemplate {
 		uint32 sampling = 1; // Sampling (horizontal and vertical number of pixels) for a face.
 		Stereo stereo = 2; // Allows to set the interocular distance.
 		double integration_angle = 3; // Integration angle in degrees for direct simulations.
-		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 4; // Spectral excursion to use for simulation.
+		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 4; // Spectral range to use for simulation.
 		ExcludeFaces exclude_faces = 5; // Possibility to exclude some faces.
 
 		message ExcludeFaces
