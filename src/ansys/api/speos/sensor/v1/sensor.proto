@@ -144,7 +144,7 @@ message SensorTemplate {
 		double integration_angle = 2; // Integration angle in degrees for direct simulations.
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 3; // Spectral range to use for simulation.
 		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 4; // Dimensions of the sensor.
-		Stereo stereo = 5; // Allows to set the interocular distance.
+		Stereo stereo = 5; // Activates stereo. When not set, stereo is disabled for the sensor.
 
 		double distance = 6; // Radius of the sphere on which the sensors will be placed. (mm)
 		ansys.api.speos.sensor.v1.AngularRange sensors_locations = 7; // Locations of the sensors on the sphere. X corresponds to Horizontal direction. Y corresponds to Vertical direction.
@@ -152,7 +152,7 @@ message SensorTemplate {
 
 	message Immersive {
 		uint32 sampling = 1; // Sampling (horizontal and vertical number of pixels) for a face.
-		Stereo stereo = 2; // Allows to set the interocular distance.
+		Stereo stereo = 2; // Activates stereo. When not set, stereo is disabled for the sensor.
 		double integration_angle = 3; // Integration angle in degrees for direct simulations.
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 4; // Spectral range to use for simulation.
 		ExcludeFaces exclude_faces = 5; // Possibility to exclude some faces.
