@@ -158,6 +158,8 @@ service JobActions {
 	rpc GetRayPaths(GetRayPaths_Request) returns (stream ansys.api.speos.results.v1.RayPath) {}
 	// Get progress status about a Job
 	rpc GetProgressStatus(GetProgressStatus_Request) returns (GetProgressStatus_Response) {}
+	// Save a Job into .speos file
+	rpc SaveFile(SaveFile_Request) returns (SaveFile_Response) {}
 }
 
 message GetState_Request {
@@ -241,3 +243,9 @@ message GetProgressStatus_Response {
 	uint64 rays_number = 8; // Number of rays emitted since the (re)start of the simulation
 	uint64 rays_number_per_second = 9; // Number of rays emitted in the last second
 }
+
+message SaveFile_Request {
+	string guid = 1; // Guid of the Job in JobsManager.
+	string file_uri = 2; // File uri to the .speos file to save. (Local path or guid from FileTransferService).
+}
+message SaveFile_Response {}
