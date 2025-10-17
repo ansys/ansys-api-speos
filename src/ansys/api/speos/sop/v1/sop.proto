@@ -22,7 +22,7 @@ service SOPTemplatesManager {
 message SOPTemplate {
 	// Perfect specular surface
 	message Mirror {
-		double reflectance = 1; // Reflectance, expected from 0.0 to 1.0 
+		double reflectance = 1; // Reflectance, expected from 0. to 100. in % 
 	}
 	// Transparent or perfectly polished material (glass, plastic)
 	message OpticalPolished {}
