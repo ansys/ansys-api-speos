@@ -246,6 +246,6 @@ message GetProgressStatus_Response {
 
 message SaveFile_Request {
 	string guid = 1; // Guid of the Job in JobsManager.
-	string file_uri = 2; // File uri to the .speos file to save. (Local path or guid from FileTransferService).
+	string file_uri = 2; // URI of the *.speos file to save. (Local path or guid from FileTransferService).
 }
 message SaveFile_Response {}
