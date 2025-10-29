@@ -65,7 +65,7 @@ message SensorCameraModePhotometric {
 		SensorCameraColorModeMonochromatic color_mode_monochromatic = 7; // Color mode : Monochromatic
 	}
 
-	WavelengthsRange wavelengths_range = 12; // Spectral excursion to use for simulation
+	WavelengthsRange wavelengths_range = 12; // Spectral range to use for simulation.
 }
 
 message CameraSensorTemplate {
