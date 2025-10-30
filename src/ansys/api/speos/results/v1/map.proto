@@ -11,6 +11,9 @@ service MapActions {
 
 	// Merge left and right speos360 files into a stereoscopic Speos360 file. [Unsupported]
 	rpc MergeSpeos360ToStereoSpeos360(MergeSpeos360ToStereoSpeos360_Request) returns (MergeSpeos360ToStereoSpeos360_Response) {}
+
+	// Split a Speos360 file into a list of XMP files. [Unsupported]
+	rpc SplitSpeos360IntoXMPs(SplitSpeos360IntoXMPs_Request) returns (SplitSpeos360IntoXMPs_Response) {}
 }
 
 message MergeXMPsToXMPOrSpeos360_Request {
@@ -28,3 +31,10 @@ message MergeSpeos360ToStereoSpeos360_Request {
 }
 
 message MergeSpeos360ToStereoSpeos360_Response {}
+
+message SplitSpeos360IntoXMPs_Request {
+	string file_uri = 1; // Uri of the speos360 file to split.
+}
+message SplitSpeos360IntoXMPs_Response {
+	repeated string splitted_map_uri = 1; // List of uris to XMP files.
+}

@@ -35,13 +35,13 @@ message SensorDimensions {
 message SensorTypePhotometric {}
 // Color results without any spectral data or layer separation.
 message SensorTypeColorimetric {
-	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+	WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
 }
 // The sensor considers the entire spectrum and gets the results.
 message SensorTypeRadiometric {}
 // Color results and spectral data separated by wavelength.
 message SensorTypeSpectral {
-	WavelengthsRange wavelengths_range = 1; // Spectral excursion to use for simulation
+	WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
 }
 
 // Dimensions of the non conoscopic intensity sensor
@@ -52,6 +52,16 @@ message IntensityDimensions {
 	double y_start = 4; // Start angle along Y direction (deg).
 	double y_end = 5; // End angle along Y direction (deg).
 	uint32 y_sampling = 6; // Number of pixels along Y direction.
+}
+
+// Angular range and sampling along two directions.
+message AngularRange {
+	double x_start = 1; // Start angle along X direction (deg).
+	double x_end = 2; // End angle along X direction (deg).
+	uint32 x_sampling = 3; // Sampling along X direction.
+	double y_start = 4; // Start angle along Y direction (deg).
+	double y_end = 5; // End angle along Y direction (deg).
+	uint32 y_sampling = 6; // Sampling along Y direction.
 }
 
 // Dimensions of the conoscopic intensity sensor
