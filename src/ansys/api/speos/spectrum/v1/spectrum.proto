@@ -114,5 +114,5 @@ message GetSampled_Request {
 
 // Response of GetSampled
 message GetSampled_Response {
-	ansys.api.speos.common.v1.DataDoubles flux = 1; // Flux of the spectrum file
+	Spectrum.Sampled spectrum = 1; // Flux of the spectrum file
 }
