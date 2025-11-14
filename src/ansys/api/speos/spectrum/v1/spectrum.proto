@@ -100,3 +100,19 @@ message List_Request {
 message List_Response {
 	repeated string guids = 1; // Guids of the Spectrums in SpectrumsManager
 }
+
+// Actions available on a Spectrum
+service SpectrumActions {
+	// Get information about spectrum library
+	rpc GetSampled(GetSampled_Request) returns (GetSampled_Response) {}
+}
+
+// Request of GetSampled
+message GetSampled_Request {
+	string guid = 1; // Guid of the Spectrum to get information about spectrum file (example: flux). Only for Spectrum of type Library.
+}
+
+// Response of GetSampled
+message GetSampled_Response {
+	Spectrum.Sampled spectrum = 1; // Flux of the spectrum file
+}
