@@ -1,0 +1,402 @@
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.sensor.v2;
+
+
+service SensorTemplatesManager {
+	// Create a SensorTemplate
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a SensorTemplate
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a SensorTemplate
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a SensorTemplate
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all SensorTemplates in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// Sensor template with its basic characteristics.
+message SensorTemplate {
+	string name = 1; // SensorTemplate name.
+	string description = 2; // SensorTemplate description.
+	map<string, string> metadata = 3; // User defined metadata.
+	oneof sensor_template {
+		Camera camera = 4;
+		Irradiance irradiance = 5;
+		Radiance radiance = 6;
+		Intensity intensity = 7;
+		PolarIntensity polar_intensity = 8;
+		Irradiance3D irradiance_3d = 9;
+		Observer observer = 10;
+		Immersive immersive = 11;
+	}
+
+	message Camera {
+		oneof sensor_mode {
+			ModeGeometric mode_geometric = 2; // Sensor mode : Geometric
+			ModePhotometric mode_photometric = 3; // Sensor mode : Photometric
+		}
+
+		double focal_length = 4; // Distance between the center of the optical system and the focus. (mm)
+		double imager_distance = 5; // Imager distance in mm, the imager is located at the focal point. The Imager distance has no impact on the result.
+		double f_number = 6; // F-number represents the aperture of the front lens. F number has no impact on the result.
+		string distortion_file_uri = 7; // Optical aberration that deforms and bends straight lines. The distortion is expressed in a .OPTDistortion file.
+
+		uint32 horz_pixel = 8; // Defines the horizontal pixels number corresponding to the camera resolution.
+		uint32 vert_pixel = 9; // Defines the vertical pixels number corresponding to the camera resolution.
+		double width = 10; // Defines the sensor's width in mm.
+		double height = 11; // Defines the sensor's height in mm.
+
+		// Simplified version of the Camera Sensor definition parameters
+		message ModeGeometric {}
+		// Allows to set every Camera Sensor parameters, including the photometric definition parameters
+		message ModePhotometric {
+			double acquisition_integration = 1; // Acquisition integration in s
+			double acquisition_lag_time = 2; // Acquisition lag time in s
+
+			string transmittance_file_uri = 3; // Amount of light of the source that passes through the lens and reaches the sensor. The transmittance is expressed in a .spectrum file.
+
+			float gamma_correction = 4; // Compensation of the curve before the display on the screen.
+			PNGBits png_bits = 5; // Choose between 8, 10, 12 and 16 bits.
+
+			oneof color_mode {
+				ModeColor mode_color = 6; // Color mode : Color
+				ModeMonochromatic mode_monochromatic = 7; // Color mode : Monochromatic
+			}
+
+			WavelengthsRange wavelengths_range = 12; // Spectral range to use for simulation.
+
+			enum PNGBits {
+				PNG_BITS_UNSPECIFIED = 0;
+				PNG_BITS_08 = 1;
+				PNG_BITS_10 = 2;
+				PNG_BITS_12 = 3;
+				PNG_BITS_16 = 4;
+			}
+
+			// Simulation results are available in color according to the White Balance mode.
+			message ModeColor {
+				string red_spectrum_file_uri = 1;
+				string green_spectrum_file_uri = 2;
+				string blue_spectrum_file_uri = 3;
+
+				oneof white_balance_mode {
+					WhiteBalanceModeNone white_balance_mode_none = 8; // White balance mode : None.
+					WhiteBalanceModeGreyWorld white_balance_mode_grey_world = 9; // White balance mode : Grey world.
+					WhiteBalanceModeUser white_balance_mode_user = 10; // White balance mode : User.
+					WhiteBalanceModeDisplayPrimaries white_balance_mode_display_primaries = 11; // White balance mode : Display primaries.
+				}
+
+				// The spectral transmittance of the optical system and the spectral sensitivity for each channel are applied to the detected spectral image before the conversion in a three-channel result. This method is referred to as the basic conversion.
+				message WhiteBalanceModeNone {}
+				// The grey world assumption states that the content of the image is grey on average. This method converts spectral results in a three-channel result with the basic conversion. Then it computes and applies coefficients to the red, green and blue images to make sure their averages are equal.
+				message WhiteBalanceModeGreyWorld {}
+				// In addition to the basic treatment, it allows you to apply your own coefficients to the red, green, blue images.
+				message WhiteBalanceModeUser {
+					double red_gain = 1;
+					double green_gain = 2;
+					double blue_gain = 3;
+				}
+				// Spectral results are converted in a three-channel result. Then a post-treatment is realized to take the distortion induced by the display devices into account. With this method, displayed results are similar to what the camera really gets.
+				message WhiteBalanceModeDisplayPrimaries {
+					string red_display_file_uri = 1;
+					string green_display_file_uri = 2;
+					string blue_display_file_uri = 3;
+				}
+			}
+
+			// Simulation results are available in grey scale.
+			message ModeMonochromatic {
+				string spectrum_file_uri = 1;
+			}
+		}
+	}
+
+	message Irradiance {
+		oneof sensor_type {
+			TypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric.
+			TypeColorimetric sensor_type_colorimetric = 3; //  Sensor type : Colorimetric.
+			TypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric.
+			TypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral.
+		}
+	
+		// Select how the light should be integrated into the sensor.
+		oneof illuminance_type {
+			IlluminanceTypePlanar illuminance_type_planar = 6; // Illuminance type : Planar.
+			IlluminanceTypeRadial illuminance_type_radial = 7; // Illuminance type : Radial.
+			IlluminanceTypeHemispherical illuminance_type_hemispherical = 8; // Illuminance type : Hemispherical.
+			IlluminanceTypeCylindrical illuminance_type_cylindrical = 9; // Illuminance type : Cylindrical.
+			IlluminanceTypeSemiCylindrical illuminance_type_semi_cylindrical = 10; // Illuminance type : SemiCylindrical.
+		}
+	
+		Dimensions dimensions = 11; // Dimensions of the sensor.
+
+		// Integration made orthogonally with the sensor plane.
+		message IlluminanceTypePlanar {}
+		// Illuminance sensor with radial integration type.
+		message IlluminanceTypeRadial {}
+		// Illuminance sensor with hemispherical integration type.
+		message IlluminanceTypeHemispherical {}
+		// Illuminance sensor with cylindrical integration type.
+		message IlluminanceTypeCylindrical {}
+		// Illuminance sensor with semi cylindrical integration type.
+		message IlluminanceTypeSemiCylindrical {}
+	}
+
+	message Radiance {
+		oneof sensor_type {
+			TypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric.
+			TypeColorimetric sensor_type_colorimetric = 3; //  Sensor type : Colorimetric.
+			TypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric.
+			TypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral.
+		}		
+		double focal = 6; // Observer type : focal (mm).
+		double integration_angle = 7; // Integration angle, in degree.
+		Dimensions dimensions = 8; // Dimensions of the sensor.
+	}
+
+	message Intensity { // Carthesian intensity sensor, generating a XMP result.
+		oneof sensor_type {
+			TypePhotometric sensor_type_photometric = 2; // Sensor type: Photometric.
+			TypeColorimetric sensor_type_colorimetric = 3; // Sensor type: Colorimetric.
+			TypeRadiometric sensor_type_radiometric = 4; // Sensor type: Radiometric.
+			TypeSpectral sensor_type_spectral = 5; // Sensor type: Spectral.
+		}
+		oneof orientation {
+			IntensityOrientationXAsMeridian intensity_orientation_x_as_meridian = 6; // Orientation type: X As Meridian, Y as Parallel.
+			IntensityOrientationXAsParallel intensity_orientation_x_as_parallel = 7; // Orientation type: X As Parallel, Y as Meridian.
+			IntensityOrientationConoscopic intensity_orientation_conoscopic = 8; // Orientation type: Conoscopic.
+		}
+		
+		NearField near_field = 10; // Activates Near field. When not set, near field is disabled for the sensor.
+
+		oneof viewing_direction {
+			FromSourceLookingAtSensor from_source_looking_at_sensor = 11; // Viewing direction from source looking at sensor.
+			FromSensorLookingAtSource from_sensor_looking_at_source = 12; // Viewing direction from sensor looking at source.
+		}
+
+		// The sensor considers X direction as meridian and Y direction as parallel.
+		message IntensityOrientationXAsMeridian {
+			AngularRange intensity_dimensions = 1; // Dimensions for non conoscopic sensor.
+		}
+		// The sensor considers X direction as parallel and Y direction as meridian.
+		message IntensityOrientationXAsParallel {
+			AngularRange intensity_dimensions = 1; // Dimensions for non conoscopic sensor.
+		}
+		// The sensor considers conoscopic orientation.
+		message IntensityOrientationConoscopic {
+			ConoscopicIntensityDimensions conoscopic_intensity_dimensions = 1; // Dimensions for non conoscopic sensor.
+
+			// Dimensions of the conoscopic intensity sensor.
+			message ConoscopicIntensityDimensions {
+				double theta_max = 1; // Maximum theta angle (deg).	
+				uint32 sampling = 2; // Number of pixels along Theta.	
+			}
+		}
+
+		// Intensity result viewing direction: from source looking at sensor.
+		message FromSourceLookingAtSensor {}
+		// Intensity result viewing direction: from sensor looking at source.
+		message FromSensorLookingAtSource {}
+	}
+
+	message PolarIntensity{
+		oneof format {
+			PolarIntensityIesnaA iesna_a = 1; // Sensor format: Iesna A type.
+			PolarIntensityIesnaB iesna_b = 2; // Sensor format: Iesna B type.
+			PolarIntensityIesnaC iesna_c = 3; // Sensor format: Iesna C type.
+			PolarIntensityEulumdat eulumdat = 4; // Sensor format: Eulumdat.
+		}
+		oneof sampling {
+			PolarIntensityDimensions dimensions = 5; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file.
+			string adaptive_sampling_uri = 6; // Path to the adaptive sampling file.
+		}
+		oneof field {
+			FarField far_field = 8; // Far field, only used when near field is disabled for the sensor. It permits to set the integration angle.
+			NearField near_field = 7; // Near field parameters: cell distance and diameter. Integration angle needs to be calculated from these parameters.
+		}
+
+		// The polar intensity sensor generates an Iesna A type file.
+		message PolarIntensityIesnaA {}
+		// The polar intensity sensor generates an Iesna B type file.
+		message PolarIntensityIesnaB {}
+		// The polar intensity sensor generates an Iesna C type file.
+		message PolarIntensityIesnaC {}
+		// The polar intensity sensor generates an Eulumdat file.
+		message PolarIntensityEulumdat {}
+
+		// Dimensions of the conoscopic intensity sensor.
+		message PolarIntensityDimensions {	
+			int32 horizontal_sampling = 1; // Number of horizontal samples of the intensity file (IESNA or EULUMDAT).
+			int32 vertical_sampling = 2; // Number of vertical samples of the intensity file (IESNA or EULUMDAT).
+		}
+
+		message FarField {
+			double integration_angle = 1; // Integration angle (deg).
+		}		
+	}	
+
+	message Irradiance3D {
+		oneof sensor_type {
+			TypePhotometric type_photometric = 1; // Sensor type : Photometric.
+			TypeColorimetric type_colorimetric = 2; //  Sensor type : Colorimetric.
+			TypeRadiometric type_radiometric = 3; //  Sensor type : Radiometric.
+		}
+
+		// The sensor considers the visible spectrum and gets the results in lm/m2 or lx.
+		message TypePhotometric{
+			oneof integration_type {
+				IntegrationTypeRadial integration_type_radial = 1; // Integration type : Radial.
+				IntegrationTypePlanar integration_type_planar = 2; // Integration type : Planar.
+			}
+		}
+
+		// The sensor considers the entire spectrum and gets the results in W/m2.
+		message TypeRadiometric{
+			oneof integration_type {
+				IntegrationTypeRadial integration_type_radial = 1; // Integration type : Radial.
+				IntegrationTypePlanar integration_type_planar = 2; // Integration type : Planar.
+			}
+		}
+
+		// Color results without any spectral data or layer separation (in lx or W//m2).
+		message TypeColorimetric{
+		    double wavelength_start = 1; // (nm)
+		    double wavelength_end = 2; // (nm)
+			IntegrationType integration_type = 3; // Will determine the integration type of the sensor between radial and planar.
+
+			// Defines how the illuminance is integrated in the sensor.
+			enum IntegrationType {
+				INTEGRATION_TYPE_UNSPECIFIED = 0;
+			    INTEGRATION_TYPE_RADIAL = 1; // Integration type : Radial.
+			    INTEGRATION_TYPE_PLANAR = 2; // Integration type : Planar.
+		    }
+		}
+
+		// Integration made orthogonally with the sensor plane.
+		message IntegrationTypePlanar {
+			bool reflection = 1;  // Reflection is taking into account for the integrating faces of the sensor.
+			bool transmission = 2; // Transmission is taking into account for the integrating faces of the sensor.
+			bool absorption = 3; // Absorption is taking into account for the integrating faces of the sensor.
+		}
+
+		message IntegrationTypeRadial {}
+	}
+
+	message Stereo
+	{
+		double interocular_distance = 1; // Distance between viewpoints in mm. To use, make sure that front direction is horizontal and top vertical.
+	}
+
+	message Observer{
+		double focal = 1; // Distance between the sensor radiance plan and the observer point. The larger the focal, the closer to the object. (mm)
+		double integration_angle = 2; // Integration angle in degrees for direct simulations.
+		WavelengthsRange wavelengths_range = 3; // Spectral range to use for simulation.
+		Dimensions dimensions = 4; // Dimensions of the sensor.
+		Stereo stereo = 5; // Activates stereo. When not set, stereo is disabled for the sensor.
+
+		double distance = 6; // Radius of the sphere on which the sensors will be placed. (mm)
+		AngularRange sensors_locations = 7; // Locations of the sensors on the sphere. X corresponds to Horizontal direction. Y corresponds to Vertical direction.
+	}
+
+	message Immersive {
+		uint32 sampling = 1; // Sampling (horizontal and vertical number of pixels) for a face.
+		Stereo stereo = 2; // Activates stereo. When not set, stereo is disabled for the sensor.
+		double integration_angle = 3; // Integration angle in degrees for direct simulations.
+		WavelengthsRange wavelengths_range = 4; // Spectral range to use for simulation.
+		ExcludeFaces exclude_faces = 5; // Possibility to exclude some faces.
+
+		message ExcludeFaces
+		{
+			bool front = 1;	// Exclude front face if true.
+			bool back = 2; // Exclude back face if true.
+			bool left = 3; // Exclude left face if true.
+			bool right = 4;	// Exclude right face if true.
+			bool top = 5; // Exclude top face if true.
+			bool bottom = 6; // Exclude bottom face if true.
+		}
+	}
+
+	// Spectral range to use for simulation.
+	message WavelengthsRange {
+		double w_start = 1; // Defines the minimum wavelength. (nm)
+		double w_end = 2; // Defines the maximum wavelength. (nm)
+		uint32 w_sampling = 3; // Defines the number of wavelengths to be taken into account between the minimum and maximum wavelengths set.
+	}
+
+	// Dimensions of the sensor
+	message Dimensions {
+		double x_start = 1; // Start distance from center along X direction (mm).
+		double x_end = 2; // End distance from center along X direction (mm).
+		uint32 x_sampling = 3; // Number of pixels along X direction.
+		double y_start = 4; // Start distance from center along Y direction (mm).
+		double y_end = 5; // End distance from center along Y direction (mm).
+		uint32 y_sampling = 6; // Number of pixels along Y direction.
+	}
+
+	// Angular range and sampling along two directions.
+	message AngularRange {
+		double x_start = 1; // Start angle along X direction (deg).
+		double x_end = 2; // End angle along X direction (deg).
+		uint32 x_sampling = 3; // Sampling along X direction.
+		double y_start = 4; // Start angle along Y direction (deg).
+		double y_end = 5; // End angle along Y direction (deg).
+		uint32 y_sampling = 6; // Sampling along Y direction.
+	}
+
+	// The sensor considers the visible spectrum and gets the results.
+	message TypePhotometric {}
+	// Color results without any spectral data or layer separation.
+	message TypeColorimetric {
+		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
+	}
+	// The sensor considers the entire spectrum and gets the results.
+	message TypeRadiometric {}
+	// Color results and spectral data separated by wavelength.
+	message TypeSpectral {
+		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
+	}
+
+	// Near field intensity or polar intensity sensor.
+	message NearField {
+		double cell_distance = 1; // Distance of the cell from the center of the intensity sensor (mm).
+		double cell_integration_angle = 2; // Integration angle of the cell (deg). Used with cell_distance to calculate the cell diameter.
+	}
+}
+
+// Request to create a SensorTemplate in SensorTemplatesManager.
+message Create_Request {
+	SensorTemplate sensor_template = 1; // SensorTemplate containing its basic characteristics.
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
+}
+message Create_Response {
+	string guid = 1; // Guid of the SensorTemplate created in SensorTemplatesManager.
+}
+// Request to read a SensorTemplate in SensorTemplatesManager.
+message Read_Request {
+	string guid = 1; // Guid of the SensorTemplate to be read.
+}
+message Read_Response {
+	SensorTemplate sensor_template = 1; // SensorTemplate corresponding to the guid given in Read_Request.
+}
+// Request to update a SensorTemplate in SensorTemplatesManager.
+message Update_Request {
+	string guid = 1; // Guid of the SensorTemplate to be updated.
+	SensorTemplate sensor_template = 2; // SensorTemplate that will be used for the update.
+}
+message Update_Response {
+}
+// Request to delete a SensorTemplate in SensorTemplatesManager.
+message Delete_Request {
+	string guid = 1; // Guid of the SensorTemplate to be deleted.
+}
+message Delete_Response {}
+
+message List_Request {
+}
+message List_Response {
+	repeated string guids = 1; // Guids of the SensorTemplates in SensorTemplatesManager.
+}
+
