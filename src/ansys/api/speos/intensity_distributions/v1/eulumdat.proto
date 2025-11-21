@@ -18,7 +18,7 @@ service EulumdatIntensityService {
 
 message EulumdatIntensityData {
 	int32 number_lamps = 1; // integer > 0
-	string type_lamps = 2; // string
+	string type_lamps = 2; 
 	double total_luminous_flux = 3; // double > 0
 	string color_temperature = 4;
 	string color_rendering_index = 5;
