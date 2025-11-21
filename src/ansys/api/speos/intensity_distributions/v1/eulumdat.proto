@@ -19,7 +19,7 @@ service EulumdatIntensityService {
 message EulumdatIntensityData {
 	int32 number_lamps = 1; // integer > 0
 	string type_lamps = 2; // string
-	double total_luminous_flux = 3; // float > 0
+	double total_luminous_flux = 3; // double > 0
 	string color_temperature = 4;
 	string color_rendering_index = 5;
 	double wattage_including_ballast = 6;
@@ -43,15 +43,15 @@ message EulumdatIntensityDistribution {
 	double distance_c_planes = 6;
 	int32 g_angle_number = 7;
 	double distance_g_angle = 8;
-	double diameter_luminaire = 9; // unit is mm
-	double width_luminaire = 10; // unit is mm
-	double height_luminaire = 11; // unit is mm
-	double diameter_luminous_area = 12; // unit is mm
-	double width_luminous_area = 13; // unit is mm
-	double height_luminous_area_c0 = 14; // unit is mm
-	double height_luminous_area_c90 = 15; // unit is mm
-	double height_luminous_area_c180 = 16; // unit is mm
-	double height_luminous_area_c270 = 17; // unit is mm
+	double diameter_luminaire = 9; (mm)
+	double width_luminaire = 10; (mm)
+	double height_luminaire = 11; (mm)
+	double diameter_luminous_area = 12; (mm)
+	double width_luminous_area = 13; (mm)
+	double height_luminous_area_c0 = 14; (mm)
+	double height_luminous_area_c90 = 15; (mm)
+	double height_luminous_area_c180 = 16; (mm)
+	double height_luminous_area_c270 = 17; (mm)
 	double downward_flux_fraction = 18; // Percentage between 0% and 100%
 	double light_output_ratio = 19; // Percentage between 0% and 100%
 	double conversion_factor = 20;
