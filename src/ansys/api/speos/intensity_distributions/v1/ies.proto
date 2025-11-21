@@ -17,21 +17,21 @@ service IesIntensityService {
 message IesIntensityDistribution {
 	int32 norme_version = 1;
 	repeated string key_words = 2;
-	int32 unit = 3;
+	int32 unit = 3; // feet or meters
 	int32 nb_vertical_angle = 4;
 	int32 nb_horizontal_angle = 5;
-	int32 tilt_type = 6; // tilt = 1 is None.
+	int32 tilt_type = 6; // tilt_type 1 is None.
 	int32 tilt_geometry = 7;
-	int32 nb_lamp = 8;
+	int32 nb_lamp = 8; // integer > 0
 	int32 photo_type = 9;
 	double lumen_lamp = 10;
 	double multiplier = 11;
-	double width = 12;
-	double length = 13;
-	double height = 14;
-	double ballast = 15;
-	double future_use = 16;
-	double input_watt = 17;
+	double width = 12; // unit is feet or meters according 'int32'
+	double length = 13; // unit is feet
+	double height = 14; // unit is feet
+	double ballast = 15; // float > 0
+	double future_use = 16; // float > 0
+	double input_watt = 17; // float > 0
 	repeated double vertical_angle = 18;
 	repeated double horizontal_angle = 19;
 	repeated double candela_value = 20;

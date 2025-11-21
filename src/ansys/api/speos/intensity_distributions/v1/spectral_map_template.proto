@@ -43,9 +43,9 @@ message Depth {
 
 message SpectralMap {
 	Map base_data = 1;
-	int32 wavelength_nb = 2;
-	double wavelength_min = 3;
-	double wavelength_max = 4;
+	int32 wavelength_nb = 2; // Integer > 3
+	double wavelength_min = 3; // Range is between 100 and 100000
+	double wavelength_max = 4; // Range is between 100 and 100000
 	SpectralValues spectral_value = 5; // spectral values
 	ColorValues color_value = 6; // colorimetric and radiometric data
 	Depth depth_value = 7;
