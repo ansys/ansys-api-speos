@@ -20,7 +20,7 @@ message IesIntensityDistribution {
 	int32 unit = 3;
 	int32 nb_vertical_angle = 4;
 	int32 nb_horizontal_angle = 5;
-	int32 tilt_type = 6;
+	int32 tilt_type = 6; // tilt = 1 is None.
 	int32 tilt_geometry = 7;
 	int32 nb_lamp = 8;
 	int32 photo_type = 9;
