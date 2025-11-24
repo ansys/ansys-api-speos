@@ -20,7 +20,7 @@ message IesIntensityDistribution {
 	int32 unit = 3; // feet or meters
 	int32 nb_vertical_angle = 4;
 	int32 nb_horizontal_angle = 5;
-	int32 tilt_type = 6; // tilt_type 1 is None.
+	int32 tilt_type = 6; // tilt_type set to 1 means None.
 	int32 tilt_geometry = 7;
 	int32 nb_lamp = 8; // integer > 0
 	int32 photo_type = 9;
