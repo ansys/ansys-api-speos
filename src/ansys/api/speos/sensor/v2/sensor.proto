@@ -33,6 +33,13 @@ message SensorTemplate {
 		Immersive immersive = 11;
 	}
 
+	// Spectral range to use for simulation.
+	message WavelengthsRange {
+		double w_start = 1; // Defines the minimum wavelength. (nm)
+		double w_end = 2; // Defines the maximum wavelength. (nm)
+		uint32 w_sampling = 3; // Defines the number of wavelengths to be taken into account between the minimum and maximum wavelengths set.
+	}
+
 	message Camera {
 		oneof sensor_mode {
 			ModeGeometric mode_geometric = 2; // Sensor mode : Geometric
@@ -114,12 +121,35 @@ message SensorTemplate {
 		}
 	}
 
+	// The sensor considers the visible spectrum and gets the results.
+	message TypePhotometric {}
+	// Color results without any spectral data or layer separation.
+	message TypeColorimetric {
+		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
+	}
+	// The sensor considers the entire spectrum and gets the results.
+	message TypeRadiometric {}
+	// Color results and spectral data separated by wavelength.
+	message TypeSpectral {
+		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
+	}
+
+	// Dimensions of the sensor
+	message Dimensions {
+		double x_start = 1; // Start distance from center along X direction (mm).
+		double x_end = 2; // End distance from center along X direction (mm).
+		uint32 x_sampling = 3; // Number of pixels along X direction.
+		double y_start = 4; // Start distance from center along Y direction (mm).
+		double y_end = 5; // End distance from center along Y direction (mm).
+		uint32 y_sampling = 6; // Number of pixels along Y direction.
+	}
+
 	message Irradiance {
 		oneof sensor_type {
-			TypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric.
-			TypeColorimetric sensor_type_colorimetric = 3; //  Sensor type : Colorimetric.
-			TypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric.
-			TypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral.
+			TypePhotometric type_photometric = 2; // Sensor type : Photometric.
+			TypeColorimetric type_colorimetric = 3; //  Sensor type : Colorimetric.
+			TypeRadiometric type_radiometric = 4; //  Sensor type : Radiometric.
+			TypeSpectral type_spectral = 5; // Sensor type : Spectral.
 		}
 	
 		// Select how the light should be integrated into the sensor.
@@ -147,22 +177,38 @@ message SensorTemplate {
 
 	message Radiance {
 		oneof sensor_type {
-			TypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric.
-			TypeColorimetric sensor_type_colorimetric = 3; //  Sensor type : Colorimetric.
-			TypeRadiometric sensor_type_radiometric = 4; //  Sensor type : Radiometric.
-			TypeSpectral sensor_type_spectral = 5; // Sensor type : Spectral.
+			TypePhotometric type_photometric = 2; // Sensor type : Photometric.
+			TypeColorimetric type_colorimetric = 3; //  Sensor type : Colorimetric.
+			TypeRadiometric type_radiometric = 4; //  Sensor type : Radiometric.
+			TypeSpectral type_spectral = 5; // Sensor type : Spectral.
 		}		
 		double focal = 6; // Observer type : focal (mm).
 		double integration_angle = 7; // Integration angle, in degree.
 		Dimensions dimensions = 8; // Dimensions of the sensor.
 	}
 
+	// Near field intensity or polar intensity sensor.
+	message NearField {
+		double cell_distance = 1; // Distance of the cell from the center of the intensity sensor (mm).
+		double cell_integration_angle = 2; // Integration angle of the cell (deg). Used with cell_distance to calculate the cell diameter.
+	}
+
+	// Angular range and sampling along two directions.
+	message AngularRange {
+		double x_start = 1; // Start angle along X direction (deg).
+		double x_end = 2; // End angle along X direction (deg).
+		uint32 x_sampling = 3; // Sampling along X direction.
+		double y_start = 4; // Start angle along Y direction (deg).
+		double y_end = 5; // End angle along Y direction (deg).
+		uint32 y_sampling = 6; // Sampling along Y direction.
+	}
+
 	message Intensity { // Carthesian intensity sensor, generating a XMP result.
 		oneof sensor_type {
-			TypePhotometric sensor_type_photometric = 2; // Sensor type: Photometric.
-			TypeColorimetric sensor_type_colorimetric = 3; // Sensor type: Colorimetric.
-			TypeRadiometric sensor_type_radiometric = 4; // Sensor type: Radiometric.
-			TypeSpectral sensor_type_spectral = 5; // Sensor type: Spectral.
+			TypePhotometric type_photometric = 2; // Sensor type: Photometric.
+			TypeColorimetric type_colorimetric = 3; // Sensor type: Colorimetric.
+			TypeRadiometric type_radiometric = 4; // Sensor type: Radiometric.
+			TypeSpectral type_spectral = 5; // Sensor type: Spectral.
 		}
 		oneof orientation {
 			IntensityOrientationXAsMeridian intensity_orientation_x_as_meridian = 6; // Orientation type: X As Meridian, Y as Parallel.
@@ -245,6 +291,15 @@ message SensorTemplate {
 			TypeRadiometric type_radiometric = 3; //  Sensor type : Radiometric.
 		}
 
+		// Integration made orthogonally with the sensor plane.
+		message IntegrationTypePlanar {
+			bool reflection = 1;  // Reflection is taking into account for the integrating faces of the sensor.
+			bool transmission = 2; // Transmission is taking into account for the integrating faces of the sensor.
+			bool absorption = 3; // Absorption is taking into account for the integrating faces of the sensor.
+		}
+
+		message IntegrationTypeRadial {}
+
 		// The sensor considers the visible spectrum and gets the results in lm/m2 or lx.
 		message TypePhotometric{
 			oneof integration_type {
@@ -274,15 +329,6 @@ message SensorTemplate {
 			    INTEGRATION_TYPE_PLANAR = 2; // Integration type : Planar.
 		    }
 		}
-
-		// Integration made orthogonally with the sensor plane.
-		message IntegrationTypePlanar {
-			bool reflection = 1;  // Reflection is taking into account for the integrating faces of the sensor.
-			bool transmission = 2; // Transmission is taking into account for the integrating faces of the sensor.
-			bool absorption = 3; // Absorption is taking into account for the integrating faces of the sensor.
-		}
-
-		message IntegrationTypeRadial {}
 	}
 
 	message Stereo
@@ -317,52 +363,6 @@ message SensorTemplate {
 			bool top = 5; // Exclude top face if true.
 			bool bottom = 6; // Exclude bottom face if true.
 		}
-	}
-
-	// Spectral range to use for simulation.
-	message WavelengthsRange {
-		double w_start = 1; // Defines the minimum wavelength. (nm)
-		double w_end = 2; // Defines the maximum wavelength. (nm)
-		uint32 w_sampling = 3; // Defines the number of wavelengths to be taken into account between the minimum and maximum wavelengths set.
-	}
-
-	// Dimensions of the sensor
-	message Dimensions {
-		double x_start = 1; // Start distance from center along X direction (mm).
-		double x_end = 2; // End distance from center along X direction (mm).
-		uint32 x_sampling = 3; // Number of pixels along X direction.
-		double y_start = 4; // Start distance from center along Y direction (mm).
-		double y_end = 5; // End distance from center along Y direction (mm).
-		uint32 y_sampling = 6; // Number of pixels along Y direction.
-	}
-
-	// Angular range and sampling along two directions.
-	message AngularRange {
-		double x_start = 1; // Start angle along X direction (deg).
-		double x_end = 2; // End angle along X direction (deg).
-		uint32 x_sampling = 3; // Sampling along X direction.
-		double y_start = 4; // Start angle along Y direction (deg).
-		double y_end = 5; // End angle along Y direction (deg).
-		uint32 y_sampling = 6; // Sampling along Y direction.
-	}
-
-	// The sensor considers the visible spectrum and gets the results.
-	message TypePhotometric {}
-	// Color results without any spectral data or layer separation.
-	message TypeColorimetric {
-		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
-	}
-	// The sensor considers the entire spectrum and gets the results.
-	message TypeRadiometric {}
-	// Color results and spectral data separated by wavelength.
-	message TypeSpectral {
-		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
-	}
-
-	// Near field intensity or polar intensity sensor.
-	message NearField {
-		double cell_distance = 1; // Distance of the cell from the center of the intensity sensor (mm).
-		double cell_integration_angle = 2; // Integration angle of the cell (deg). Used with cell_distance to calculate the cell diameter.
 	}
 }
 
