@@ -61,7 +61,7 @@ message EulumdatIntensityDistribution {
 	repeated double direct_ratio = 24;
 	repeated double c_plane = 25;
 	repeated double g_angle = 26; 
-	repeated double luminous_intensity_per_klm = 27; // unit is cd/klm
+	repeated double luminous_intensity_per_klm = 27; // (cd/klm)
 }
 
 message Load_Request {

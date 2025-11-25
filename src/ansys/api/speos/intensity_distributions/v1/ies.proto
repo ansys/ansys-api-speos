@@ -26,9 +26,9 @@ message IesIntensityDistribution {
 	int32 photo_type = 9;
 	double lumen_lamp = 10;
 	double multiplier = 11;
-	double width = 12; // unit in feet or meters according to 'int32' unit type.
-	double length = 13; // unit is feet
-	double height = 14; // unit is feet
+	double width = 12; // (feet) or (meters) according to 'int32' unit type.
+	double length = 13; // (feet)
+	double height = 14; // (feet)
 	double ballast = 15; // float > 0
 	double future_use = 16; // float > 0
 	double input_watt = 17; // float > 0
