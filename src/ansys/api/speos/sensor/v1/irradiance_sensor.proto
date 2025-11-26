@@ -24,4 +24,6 @@ message IrradianceSensorTemplate {
 	}
 	
 	ansys.api.speos.sensor.v1.SensorDimensions dimensions = 11; // Dimensions of the sensor
+
+	bool use_hdf5_format = 12; // If true, the output images will be saved in HDF5 format.
 }
