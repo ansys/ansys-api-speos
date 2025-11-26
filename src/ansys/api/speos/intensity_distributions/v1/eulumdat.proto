@@ -53,7 +53,7 @@ message EulumdatIntensityDistribution {
 	double height_luminous_area_c180 = 16; // (mm)  
 	double height_luminous_area_c270 = 17; // (mm)  
 	double downward_flux_fraction = 18; // Percentage between 0% and 100%
-	double light_output_ratio = 19; // Percentage between 0% and 100%
+	double light_ouput_ratio = 19; // Percentage between 0% and 100%
 	double conversion_factor = 20;
 	double measurement_tilt = 21;
 	int32 number_standard_set_lamps = 22;
