@@ -256,7 +256,7 @@ message SensorTemplate {
 			PolarIntensityEulumdat eulumdat = 4; // Sensor format: Eulumdat.
 		}
 		oneof sampling {
-			PolarIntensityDimensions dimensions = 5; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file.
+			Dimensions dimensions = 5; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file.
 			string adaptive_sampling_uri = 6; // Path to the adaptive sampling file.
 		}
 		oneof field {
@@ -274,7 +274,7 @@ message SensorTemplate {
 		message PolarIntensityEulumdat {}
 
 		// Dimensions of the conoscopic intensity sensor.
-		message PolarIntensityDimensions {	
+		message Dimensions {	
 			int32 horizontal_sampling = 1; // Number of horizontal samples of the intensity file (IESNA or EULUMDAT).
 			int32 vertical_sampling = 2; // Number of vertical samples of the intensity file (IESNA or EULUMDAT).
 		}
