@@ -233,10 +233,10 @@ message SensorTemplate {
 		}
 		// The sensor considers conoscopic orientation.
 		message OrientationConoscopic {
-			ConoscopicIntensityDimensions conoscopic_intensity_dimensions = 1; // Dimensions for non conoscopic sensor.
+			Dimensions dimensions = 1; // Dimensions for conoscopic sensor.
 
 			// Dimensions of the conoscopic intensity sensor.
-			message ConoscopicIntensityDimensions {
+			message Dimensions {
 				double theta_max = 1; // Maximum theta angle (deg).	
 				uint32 sampling = 2; // Number of pixels along Theta.	
 			}
