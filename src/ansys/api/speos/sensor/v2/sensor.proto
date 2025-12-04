@@ -211,9 +211,9 @@ message SensorTemplate {
 			TypeSpectral type_spectral = 5; // Sensor type: Spectral.
 		}
 		oneof orientation {
-			OrientationXAsMeridian intensity_orientation_x_as_meridian = 6; // Orientation type: X As Meridian, Y as Parallel.
-			OrientationXAsParallel intensity_orientation_x_as_parallel = 7; // Orientation type: X As Parallel, Y as Meridian.
-			OrientationConoscopic intensity_orientation_conoscopic = 8; // Orientation type: Conoscopic.
+			OrientationXAsMeridian orientation_x_as_meridian = 6; // Orientation type: X As Meridian, Y as Parallel.
+			OrientationXAsParallel orientation_x_as_parallel = 7; // Orientation type: X As Parallel, Y as Meridian.
+			OrientationConoscopic orientation_conoscopic = 8; // Orientation type: Conoscopic.
 		}
 		
 		NearField near_field = 10; // Activates Near field. When not set, near field is disabled for the sensor.
@@ -225,11 +225,11 @@ message SensorTemplate {
 
 		// The sensor considers X direction as meridian and Y direction as parallel.
 		message OrientationXAsMeridian {
-			AngularRange intensity_dimensions = 1; // Dimensions for non conoscopic sensor.
+			AngularRange dimensions = 1; // Dimensions for non conoscopic sensor.
 		}
 		// The sensor considers X direction as parallel and Y direction as meridian.
 		message OrientationXAsParallel {
-			AngularRange intensity_dimensions = 1; // Dimensions for non conoscopic sensor.
+			AngularRange dimensions = 1; // Dimensions for non conoscopic sensor.
 		}
 		// The sensor considers conoscopic orientation.
 		message OrientationConoscopic {
