@@ -17,9 +17,9 @@ service EulumdatIntensityService {
 }
 
 message EulumdatIntensityData {
-	int32 number_lamps = 1;
-	string type_lamps = 2;
-	double total_luminous_flux = 3;
+	int32 number_lamps = 1; // integer > 0
+	string type_lamps = 2; 
+	double total_luminous_flux = 3; // double > 0
 	string color_temperature = 4;
 	string color_rendering_index = 5;
 	double wattage_including_ballast = 6;
@@ -29,7 +29,7 @@ message EulumdatFileInformation {
 	string company_identification = 1;
 	string measurement_report_number = 2;
 	string luminaire_name = 3;
-	string luminaire_number = 4;
+	string luminaire_number = 4; 
 	string file_name = 5;
 	string date = 6;
 }
@@ -43,25 +43,25 @@ message EulumdatIntensityDistribution {
 	double distance_c_planes = 6;
 	int32 g_angle_number = 7;
 	double distance_g_angle = 8;
-	double diameter_luminaire = 9;
-	double width_luminaire = 10;
-	double height_luminaire = 11;
-	double diameter_luminous_area = 12;
-	double width_luminous_area = 13;
-	double height_luminous_area_c0 = 14;
-	double height_luminous_area_c90 = 15;
-	double height_luminous_area_c180 = 16;
-	double height_luminous_area_c270 = 17;
-	double downward_flux_fraction = 18;
-	double light_ouput_ratio = 19;
+	double diameter_luminaire = 9; // (mm)  
+	double width_luminaire = 10; // (mm)  
+	double height_luminaire = 11; // (mm)  
+	double diameter_luminous_area = 12; // (mm)  
+	double width_luminous_area = 13; // (mm)  
+	double height_luminous_area_c0 = 14; // (mm)  
+	double height_luminous_area_c90 = 15; // (mm)  
+	double height_luminous_area_c180 = 16; // (mm)  
+	double height_luminous_area_c270 = 17; // (mm)  
+	double downward_flux_fraction = 18; // Percentage between 0% and 100%
+	double light_ouput_ratio = 19; // Percentage between 0% and 100%
 	double conversion_factor = 20;
 	double measurement_tilt = 21;
 	int32 number_standard_set_lamps = 22;
 	repeated EulumdatIntensityData lamp_distribution = 23;
 	repeated double direct_ratio = 24;
 	repeated double c_plane = 25;
-	repeated double g_angle = 26;
-	repeated double luminous_intensity_per_klm = 27;
+	repeated double g_angle = 26; 
+	repeated double luminous_intensity_per_klm = 27; // (cd/klm)
 }
 
 message Load_Request {
