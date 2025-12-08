@@ -361,6 +361,12 @@ message Scene
 			}
 		}
 
+		message PhysicalCameraProperties {
+			string scene_guid = 1; // Guid of scene representating the optical system.
+			repeated double scene_axis_system = 2; // Position of the scene (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz).
+			IrradianceProperties irradiance_properties = 3; 
+		}
+
 		string name = 1; // Unique identifier in the scene
 		string display_name = 4; // User name to be displayed
 		string description = 2;
@@ -376,6 +382,7 @@ message Scene
 			Irradiance3DProperties irradiance_3d_properties = 17; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Irradiance3D
 			ObserverProperties observer_properties = 18; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Observer
 			ImmersiveProperties immersive_properties = 19; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Immersive
+			PhysicalCameraProperties physical_camera_properties = 20; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::PhysicalCamera
 		}
 		LXPProperties lxp_properties = 30; // To activate lxp feature, we must fill this field
 	}
@@ -419,6 +426,12 @@ message Scene
 		double ground_height = 3; // height of the environment shooting (unit mm)
 	}
 
+	enum RayTracerType
+	{
+		Embree = 1; // Intel Embree ray tracer
+		SmartEngine = 2; // Homemade ray tracer
+	}
+
 	string name = 1;
 	string description = 2;
 	map<string, string> metadata = 3; // User defined metadata
@@ -433,6 +446,7 @@ message Scene
 	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
 	GroundPlane ground = 21; // Optional - Only usable when there is at least one Ambient Environment Source Template that has selected a HDR image file. 
+	RayTracerType ray_tracer_type = 22; // Ray tracer type using for the propagation in this scene
 }
 
 // Manager for Scenes
