@@ -66,6 +66,8 @@ message SourceTemplate {
 			string spectrum_guid = 9; // Spectrum guid in spectrum manager
 		}
 
+		Timeline timeline = 10; // Activate timeline.
+
 		// Exitance messages
 		message ExitanceVariable{
 			string exitance_xmp_file_uri = 1; // XMP file describing exitance, if spectral, spectrum is not needed in source definition
@@ -74,6 +76,13 @@ message SourceTemplate {
 
 		// Take spectrum from xmp file provided
 		message SpectrumFromXMPFile{}
+
+		// Define the variation of the source's power in time and represent flickering Surface source
+		message Timeline{
+			string flux_variation_file_uri = 1; // Flux variation file, used to define the samples for one period representing the variation of the relative flux of the source with time.
+			int32 relative_lag = 2; // Relative lag (percentage, default value of 0%) represents the relative time along the period when the source starts to emit light. That means the relative lag includes a temporal shift of the time period.
+		}
+
 	}
 
 	message Luminaire{

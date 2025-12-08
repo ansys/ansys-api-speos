@@ -410,6 +410,7 @@ message Scene
 		map<string, string> metadata = 3; // User defined metadata
 		string scene_guid = 10; // Guid of the element to instantiate
 		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
+		string trajectory_file_uri = 12; // Trajectory file, used to define the positions and orientations of the Scene instance in time.
 	}
 
 	message GroundPlane
