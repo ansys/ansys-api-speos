@@ -428,8 +428,8 @@ message Scene
 
 	enum RayTracerType
 	{
-		Embree = 1; // Intel Embree ray tracer
-		SmartEngine = 2; // Homemade ray tracer
+		Embree = 0; // Intel Embree ray tracer
+		SmartEngine = 1; // Homemade ray tracer
 	}
 
 	string name = 1;
