@@ -3,21 +3,18 @@ syntax = "proto3";
 
 package ansys.api.speos.part.v1;
 
-
-//////////
-// CRUD //
-//////////
-
 // Part definition, a Part is related to a CAD part file (scdocx, prt, ...) made of meshed bodies and faces
 message Part
 {
 	// Instance of Part in parent coordinates system
 	message PartInstance
 	{
-		string name = 1;
+		string name = 1; // Unique identifier in its Part
+		string display_name = 4; // User name to be displayed
 		string description = 2;
+		map<string, string> metadata = 12; // User defined metadata
 		string part_guid = 3; // Guid of Part in PartsManager
-		repeated double axis_system = 11; // Part position relative to parent reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) 
+		repeated double axis_system = 11; // Part position relative to parent reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
 	}
 
 	string name = 1;
@@ -39,11 +36,15 @@ service PartsManager {
 	rpc Delete(Delete_Request) returns (Delete_Response) {}
 	// List all parts in manager
 	rpc List(List_Request) returns (List_Response) {}
+	// Read the whole database, use a field mask in message grpc request metadata (key = read_masks) to only get needed fields.
+	// i.e.: parts.*.name -> would only return the names of the bodies in the message
+	rpc ReadAll(ReadAll_Request) returns (ReadAll_Response){}
 }
 
 // Request to create an element
 message Create_Request {
     Part part = 1; // Element to create
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
 }
 // Response to create an element
 message Create_Response {
@@ -82,10 +83,13 @@ message List_Response {
 	repeated string guids = 1; // Guids of all Parts
 }
 
-
-/////////////
-// ACTIONS //
-/////////////
+// Request to read all parts
+message ReadAll_Request{
+}
+// Response to read all parts
+message ReadAll_Response{
+	map<string, Part> parts = 1; // Read parts with their Guids
+}
 
 // Actions available on a Part
 service PartActions {

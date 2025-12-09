@@ -24,7 +24,7 @@ service XmpFileService_Mono {
 }
 
 message FileName {
-	string file_name = 1;
+	string file_name = 1; // *.xmp
 }
 
 message Value {
