@@ -361,11 +361,12 @@ message Scene
 			}
 		}
 		message EyeProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
+			repeated double zenith_direction = 1; // Top direction of observer. If the vector is not normalized, it will be automatically normalized	
 			repeated double observer_point = 2; // Position of the observer point (Ox Oy Oz), optional (default: focal length is used)
+			repeated double target_point = 3; // Position of the target point (Ox Oy Oz)
 			oneof layer_type {
-				LayerTypeNone layer_type_none = 3; // Layer type : None
-				LayerTypeSource layer_type_source = 4; // Layer type : Source		
+				LayerTypeNone layer_type_none = 4; // Layer type : None
+				LayerTypeSource layer_type_source = 5; // Layer type : Source		
 			}
 		}
 
