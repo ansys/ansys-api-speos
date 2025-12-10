@@ -35,6 +35,7 @@ message SensorTemplate {
 		Irradiance3D irradiance_3d = 9;
 		Observer observer_sensor_template = 10;
 		Immersive immersive_sensor_template = 11;
+		PhysicalCamera physical_camera_template = 12;
 	}
 	message Radiance {
 		oneof sensor_type {
@@ -167,6 +168,8 @@ message SensorTemplate {
 			bool bottom = 6; // Exclude bottom face if true.
 		}
 	}
+
+	message PhysicalCamera {} // Specify that we want create a physical camera sensor
 }
 
 // Request to create a SensorTemplate in SensorTemplatesManager
