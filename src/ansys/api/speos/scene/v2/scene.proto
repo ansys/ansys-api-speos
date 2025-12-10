@@ -362,8 +362,7 @@ message Scene
 		}
 
 		message PhysicalCameraProperties {
-			string scene_guid = 1; // Guid of scene representating the optical system and its associated irradiance sensor.
-			repeated double scene_axis_system = 2; // Position of the scene (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz).
+			SceneInstance scene = 1; // Scene representing the optical system and its associated irradiance sensor.
 			string sequence_file_uri = 3; // File uri (.OptSequence) come from first run of direct simulation with physical camera
 			uint32 nb_sequences = 4; // Number of sequence propagated in physical camera at the second run of direct simulation with physical camera
 		}
