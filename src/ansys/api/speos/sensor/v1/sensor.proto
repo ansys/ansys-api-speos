@@ -172,18 +172,18 @@ message SensorTemplate {
 
 	message EnergyDensity {
 		oneof sensor_type {
-			ansys.api.speos.sensor.v1.SensorTypePhotometric sensor_type_photometric = 2; // Sensor type : Photometric			
-			ansys.api.speos.sensor.v1.SensorTypeRadiometric sensor_type_radiometric = 3; //  Sensor type : Radiometric			
+			ansys.api.speos.sensor.v1.SensorTypePhotometric sensor_type_photometric = 1; // Sensor type : Photometric
+			ansys.api.speos.sensor.v1.SensorTypeRadiometric sensor_type_radiometric = 2; //  Sensor type : Radiometric
 		}		
-		SensorVolumeDimensions dimensions = 7; // Dimensions of the sensor
+		Dimensions3D dimensions_3d = 7; // Dimensions of the sensor
 		
-		message SensorVolumeDimensions {
-			double x_size = 5; // Size along X direction (mm).			
-			uint32 x_sampling = 6; // Number of pixels along X direction.
-			double y_size = 7; // Size along Y direction (mm).			
-			uint32 y_sampling = 8; // Number of pixels along Y direction.
-			double z_size = 9; // Size along Y direction (mm).			
-			uint32 z_sampling = 10; // Number of pixels along Y direction.
+		message Dimensions3D {
+			double x_size = 1; // Size along X direction (mm).
+			uint32 x_sampling = 2; // Number of pixels along X direction.
+			double y_size = 3; // Size along Y direction (mm).
+			uint32 y_sampling = 4; // Number of pixels along Y direction.
+			double z_size = 5; // Size along Y direction (mm).
+			uint32 z_sampling = 6; // Number of pixels along Y direction.
 		}
 	}
 }
