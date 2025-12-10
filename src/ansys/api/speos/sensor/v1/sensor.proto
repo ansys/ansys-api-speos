@@ -168,13 +168,6 @@ message SensorTemplate {
 			bool bottom = 6; // Exclude bottom face if true.
 		}
 	}
-
-	message PhysicalCamera
-	{
-		IrradianceSensorTemplate irradiance_sensor = 1; // Irradiance sensor associated to physical camera
-		string sequence_file_uri = 2; // File uri (.OptSequence) come from first run of direct simulation with physical camera
-		uint32 nb_sequences = 3; // Number of sequence propagated in physical camera at the second run of direct simulation with physical camera
-	}
 }
 
 // Request to create a SensorTemplate in SensorTemplatesManager
