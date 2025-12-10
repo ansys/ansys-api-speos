@@ -28,6 +28,16 @@ message Scene
 		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 	}
 
+	message SceneInstance
+	{
+		string name = 1; // Unique identifier in the scene
+		string display_name = 4; // User name to be displayed
+		string description = 2;
+		map<string, string> metadata = 3; // User defined metadata
+		string scene_guid = 10; // Guid of the element to instantiate
+		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
+	}
+
 	// Instance of a material to apply on geometries of the scene
 	message MaterialInstance
 	{
@@ -407,16 +417,6 @@ message Scene
 			double analysis_x_ratio = 2; // Ratio to reduce the analysis area following x, must be in range ]0., 100.]
 			double analysis_y_ratio = 3; // Ratio to reduce the analysis area following y, must be in range ]0., 100.]
 		}
-	}
-
-	message SceneInstance
-	{
-		string name = 1; // Unique identifier in the scene
-		string display_name = 4; // User name to be displayed
-		string description = 2;
-		map<string, string> metadata = 3; // User defined metadata
-		string scene_guid = 10; // Guid of the element to instantiate
-		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
 	}
 
 	message GroundPlane
