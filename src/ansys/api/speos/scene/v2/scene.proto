@@ -432,16 +432,16 @@ message Scene
 
 		message Pattern3D
 		{
-			string body_guid = 1; // Guid of the body used as 3D texture pattern without specifying materials
-			repeated MaterialInstance materials = 2; // 0 Mat = pas de Mat
+			string body_guid = 1; // Guid of the body used as 3D texture pattern, shouldn't be a body from the scene root part taken in the simulation
+			repeated MaterialInstance materials = 2; // Materials to apply on the pattern body, repeated to allow set of specific faces properties
 		}
 
 		repeated double axis_system = 1; // Anchor of the 3D texture pattern (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
 		string support_body_geo_path = 2; // Geo path of the body supporting the 3D texture
 		PatternOperation pattern_operation = 3; // Operation to apply with the 3D
-		Pattern3D pattern = 4; // Sub-scene used as 3D texture pattern
+		Pattern3D pattern = 4; // 3D texture pattern definition
 		double global_scale = 5; // Global scale factor applied to the 3D texture pattern
-		string mapping_3d_uri = 6; // Guid of the 3D mapping to use for this 3D texture (OPT3DMapping)
+		string mapping_3d_uri = 6; // Guid of the 3D mapping to use for this 3D texture (.OPT3DMapping)
 	}
 
 	string name = 1;
