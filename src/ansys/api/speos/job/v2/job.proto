@@ -54,6 +54,7 @@ message Job {
 		optional int64 stop_condition_rays_number = 1; // To stop the simulation after a certain number of rays were sent
 		optional int64 stop_condition_duration = 2; // To stop the simulation after a certain duration
 		int32 automatic_save_frequency = 3; // Define a backup interval (s). This option is useful when computing long simulations. Note: A reduced number of save operations naturally increases the simulation performance. 0 disables intermediary backup saves.
+		bool deactivate_ftg = 4; // Deactivate the Fast Transmission Gathering.
 	}
 
 	// If several stop conditions are set, the first condition reached ends the simulation.
@@ -66,6 +67,7 @@ message Job {
 		}
 		optional int64 stop_condition_duration = 5; // To stop the simulation after a certain duration
 		int32 automatic_save_frequency = 4; // Define a backup interval (s). This option is useful when computing long simulations. Note: A reduced number of save operations naturally increases the simulation performance. 0 disables intermediary backup saves.
+		bool deactivate_ftg = 6; // Deactivate the Fast Transmission Gathering.
 
 		// No optimization : the same number of passes is used for each pixel of the image
 		message OptimizedPropagationNone {
