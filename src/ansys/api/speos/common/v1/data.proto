@@ -18,11 +18,20 @@ enum Unit {
 	watts_per_square_meters_nanometers = 6; // W/(m2.nm)
 	watts_per_square_foot = 7; // W/ft2
 	watts_per_square_foot_nanometer = 8; // W/(ft2.nm)
+	watts_per_square_centimeter = 9; // W/cm2
+	watts_per_square_foot_steradian = 10; // W/(ft2.sr)
+	watts_per_square_meter_steradian_nanometer = 11; // W/(m2.sr.nm)
+	watts_per_square_foot_steradian_nanometer = 12; // W/(ft2.sr.nm)
+	watts_per_cubic_meter = 13; // W/m3
+	watts_per_cubic_centimeter = 14; // W/cm3
 
 	joules = 16; // J
 	joules_per_nanometers = 17; // J/(nm)
 	joules_per_square_meters = 18; // J/(m2)
 	joules_per_square_meters_nanometers = 19; // J/(m2.nm)
+	joules_per_square_centimeter = 20; // J/cm2
+	joules_per_square_foot = 21; // J/ft2
+	joules_per_square_foot_nanometer = 22; // J/(ft2.nm)
 
 	luxes = 29; // lx
 	luxes_seconds = 30; // lx.s
@@ -33,14 +42,20 @@ enum Unit {
 	candelas_per_square_meters = 43; // cd/(m2)
 	candelas_per_nanometers = 44; // cd/(m2)
 	candelas_per_squaremeters_nanometers = 45; // cd/(m2.nm)
+	candelas_per_square_centimeter = 46; // cd/cm2
+	candelas_per_square_foot = 47; // cd/ft2
+	candelas_per_square_foot_nanometer = 48; // cd/(ft2.nm)
 
+	lumens_per_square_meters_nanometers = 49; // lm/(m2.nm) 
 	lumens = 55; // lm
 	lumens_seconds = 56; // lm.s
 	lumens_per_nanometers = 57; // lm/(nm)
-	lumens_per_square_meters_nanometers = 49; // lm/(m2.nm) 
 	lumens_per_square_centimeter = 59; // lm/cm2
 
 	percent = 60; // %
+
+	lumens_per_cubic_meter = 61; // lm/m3
+	lumens_seconds_per_square_centimeter = 62; // lm.s/cm2
 
 	color_XYZ = 70; // XYZ CIE
 	color_xyY = 71; // xy CIE
@@ -54,9 +69,12 @@ enum Unit {
 
 	foot_candles = 90; // fc
 	foot_candles_per_nanometer = 91; // fc/nm
+	foot_candles_seconds = 92; // fc.s
+	foot_candles_seconds_per_nanometer = 93; // fc.s/nm
+	foot_lamberts = 94; // fL
+	foot_lamberts_per_nanometer = 95; // fL/nm
 
 	nanometers = 120; // nm
-
 	micrometers = 121; // um
 	millimeters = 122; // mm
 	meters = 123; // m
@@ -66,6 +84,16 @@ enum Unit {
 
 	ray_per_pixel = 127; // rays/pixel
 
+	feet = 128; // ft
+	inches = 129; // in
+	milliradians = 130; // mrad
+	arcminutes = 131; // '
+	arcseconds = 132; // ''
+	kelvin = 133; // K
+	diopters = 134; // D
+	millidiopters = 135; // mD
+	unit_precision = 136; // %
+
 	square_meters = 140; // m2
 	square_centimeters = 141; // cm2
 	square_millimeters = 142; // mm2
@@ -73,6 +101,12 @@ enum Unit {
 	square_nanometers = 144; // nm2
 	square_feet = 145; // ft2
 	square_inches = 146; // inch2
+
+	invert_meter = 150; // m-1
+	invert_millimeter = 151; // mm-1
+	invert_foot = 152; // ft-1
+	invert_inch = 153; // in-1
+	invert_steradian = 154; // sr-1
 
 	no_unit = 160; // 
 }
