@@ -77,7 +77,7 @@ message SensorTemplate {
 			WavelengthsRange wavelengths_range = 8; // Spectral range to use for simulation.
 
 			enum PNGBits {
-				PNG_BITS_UNSPECIFIED = 0; // Default to 16 bits: PNG_BITS_16.
+				PNG_BITS_UNSPECIFIED = 0;
 				PNG_BITS_08 = 1;
 				PNG_BITS_10 = 2;
 				PNG_BITS_12 = 3;
