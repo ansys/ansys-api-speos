@@ -48,6 +48,11 @@ message Job {
 		IN_ERROR = 5;
 	}
 
+	// If timeline is applied to the job, fill Timeline message.
+	message Timeline {
+		double start_time = 1; // Define the start time (s).
+	}
+
 	// If several stop conditions are set, the first condition reached ends the simulation.
 	// If no stop condition is set, the simulation ends when you stop the process.
 	message DirectMCSimulationProperties {
@@ -66,6 +71,8 @@ message Job {
 		}
 		optional int64 stop_condition_duration = 5; // To stop the simulation after a certain duration
 		int32 automatic_save_frequency = 4; // Define a backup interval (s). This option is useful when computing long simulations. Note: A reduced number of save operations naturally increases the simulation performance. 0 disables intermediary backup saves.
+
+		Timeline timeline = 6; // Active the timeline. This parameter is linked to trajectory_file_uri of scene's CameraProperties, or trajectory_file_uri of scene's SceneInstance, 
 
 		// No optimization : the same number of passes is used for each pixel of the image
 		message OptimizedPropagationNone {
