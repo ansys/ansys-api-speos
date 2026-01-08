@@ -23,14 +23,14 @@ message SensorTemplate {
 	string description = 2; // SensorTemplate description.
 	map<string, string> metadata = 3; // User defined metadata.
 	oneof sensor_template {
-		Camera camera = 4;
-		Irradiance irradiance = 5;
-		Radiance radiance = 6;
-		Intensity intensity = 7;
-		PolarIntensity polar_intensity = 8;
-		Irradiance3D irradiance_3d = 9;
-		Observer observer = 10;
-		Immersive immersive = 11;
+		Camera camera = 4; // Sensor template of type camera.
+		Irradiance irradiance = 5; // Sensor template of type irradiance.
+		Radiance radiance = 6; // Sensor template of type radiance.
+		Intensity intensity = 7; // Sensor template of type intensity.
+		PolarIntensity polar_intensity = 8; // Sensor template of type polar intensity.
+		Irradiance3D irradiance_3d = 9; // Sensor template of type irradiance 3D.
+		Observer observer = 10; // Sensor template of type observer.
+		Immersive immersive = 11; // Sensor template of type immersive.
 	}
 
 	// Spectral range to use for simulation.
@@ -59,7 +59,7 @@ message SensorTemplate {
 		// Simplified version of the Camera Sensor definition parameters
 		message ModeGeometric {}
 
-		// Allows to set every Camera Sensor parameters, including the photometric definition parameters
+		// Allows to set every Camera Sensor parameter, including the photometric definition parameters
 		message ModePhotometric {
 			double acquisition_integration = 1; // Acquisition integration in s
 			double acquisition_lag_time = 2; // Acquisition lag time in s
@@ -107,7 +107,7 @@ message SensorTemplate {
 					double green_gain = 2;
 					double blue_gain = 3;
 				}
-				// Spectral results are converted in a three-channel result. Then a post-treatment is realized to take the distortion induced by the display devices into account. With this method, displayed results are similar to what the camera really gets.
+				// Spectral results are converted in a three-channel result. Then a post-treatment is realized to take into account the distortion induced by the display devices. With this method, displayed results are similar to what the camera really gets.
 				message WhiteBalanceModeDisplayPrimaries {
 					string red_display_file_uri = 1;
 					string green_display_file_uri = 2;
@@ -173,18 +173,18 @@ message SensorTemplate {
 			ModeSpectral mode_spectral = 4; // Sensor mode : Spectral.
 		}		
 		double focal = 5; // Observer type : focal (mm).
-		double integration_angle = 6; // Integration angle, in degree.
+		double integration_angle = 6; // Integration angle (deg).
 		Dimensions dimensions = 7; // Dimensions of the sensor.
 	}
 
 	// Near field intensity or polar intensity sensor.
 	message NearField {
-		double cell_distance = 1; // Distance of the cell from the center of the intensity sensor (mm).
+		double cell_distance = 1; // Distance between the cell and the center of the intensity sensor (mm).
 		double cell_integration_angle = 2; // Integration angle of the cell (deg). Used with cell_distance to calculate the cell diameter.
 	}
 
-	// Angulars range and sampling along two directions.
-	message AngularsRange {
+	// Angular range and sampling along two directions.
+	message AngularRange {
 		double x_start = 1; // Start angle along X direction (deg).
 		double x_end = 2; // End angle along X direction (deg).
 		uint32 x_sampling = 3; // Sampling along X direction.
@@ -211,15 +211,15 @@ message SensorTemplate {
 
 		// The sensor considers X direction as meridian and Y direction as parallel.
 		message OrientationXAsMeridian {
-			AngularsRange dimensions = 1; // Dimensions for non conoscopic sensor.
+			AngularRange dimensions = 1; // Dimensions of non conoscopic sensor.
 		}
 		// The sensor considers X direction as parallel and Y direction as meridian.
 		message OrientationXAsParallel {
-			AngularsRange dimensions = 1; // Dimensions for non conoscopic sensor.
+			AngularRange dimensions = 1; // Dimensions of non conoscopic sensor.
 		}
 		// The sensor considers conoscopic orientation.
 		message OrientationConoscopic {
-			Dimensions dimensions = 1; // Dimensions for conoscopic sensor.
+			Dimensions dimensions = 1; // Dimensions of the conoscopic intensity sensor.
 
 			// Dimensions of the conoscopic intensity sensor.
 			message Dimensions {
@@ -272,9 +272,9 @@ message SensorTemplate {
 			ModeColorimetric mode_colorimetric = 3; //  Sensor mode : Colorimetric. In this specific case, w_sampling of WavelengthsRange is useless.
 		}
 		IntegrationType integration_type = 4; // Select how the light should be integrated into the sensor.
-		optional bool reflection = 5;  // Reflection is taking into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
-		optional bool transmission = 6; // Transmission is taking into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
-		optional bool absorption = 7; // Absorption is taking into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
+		optional bool reflection = 5;  // Reflection is taken into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
+		optional bool transmission = 6; // Transmission is taken into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
+		optional bool absorption = 7; // Absorption is taken into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
 
 		enum IntegrationType {
 			INTEGRATION_TYPE_UNSPECIFIED = 0;
@@ -285,7 +285,7 @@ message SensorTemplate {
 
 	message Stereo
 	{
-		double interocular_distance = 1; // Distance between viewpoints in mm. To use, make sure that front direction is horizontal and top vertical.
+		double interocular_distance = 1; // Distance between viewpoints (mm). To use interocular_distance, make sure that front direction is horizontal and top direction is vertical.
 	}
 
 	message Observer{
@@ -296,7 +296,7 @@ message SensorTemplate {
 		Stereo stereo = 5; // Activates stereo. When not set, stereo is disabled for the sensor.
 
 		double distance = 6; // Radius of the sphere on which the sensors will be placed. (mm)
-		AngularsRange sensors_locations = 7; // Locations of the sensors on the sphere. X corresponds to Horizontal direction. Y corresponds to Vertical direction.
+		AngularRange sensors_locations = 7; // Locations of the sensors on the sphere. X corresponds to Horizontal direction. Y corresponds to Vertical direction.
 	}
 
 	message Immersive {
@@ -308,12 +308,12 @@ message SensorTemplate {
 
 		message ExcludeFaces
 		{
-			bool front = 1;	// Exclude front face if true.
-			bool back = 2; // Exclude back face if true.
-			bool left = 3; // Exclude left face if true.
-			bool right = 4;	// Exclude right face if true.
-			bool top = 5; // Exclude top face if true.
-			bool bottom = 6; // Exclude bottom face if true.
+			bool front = 1;	// Excludes front face if true.
+			bool back = 2; // Excludes back face if true.
+			bool left = 3; // Excludes left face if true.
+			bool right = 4;	// Excludes right face if true.
+			bool top = 5; // Excludes top face if true.
+			bool bottom = 6; // Excludes bottom face if true.
 		}
 	}
 }
@@ -321,7 +321,7 @@ message SensorTemplate {
 // Request to create a SensorTemplate in SensorTemplatesManager.
 message Create_Request {
 	SensorTemplate sensor_template = 1; // SensorTemplate containing its basic characteristics.
-	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be generated for that entry and sent back in the Create_Response.
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be automatically generated for this SensorTemplate and sent into the Create_Response message.
 }
 message Create_Response {
 	string guid = 1; // Guid of the SensorTemplate created in SensorTemplatesManager.
