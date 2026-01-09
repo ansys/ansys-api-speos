@@ -8,14 +8,14 @@ enum ValueTypes {
 	OptisValueTypeIntensity = 1;
 	OptisValueTypeRadiance = 2;
 	OptisValueTypeVisual = 3;
-	OptisValueTypeSel = 4;
-	OptisValueTypeLaserPhase = 5;
-	OptisValueTypeLaserPhasePlane = 6;
-	OptisValueTypeDirectionalIrradiance = 7;
-	OptisValueTypeGain = 8;
-	OptisValueTypeWaveFront = 9;
-	OptisValueTypeFTM = 10;
-	OptisValueTypeRP = 11;
+	OptisValueTypeSel = 4; // Unsupported
+	OptisValueTypeLaserPhase = 5; // Unsupported
+	OptisValueTypeLaserPhasePlane = 6; // Unsupported
+	OptisValueTypeDirectionalIrradiance = 7; 
+	OptisValueTypeGain = 8; // Unsupported
+	OptisValueTypeWaveFront = 9; // Unsupported
+	OptisValueTypeFTM = 10; // Unsupported
+	OptisValueTypeRP = 11; // Unsupported
 	OptisValueTypePowerDensity = 12;
 	OptisValueTypePopulation = 13;
 	OptisValueTypeTemperature = 14;
@@ -43,7 +43,7 @@ enum ValueTypes {
 }
 
 enum IntensityTypes {
-	OptisIntensityOptis = 0;
+	OptisIntensityOptis = 0; // Unsupported
 	OptisIntensitySAETypeA = 1;
 	OptisIntensitySAETypeB = 2;
 	OptisIntensityConoscopic = 3;
@@ -54,7 +54,7 @@ enum UnitTypes {
 	OptisUnitTypePhotometric = 1;
 	OptisUnitTypeTemperature = 2; 
 	OptisUnitTypeUnknown = 3;
-	OptisUnitTypeFTM = 4;
+	OptisUnitTypeFTM = 4; // Unsupported
 	OptisUnitTypeDegree = 5;
 	OptisUnitTypeInverseMeter = 6;
 	OptisUnitTypeInverseSquareMeter = 7;
@@ -87,8 +87,8 @@ enum CoordinateUnits {
 }
 
 enum MapTypes {
-	OptisMapTypeBasic = 0;
-	OptisMapTypeLaser = 1;
+	OptisMapTypeBasic = 0; // Unsupported
+	OptisMapTypeLaser = 1; // Unsupported
 	OptisMapTypeSpectral = 2;
 	OptisMapTypeExtended = 3;
 	OptisMapTypeUnknown = 4;
@@ -103,7 +103,7 @@ enum LayerTypes {
 	OptisMapLayerTypeNone = 0;
 	OptisMapLayerTypeSource = 1;
 	OptisMapLayerTypeSurface = 2;
-	OptisMapLayerTypeError = 3;
+	OptisMapLayerTypeError = 3; // Unsupported
 	OptisMapLayerTypeSequence = 4;
 	OptisMapLayerTypePolarization = 5;
 	OptisMapLayerTypeIncidenceAngle = 6;
