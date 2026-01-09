@@ -85,4 +85,6 @@ message CameraSensorTemplate {
 	uint32 vert_pixel = 9; // Defines the vertical pixels number corresponding to the camera resolution.
 	double width = 10; // Defines the sensor's width in mm.
 	double height = 11; // Defines the sensor's height in mm.
+	
+	bool use_hdf5_format = 13; // If true, the output images will be saved in HDF5 format.
 }
