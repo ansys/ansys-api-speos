@@ -360,13 +360,13 @@ message Scene
 				LayerTypeSource layer_type_source = 3; // Layer type : Source.
 			}
 		}
-		message EyeProperties {
-			repeated double zenith_direction = 1; // Top direction of observer. If the vector is not normalized, it will be automatically normalized	
-			repeated double observer_point = 2; // Position of the observer point (Ox Oy Oz), optional (default: focal length is used)
-			repeated double target_point = 3; // Position of the target point (Ox Oy Oz)
+		message HumanEyeProperties {
+			repeated double eye_point = 1; // Position of the observer (Ox Oy Oz).
+			repeated double top_direction = 2; // Top direction of the observer (Vx Vy Vz). If the top_direction is not orthogonal to "eye_point - target_point" direction, it will be automatically modified.
+			repeated double target_point = 3; // Position of the target point (Ox Oy Oz).
 			oneof layer_type {
-				LayerTypeNone layer_type_none = 4; // Layer type : None
-				LayerTypeSource layer_type_source = 5; // Layer type : Source		
+				LayerTypeNone layer_type_none = 4; // Layer type : None.
+				LayerTypeSource layer_type_source = 5; // Layer type : Source.
 			}
 		}
 
@@ -385,7 +385,7 @@ message Scene
 			Irradiance3DProperties irradiance_3d_properties = 17; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Irradiance3D
 			ObserverProperties observer_properties = 18; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Observer
 			ImmersiveProperties immersive_properties = 19; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Immersive
-			EyeProperties eye_properties = 20; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Eye
+			HumanEyeProperties human_eye_properties = 20; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Eye
 		}
 		LXPProperties lxp_properties = 30; // To activate lxp feature, we must fill this field
 	}
