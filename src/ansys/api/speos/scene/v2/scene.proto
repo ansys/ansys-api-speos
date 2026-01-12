@@ -43,7 +43,7 @@ message Scene
 					Cylindrical cylindrical = 4;
 				}
 
-				repeated double axis_system = 10; // Reference for the mapping operator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+				repeated double axis_system = 10; // Reference for the mapping operator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 				double u_offset = 11; // Shift on U direction (mm)
 				double v_offset = 12; // Shift on V direction (mm)
 				double u_scale_factor = 13; // Scale factor on U dimension
@@ -78,7 +78,7 @@ message Scene
 			}
 		}
 		message NonHomogeneousProperties {
-			repeated double axis_system = 1; // Position of the non homogeneous vop (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the non homogeneous vop (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 		}
 
 		string name = 1; // Unique identifier in the scene
@@ -103,7 +103,7 @@ message Scene
 		message IntensityProperties {
 			message LibraryProperties {
 				message AxisSystem {
-					repeated double values = 1; // Orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) The coordinate system needs to be orthonormal.
+					repeated double values = 1; // Orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) The coordinate system must be orthonormal.
 				}
 				// Define the intensity distribution as normal to the selected surface.
 				message NormalToSurface {}
@@ -113,14 +113,14 @@ message Scene
 				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surface source 
 				// Orientation of the source intensity distribution
 				oneof orientation {
-					AxisSystem axis_system = 2; // Orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+					AxisSystem axis_system = 2; // Orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 					NormalToSurface normal_to_surface = 3; // Define the intensity distribution as normal to the selected surface.
 					NormalToUVMap normal_to_uv_map = 4; // Define the intensity distribution as normal to the selected emissive surface and its orientation on the emissive surface.
 				}
 			}
 
 			message GaussianProperties {
-			    repeated double axis_system = 1; // optional - orientation of the intensity distribution (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) - if not filled : normal to surface map. The coordinate system needs to be orthonormal.
+			    repeated double axis_system = 1; // optional - orientation of the intensity distribution (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz) - if not filled : normal to surface map. The coordinate system must be orthonormal.
 			}
 
 			oneof properties {
@@ -129,14 +129,14 @@ message Scene
 			}
 		}
 		message LuminaireProperties{
-			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 		}
 		message SurfaceProperties{
 			message ExitanceConstantProperties {
 				repeated GeoPath geo_paths = 1;
 			}
 			message ExitanceVariableProperties {
-				repeated double axis_plane = 1; // Position of the exitance map (Ox Oy Oz Xx Xy Xz Yx Yy Yz). The coordinate system needs to be orthonormal.
+				repeated double axis_plane = 1; // Position of the exitance map (Ox Oy Oz Xx Xy Xz Yx Yy Yz). The coordinate system must be orthonormal.
 			}
 
 			oneof exitanceProperties {
@@ -156,15 +156,15 @@ message Scene
 			}
 
 			message TemperatureFieldProperties{
-				repeated double axis_plane = 1; // Position of the exitance map (Ox Oy Oz Xx Xy Xz Yx Yy Yz). The coordinate system needs to be orthonormal.
+				repeated double axis_plane = 1; // Position of the exitance map (Ox Oy Oz Xx Xy Xz Yx Yy Yz). The coordinate system must be orthonormal.
 			}
 		}
 		message RayFileProperties{
-			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
 		}
 		message DisplayProperties{
-			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			IntensityProperties intensity_properties = 3;
 		}
 
@@ -289,7 +289,7 @@ message Scene
 		}
 
 		message CameraProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			string trajectory_file_uri = 2; // Trajectory file, used to define the positions and orientations of the Camera sensor in time.
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 3; // Layer type : None
@@ -297,7 +297,7 @@ message Scene
 			}
 		}
 		message IrradianceProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			EnumRayFileType ray_file_type = 2; // Choose type of ray file generated after the simulation.
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 3; // Layer type : None
@@ -311,7 +311,7 @@ message Scene
 			GeoPaths output_face_geometries = 10; // List of output faces for inverse simulation optimization
 		}
 		message RadianceProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			repeated double observer_point = 2; // Position of the observer point (Ox Oy Oz), optional (default: focal length is used)
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 3; // Layer type : None
@@ -325,7 +325,7 @@ message Scene
 		}
 		
 		message IntensityProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 3; // Layer type: None
 				LayerTypeSource layer_type_source = 4; // Layer type: Source
@@ -334,7 +334,7 @@ message Scene
 			}			
 		}
 		message PolarIntensityProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 		}
 
 		message Irradiance3DProperties {
@@ -347,14 +347,14 @@ message Scene
 		}
 
 		message ObserverProperties{		
-			repeated double axis_system = 1; // Position of the observed object/scene. (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Horizontal direction. Y corresponds to Vertical direction. The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the observed object/scene. (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Horizontal direction. Y corresponds to Vertical direction. The coordinate system must be orthonormal.
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 2; // Layer type : None.
 				LayerTypeSource layer_type_source = 3; // Layer type : Source.
 			}
 		}
 		message ImmersiveProperties {
-			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Front direction. Y corresponds to Top direction. Z corresponds to Right direction. The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Front direction. Y corresponds to Top direction. Z corresponds to Right direction. The coordinate system must be orthonormal.
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 2; // Layer type : None.
 				LayerTypeSource layer_type_source = 3; // Layer type : Source.
@@ -396,7 +396,7 @@ message Scene
 		}
 
 		message VirtualBSDFBenchProperties{
-			repeated double axis_system = 1; // Axis system of measurement (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz), O will be the measurement position, Z will be the normal axis (theta angle reference) and X the orientation on the surface (phi angle reference). The coordinate system needs to be orthonormal.
+			repeated double axis_system = 1; // Axis system of measurement (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz), O will be the measurement position, Z will be the normal axis (theta angle reference) and X the orientation on the surface (phi angle reference). The coordinate system must be orthonormal.
 			double analysis_x_ratio = 2; // Ratio to reduce the analysis area following x, must be in range ]0., 100.]
 			double analysis_y_ratio = 3; // Ratio to reduce the analysis area following y, must be in range ]0., 100.]
 		}
@@ -409,7 +409,7 @@ message Scene
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string scene_guid = 10; // Guid of the element to instantiate
-		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+		repeated double axis_system = 11; // Scene position relative to parent PartTemplate reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 	}
 
 	message GroundPlane
@@ -425,7 +425,7 @@ message Scene
 
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
 
-	repeated double sub_scene_anchor_axis_system = 11; // Only used for sub-scene - Represents the axis system to be attached to the one describing the scene instance. The coordinate system needs to be orthonormal.
+	repeated double sub_scene_anchor_axis_system = 11; // Only used for sub-scene - Represents the axis system to be attached to the one describing the scene instance. The coordinate system must be orthonormal.
 	
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene

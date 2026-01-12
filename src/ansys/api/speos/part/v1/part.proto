@@ -14,7 +14,7 @@ message Part
 		string description = 2;
 		map<string, string> metadata = 12; // User defined metadata
 		string part_guid = 3; // Guid of Part in PartsManager
-		repeated double axis_system = 11; // Part position relative to parent reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system needs to be orthonormal.
+		repeated double axis_system = 11; // Part position relative to parent reference (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 	}
 
 	string name = 1;
