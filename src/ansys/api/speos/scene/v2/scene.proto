@@ -160,13 +160,8 @@ message Scene
 			}
 		}
 		message RayFileProperties{
-<<<<<<< HEAD
-			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
-			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source
-=======
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			GeoPaths exit_geometries = 2; // Exit Geometries that will use this rayfile source 
->>>>>>> main
 		}
 		message DisplayProperties{
 			repeated double axis_system = 1; // Position of the source (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
