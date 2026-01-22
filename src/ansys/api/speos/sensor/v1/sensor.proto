@@ -47,8 +47,6 @@ message SensorTemplate {
 		double focal = 6; // Observer type : focal (mm)
 		double integration_angle = 7; // Integration angle, in degree
 		ansys.api.speos.sensor.v1.SensorDimensions dimensions = 8; // Dimensions of the sensor
-		
-		bool use_hdf5_format = 9; // If true, the output images will be saved in HDF5 format.
 	}
 	message Intensity { // Carthesian intensity sensor, generating a XMP result
 		oneof sensor_type {
@@ -69,8 +67,6 @@ message SensorTemplate {
 			ansys.api.speos.sensor.v1.FromSourceLookingAtSensor from_source_looking_at_sensor = 11; // Viewing direction from source looking at sensor
 			ansys.api.speos.sensor.v1.FromSensorLookingAtSource from_sensor_looking_at_source = 12; // Viewing direction from sensor looking at source
 		}
-
-		bool use_hdf5_format = 13; // If true, the output images will be saved in HDF5 format.
 	}
 	message PolarIntensity{
 		oneof format {
@@ -153,8 +149,6 @@ message SensorTemplate {
 
 		double distance = 6; // Radius of the sphere on which the sensors will be placed. (mm)
 		ansys.api.speos.sensor.v1.AngularRange sensors_locations = 7; // Locations of the sensors on the sphere. X corresponds to Horizontal direction. Y corresponds to Vertical direction.
-		
-		bool use_hdf5_format = 8; // If true, the output images will be saved in HDF5 format.
 	}
 
 	message Immersive {
@@ -163,8 +157,6 @@ message SensorTemplate {
 		double integration_angle = 3; // Integration angle in degrees for direct simulations.
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 4; // Spectral range to use for simulation.
 		ExcludeFaces exclude_faces = 5; // Possibility to exclude some faces.
-
-		bool use_hdf5_format = 6; // If true, the output images will be saved in HDF5 format.
 
 		message ExcludeFaces
 		{
