@@ -385,7 +385,7 @@ message Scene
 			Irradiance3DProperties irradiance_3d_properties = 17; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Irradiance3D
 			ObserverProperties observer_properties = 18; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Observer
 			ImmersiveProperties immersive_properties = 19; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Immersive
-			HumanEyeProperties human_eye_properties = 20; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Eye
+			HumanEyeProperties human_eye_properties = 20; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::HumanEye
 		}
 		LXPProperties lxp_properties = 30; // To activate lxp feature, we must fill this field
 	}
