@@ -64,7 +64,7 @@ message SensorTemplate {
 			double acquisition_integration = 1; // Acquisition integration in s
 			double acquisition_lag_time = 2; // Acquisition lag time in s
 
-			string transmittance_file_uri = 3; // Amount of light of the source that passes through the lens and reaches the sensor. The transmittance is expressed in a .spectrum file.
+			string transmittance_spectrum_guid = 3; // Amount of light of the source that passes through the lens and reaches the sensor. Spectrum guid in spectrum manager. Expected type is Library.
 
 			float gamma_correction = 4; // Compensation of the curve before the display on the screen.
 			PNGBits png_bits = 5; // Choose between 8, 10, 12 and 16 bits.
@@ -86,9 +86,9 @@ message SensorTemplate {
 
 			// Simulation results are available in color according to the White Balance mode.
 			message ModeColor {
-				string red_spectrum_file_uri = 1;
-				string green_spectrum_file_uri = 2;
-				string blue_spectrum_file_uri = 3;
+				string red_spectrum_guid = 1; // Red Spectrum guid in spectrum manager. Expected type is Library.
+				string green_spectrum_guid = 2; // Green Spectrum guid in spectrum manager. Expected type is Library.
+				string blue_spectrum_guid = 3; // Blue Spectrum guid in spectrum manager. Expected type is Library.
 
 				oneof white_balance_mode {
 					WhiteBalanceModeNone white_balance_mode_none = 4; // White balance mode : None.
@@ -109,15 +109,15 @@ message SensorTemplate {
 				}
 				// Spectral results are converted in a three-channel result. Then a post-treatment is realized to take into account the distortion induced by the display devices. With this method, displayed results are similar to what the camera really gets.
 				message WhiteBalanceModeDisplayPrimaries {
-					string red_display_file_uri = 1;
-					string green_display_file_uri = 2;
-					string blue_display_file_uri = 3;
+					string red_display_spectrum_guid = 1; // Red display Spectrum guid in spectrum manager. Expected type is Library.
+					string green_display_spectrum_guid = 2; // Green display Spectrum guid in spectrum manager. Expected type is Library.
+					string blue_display_spectrum_guid = 3; // Blue display Spectrum guid in spectrum manager. Expected type is Library.
 				}
 			}
 
 			// Simulation results are available in grey scale.
 			message ModeMonochromatic {
-				string spectrum_file_uri = 1;
+				string spectrum_guid = 1; // Spectrum guid in spectrum manager. Expected type is Library.
 			}
 		}
 	}
