@@ -22,7 +22,7 @@ message SensorTemplate {
 	string name = 1; // SensorTemplate name.
 	string description = 2; // SensorTemplate description.
 	map<string, string> metadata = 3; // User defined metadata.
-	oneof sensor_template {
+	oneof sensor {
 		Camera camera = 4; // Sensor template of type camera.
 		Irradiance irradiance = 5; // Sensor template of type irradiance.
 		Radiance radiance = 6; // Sensor template of type radiance.
