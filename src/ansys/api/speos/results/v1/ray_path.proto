@@ -34,7 +34,7 @@ message RayPath {
 		StatusLast = 16;
 		StatusFirst = -7;
 		StatusDiracReflected = -6;
-		StatusReserved = -5;
+		StatusTIR = -5;
 		StatusGrinStep = -4;
 		StatusLambertianReflected = -3;
 		StatusGaussianReflected = -2;
