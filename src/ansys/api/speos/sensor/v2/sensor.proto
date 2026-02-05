@@ -48,21 +48,21 @@ message SensorTemplate {
 
 		string distortion_file_uri = 3; // Optical aberration that deforms and bends straight lines. The distortion is expressed in a .OPTDistortion file.
 		optional double focal_length = 4; // Distance between the center of the optical system and the focus. (mm)
-		optional double imager_distance = 5; // Imager distance in mm, the imager is located at the focal point. The Imager distance has no impact on the result.
-		optional double f_number = 6; // F-number represents the aperture of the front lens. F number has no impact on the result.
+		optional double imager_distance = 5; // Imager distance (mm), the imager is located at the focal point. The Imager distance has no impact on the result.
+		optional double f_number = 6; // F-number represents the aperture of the front lens.
 
 		uint32 horz_pixel = 7; // Defines the horizontal pixels number corresponding to the camera resolution.
 		uint32 vert_pixel = 8; // Defines the vertical pixels number corresponding to the camera resolution.
-		double width = 9; // Defines the sensor's width in mm.
-		double height = 10; // Defines the sensor's height in mm.
+		double width = 9; // Defines the sensor's width. (mm)
+		double height = 10; // Defines the sensor's height. (mm)
 
 		// Simplified version of the Camera Sensor definition parameters
 		message ModeGeometric {}
 
 		// Allows to set every Camera Sensor parameter, including the photometric definition parameters
 		message ModePhotometric {
-			double acquisition_integration = 1; // Acquisition integration in s
-			double acquisition_lag_time = 2; // Acquisition lag time in s
+			double acquisition_integration = 1; // Acquisition integration. (s)
+			double acquisition_lag_time = 2; // Acquisition lag time. (s)
 
 			string transmittance_spectrum_guid = 3; // Amount of light of the source that passes through the lens and reaches the sensor. Spectrum guid in spectrum manager. Expected type is Library.
 
@@ -290,7 +290,7 @@ message SensorTemplate {
 
 	message Observer{
 		double focal = 1; // Distance between the sensor radiance plan and the observer point. The larger the focal, the closer to the object. (mm)
-		double integration_angle = 2; // Integration angle in degrees for direct simulations.
+		double integration_angle = 2; // Integration angle (deg) for direct simulations.
 		WavelengthsRange wavelengths_range = 3; // Spectral range to use for simulation.
 		Dimensions dimensions = 4; // Dimensions of the sensor.
 		Stereo stereo = 5; // Activates stereo. When not set, stereo is disabled for the sensor.
@@ -302,7 +302,7 @@ message SensorTemplate {
 	message Immersive {
 		uint32 sampling = 1; // Sampling (horizontal and vertical number of pixels) for a face.
 		Stereo stereo = 2; // Activates stereo. When not set, stereo is disabled for the sensor.
-		double integration_angle = 3; // Integration angle in degrees for direct simulations.
+		double integration_angle = 3; // Integration angle (deg) for direct simulations.
 		WavelengthsRange wavelengths_range = 4; // Spectral range to use for simulation.
 		ExcludeFaces exclude_faces = 5; // Possibility to exclude some faces.
 
