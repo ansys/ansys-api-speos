@@ -193,7 +193,7 @@ message SensorTemplate {
 		uint32 y_sampling = 6; // Sampling along Y direction.
 	}
 
-	message Intensity { // Carthesian intensity sensor, generating a XMP result.
+	message Intensity { // Cartesian intensity sensor, generating a XMP result.
 		oneof sensor_mode {
 			ModePhotometric mode_photometric = 1; // Sensor mode: Photometric.
 			ModeColorimetric mode_colorimetric = 2; // Sensor mode: Colorimetric.
