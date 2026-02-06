@@ -67,7 +67,7 @@ message SensorTemplate {
 			string transmittance_spectrum_guid = 3; // Amount of light of the source that passes through the lens and reaches the sensor. Spectrum guid in spectrum manager. Expected type is Library.
 
 			float gamma_correction = 4; // Compensation of the curve before the display on the screen.
-			PNGBits png_bits = 5; // Choose between 8, 10, 12 and 16 bits.
+			PNGBits png_bits = 5; // Defines the number of bits per channel for the PNG output file.
 
 			oneof color_mode {
 				ModeColor mode_color = 6; // Color mode : Color
@@ -78,10 +78,10 @@ message SensorTemplate {
 
 			enum PNGBits {
 				PNG_BITS_UNSPECIFIED = 0;
-				PNG_BITS_08 = 1;
-				PNG_BITS_10 = 2;
-				PNG_BITS_12 = 3;
-				PNG_BITS_16 = 4;
+				PNG_BITS_08 = 1; // 8 bits per channel.
+				PNG_BITS_10 = 2; // 10 bits per channel.
+				PNG_BITS_12 = 3; // 12 bits per channel.
+				PNG_BITS_16 = 4; // 16 bits per channel.
 			}
 
 			// Simulation results are available in color according to the White Balance mode.
