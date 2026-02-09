@@ -31,6 +31,7 @@ message SensorTemplate {
 		Irradiance3D irradiance_3d = 9; // Sensor template of type irradiance 3D.
 		Observer observer = 10; // Sensor template of type observer.
 		Immersive immersive = 11; // Sensor template of type immersive.
+		HumanEye human_eye = 12; // Sensor template of type human eye.
 	}
 
 	// Spectral range to use for simulation.
@@ -315,6 +316,17 @@ message SensorTemplate {
 			bool top = 5; // Excludes top face if true.
 			bool bottom = 6; // Excludes bottom face if true.
 		}
+	}
+
+	message HumanEye
+	{
+		oneof sensor_mode {
+			ModeColorimetric mode_colorimetric = 1; // Sensor mode : Colorimetric. WavelengthsRange expected is w_start=360 nm, w_end=830 nm.
+			ModeSpectral mode_spectral = 2; // Sensor mode : Spectral. WavelengthsRange expected is w_start=360 nm, w_end=830 nm.
+		}
+	
+		double pupil_diameter = 3; // Diameter of the pupil. (mm)
+		AngularRange dimensions = 4; // Dimensions of the sensor.
 	}
 }
 

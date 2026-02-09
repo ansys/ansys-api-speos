@@ -35,7 +35,6 @@ message SensorTemplate {
 		Irradiance3D irradiance_3d = 9;
 		Observer observer_sensor_template = 10;
 		Immersive immersive_sensor_template = 11;
-		HumanEye human_eye_sensor_template = 12;
 	}
 	message Radiance {
 		oneof sensor_type {
@@ -167,16 +166,6 @@ message SensorTemplate {
 			bool top = 5; // Exclude top face if true.
 			bool bottom = 6; // Exclude bottom face if true.
 		}
-	}
-	message HumanEye
-	{
-		oneof sensor_type {
-			ansys.api.speos.sensor.v1.SensorTypeColorimetric sensor_type_colorimetric = 1; //  Sensor type : Colorimetric. WavelengthsRange expected is w_start=360 nm, w_end=830 nm.
-			ansys.api.speos.sensor.v1.SensorTypeSpectral sensor_type_spectral = 2; // Sensor type : Spectral. WavelengthsRange expected is w_start=360 nm, w_end=830 nm.
-		}
-	
-		double pupil_diameter = 3; // Diameter of the pupil (mm)
-		ansys.api.speos.sensor.v1.AngularRange dimensions = 4; // Dimensions of the sensor
 	}
 }
 
