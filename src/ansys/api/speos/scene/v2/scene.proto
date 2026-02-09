@@ -509,7 +509,7 @@ message SaveFile_Request {
   string guid = 1; // Guid of a ScenesManager element to save
   string file_uri = 2; // File uri (path or guid from FileTransferService) 
   string password = 3; // Password to be defined if the user wants to protect a Speos Lightbox file. If not, then keep this field empty.
-  bool is_black_boxed = 4; // Flag to save the scene into black-boxed speos lightbox. If the scene is already tagged as black-boxed, this flag is ignored (only necessary if user want save a speos light box)
+  bool is_black_boxed = 4; // Flag to save the scene into a black-boxed Speos Lightbox. If the scene is already tagged as black-boxed, this flag is ignored.
 }
 // Response to SaveFile service.
 message SaveFile_Response {
