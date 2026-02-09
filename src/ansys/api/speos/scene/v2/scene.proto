@@ -497,7 +497,7 @@ service SceneActions {
 // Request to LoadFile service
 message LoadFile_Request {
 	string guid = 1; // Guid of a ScenesManager element to update
-  string file_uri = 2; // File uri (path or guid from FileTransferService) 
+  	string file_uri = 2; // File uri (path or guid from FileTransferService) 
 	string password = 3; // Password needed to open the speos lightbox file (only necessary if user protects the speos light box with a password)
 }
 // Response to LoadFile service
@@ -508,7 +508,7 @@ message LoadFile_Response {
 message SaveFile_Request {
   string guid = 1; // Guid of a ScenesManager element to save
   string file_uri = 2; // File uri (path or guid from FileTransferService) 
-	string password = 3; // Password that we want to protect the speos lightbox file with a password (only necessary if user want save a speos light box with a password)
+  string password = 3; // Password that we want to protect the speos lightbox file with a password (only necessary if user want save a speos light box with a password)
   bool is_black_boxed = 4; // Flag to save the scene into black-boxed speos lightbox. If the scene is already tagged as black-boxed, this flag is ignored (only necessary if user want save a speos light box)
 }
 // Response to SaveFile service. Warning: SaveFile is not supported.
