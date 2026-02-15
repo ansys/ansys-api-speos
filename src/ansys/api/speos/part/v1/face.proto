@@ -3,30 +3,26 @@ syntax = "proto3";
 
 package ansys.api.speos.face.v1;
 
-// Face definition with meshing information
+// Face definition with meshing information.
 message Face
 {
-	string name = 1; // Unique identifier in its Body
-	string display_name = 4; // User name to be displayed
+	string name = 1; // Unique identifier in its Body.
+	string display_name = 4; // User name to be displayed.
 	string description = 2;
-	map<string, string> metadata = 3; // user defined metadata
-	repeated float vertices = 10; // coordinates of all points (p1x p1y p1z p2x p2y p2z ...)
-	repeated uint32 facets = 11; // indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...)
-	repeated float normals = 12; // normal vector for all points (n1x n1y n1z n2x n2y n2z ...)
+	map<string, string> metadata = 3; // User defined metadata.
+	repeated float vertices = 10; // Coordinates of all points (p1x p1y p1z p2x p2y p2z ...).
+	repeated uint32 facets = 11; // Indexes of points for all triangles (t1_1 t1_2 t1_3 t2_1 t2_2 t2_3 ...).
+	repeated float normals = 12; // Normal vector for all points (n1x n1y n1z n2x n2y n2z ...).
 
-	// Store named data on meshed
+	// Store named data on the mesh.
 	message MeshData
 	{
-		string name = 1; // Identifier name (uv, temperature...)
-		repeated float data = 2; // Raw data for each mesh
+		string name = 1; // Identifier name (uv, temperature...).
+		repeated float data = 2; // Raw data for each mesh. Example for texture coordinates uv: (u1 v1 u2 v2 ...) with u1 and v1 the coordinates for the first vertex. Typically ranging from 0.0 to 1.0, where (0.0 0.0) is the bottom-left and (1.0 1.0) is the top-right of the texture.
 	}
 
-	repeated MeshData vertices_data = 20; // List of data applied to vertices (like texture coordinates uv)
-	repeated MeshData facets_data = 21; // List of data applied to facets (like temperature)
-
-	// tangents ?
-	// bitangents ?
-	// custom data on vertex ?
+	repeated MeshData vertices_data = 20; // List of data applied to vertices (like texture coordinates uv).
+	repeated MeshData facets_data = 21; // List of data applied to facets (like temperature) - Unsupported.
 }
 
 service FacesManager {

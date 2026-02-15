@@ -140,9 +140,9 @@ message SourceTemplate {
 						UserDefinedWhitePoint user_defined_white_point = 2; //custom Y and X white point coordinates
 					}
 					
-		string red_spectrum_guid = 3;  // red Spectrum guid in spectrum manager
-		string green_spectrum_guid = 4;  //green Spectrum guid in spectrum manager
-		string blue_spectrum_guid = 5;  //blue Spectrum guid in spectrum manager
+		string red_spectrum_guid = 3; // Red Spectrum guid in spectrum manager. Expected type is Library.
+		string green_spectrum_guid = 4; // Green Spectrum guid in spectrum manager. Expected type is Library.
+		string blue_spectrum_guid = 5; // Blue Spectrum guid in spectrum manager. Expected type is Library.
 	}
 
 	message PredefinedColorSpace { 
