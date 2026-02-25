@@ -7,7 +7,7 @@ package ansys.api.speos.scene.v2;
 // Optical scene definition made of parts, optical properties, sources, sensors and simulations
 message Scene
 {
-	// Geometry path of object that will include the specific property (can be sub-scene/part/body/face). 
+	// Geometry path of object that will include the specific property (can be sub-scene/part/body/face).
 	// geo_path in the format : "<sub-scene name>/<part name>/<body name>/<face name>" (no name by default for root scene and root part).
 	// "body0" -> body0 of the root part in the root scene
 	// "body0/face0" -> face0 in body0 of the root part in the root scene
@@ -24,7 +24,7 @@ message Scene
 	}
 
 	message GeoPath {
-		string geo_path = 1; // Geometry that will be used ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face) 
+		string geo_path = 1; // Geometry that will be used ("<body name>" for a whole body, or "<body name>/<face name>" for a specific face)
 		optional bool reverse_normal = 2; // optional - if not set or false : normal is not reversed.
 	}
 
@@ -62,7 +62,7 @@ message Scene
 				}
 			}
 
-			message Layer 
+			message Layer
 			{
 				string sop_guid = 1; // Guid of the surface optical property to bind to geometry
 				TextureMappingInfo image_properties = 2; // To be filled if the SOPTemplate/Texture contains image field
@@ -110,7 +110,7 @@ message Scene
 				// Define the intensity distribution as normal to the selected emissive surface and its orientation on the emissive surface.
 				message NormalToUVMap {}
 
-				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surface source 
+				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surface source
 				// Orientation of the source intensity distribution
 				oneof orientation {
 					AxisSystem axis_system = 2; // Orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
@@ -140,8 +140,8 @@ message Scene
 			}
 
 			oneof exitanceProperties {
-				ExitanceConstantProperties exitance_constant_properties = 1; // To be filled if the Surface SourceTemplate has ExitanceConstant 
-				ExitanceVariableProperties exitance_variable_properties = 2; // To be filled if the Surface SourceTemplate has ExitanceVariable 
+				ExitanceConstantProperties exitance_constant_properties = 1; // To be filled if the Surface SourceTemplate has ExitanceConstant
+				ExitanceVariableProperties exitance_variable_properties = 2; // To be filled if the Surface SourceTemplate has ExitanceVariable
 			}
 			IntensityProperties intensity_properties = 3;
 		}
@@ -152,7 +152,7 @@ message Scene
 			}
 
 			message EmissiveFacesProperties{
-				repeated GeoPath geo_paths = 1; // the list of emitting faces of the source 
+				repeated GeoPath geo_paths = 1; // the list of emitting faces of the source
 			}
 
 			message TemperatureFieldProperties{
@@ -184,15 +184,15 @@ message Scene
 				repeated double sun_direction = 1; // (X Y Z) direction to the sun
 				bool reverse_sun = 2;  // optional - if not set or false : normal is not reversed
 			}
-			
+
 			message SunAxisSystem {
 				oneof sun_type {
 					AutomaticSun automatic_sun = 1; // calculates the sun position according to the north direction and time zone location set
 					ManualSun manual_sun = 2; // sets the sun position and direction from scene
 				}
 				message AutomaticSun {
-					string time_zone_uri = 1; 
-					int32 year = 2; 
+					string time_zone_uri = 1;
+					int32 year = 2;
 					int32 month = 3;
 					int32 day = 4;
 					int32 hour = 5;
@@ -264,7 +264,7 @@ message Scene
 				IntersectedOneTime = 1;
 			}
 			message Layer {
-				string name = 1; // Name of the layer 
+				string name = 1; // Name of the layer
 				GeoPaths geometries = 2; // Surface selected.
 			}
 
@@ -317,13 +317,13 @@ message Scene
 				LayerTypeNone layer_type_none = 3; // Layer type : None
 				LayerTypeSource layer_type_source = 4; // Layer type : Source
 				LayerTypeFace layer_type_face = 5; // Layer type : Face
-				LayerTypeSequence layer_type_sequence = 6; // Layer type : Sequence								
+				LayerTypeSequence layer_type_sequence = 6; // Layer type : Sequence
 			}
 		}
 		message LXPProperties {
 			uint32 nb_max_paths = 1; // The Maximum paths corresponds to the maximum number of rays the Light Expert file (*.lpf or *.lp3) can contain.
 		}
-		
+
 		message IntensityProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 			oneof layer_type {
@@ -331,7 +331,7 @@ message Scene
 				LayerTypeSource layer_type_source = 4; // Layer type: Source
 				LayerTypeFace layer_type_face = 5; // Layer type: Face
 				LayerTypeSequence layer_type_sequence = 6; // Layer type: Sequence
-			}			
+			}
 		}
 		message PolarIntensityProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
@@ -346,7 +346,7 @@ message Scene
 			GeoPaths geometries = 4; // Geometries that will use this sensor
 		}
 
-		message ObserverProperties{		
+		message ObserverProperties{
 			repeated double axis_system = 1; // Position of the observed object/scene. (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Horizontal direction. Y corresponds to Vertical direction. The coordinate system must be orthonormal.
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 2; // Layer type : None.
@@ -372,7 +372,7 @@ message Scene
 			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
 			RadianceProperties radiance_properties = 14; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Radiance
 			IntensityProperties intensity_properties = 15; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IntensitySensorTemplate
-			PolarIntensityProperties polar_intensity_properties = 16; // To be filled if the sensor_guid corresponds to a SensorTemplate of type PolarIntensitySensorTemplate	
+			PolarIntensityProperties polar_intensity_properties = 16; // To be filled if the sensor_guid corresponds to a SensorTemplate of type PolarIntensitySensorTemplate
 			Irradiance3DProperties irradiance_3d_properties = 17; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Irradiance3D
 			ObserverProperties observer_properties = 18; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Observer
 			ImmersiveProperties immersive_properties = 19; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Immersive
@@ -419,6 +419,31 @@ message Scene
 		double ground_height = 3; // height of the environment shooting (unit mm)
 	}
 
+	message Texture3D
+	{
+		enum PatternOperation {
+			PATTERN_OPERATION_UNDEFINED = 0; // Undefined pattern operation
+			PATTERN_OPERATION_REMOVE = 1; // Substract the pattern from the support body
+			PATTERN_OPERATION_ADD_ON_SAME_MATERIAL = 2; // Add the pattern on the support body and keep its material
+			PATTERN_OPERATION_ADD_ON_DIFFERENT_MATERIAL = 3; // Add the pattern on the support body and use the pattern's material
+			PATTERN_OPERATION_ADD_IN = 4; // Add the pattern into the support body and use the pattern's material
+			PATTERN_OPERATION_INSERT = 5; // Add the pattern to the support body and use the pattern's material
+		}
+
+		message Pattern3D
+		{
+			string body_guid = 1; // Guid of the body used as 3D texture pattern, shouldn't be a body from the scene root part taken in the simulation
+			repeated MaterialInstance materials = 2; // Materials to apply on the pattern body, repeated to allow set of specific faces properties
+		}
+
+		repeated double axis_system = 1; // Anchor of the 3D texture pattern (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
+		string support_body_geo_path = 2; // Geo path of the body supporting the 3D texture
+		PatternOperation pattern_operation = 3; // Operation to apply with the 3D
+		Pattern3D pattern = 4; // 3D texture pattern definition
+		double global_scale = 5; // Global scale factor applied to the 3D texture pattern
+		string mapping_3d_uri = 6; // Guid of the 3D mapping to use for this 3D texture (.OPT3DMapping)
+	}
+
 	string name = 1;
 	string description = 2;
 	map<string, string> metadata = 3; // User defined metadata
@@ -426,13 +451,14 @@ message Scene
 	string part_guid = 10; // Guid from PartsManager of the geometrical part included inside the scene
 
 	repeated double sub_scene_anchor_axis_system = 11; // Only used for sub-scene - Represents the axis system to be attached to the one describing the scene instance. The coordinate system must be orthonormal.
-	
+
 	repeated SourceInstance sources = 13; // The sources added in the scene
 	repeated SensorInstance sensors = 14; // The sensors added in the scene
 	repeated SimulationInstance simulations = 15; // The simulations added in the scene
 	repeated MaterialInstance materials = 16; // The materials (volume + surface) applied on geometries
 	repeated SceneInstance scenes = 20; // Sub scenes
-	GroundPlane ground = 21; // Optional - Only usable when there is at least one Ambient Environment Source Template that has selected a HDR image file. 
+	GroundPlane ground = 21; // Optional - Only usable when there is at least one Ambient Environment Source Template that has selected a HDR image file.
+	repeated Texture3D textures_3d = 22; // List of 3D textures applied on geometries of the scene
 }
 
 // Manager for Scenes
@@ -497,7 +523,7 @@ service SceneActions {
 // Request to LoadFile service
 message LoadFile_Request {
 	string guid = 1; // Guid of a ScenesManager element to update
-  	string file_uri = 2; // File uri (path or guid from FileTransferService) 
+    string file_uri = 2; // File uri (path or guid from FileTransferService)
 	string password = 3; // Password needed to open the speos lightbox file (only necessary if user protects the speos light box with a password)
 }
 // Response to LoadFile service
