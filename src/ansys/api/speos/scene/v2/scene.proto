@@ -230,7 +230,6 @@ message Scene
 		string display_name = 4; // User name to be displayed
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
-		string group_name = 5; // Group name for the source, all sources with a same group name will be added to the same layer when sensor layering is LayerTypeSource
 		string source_guid = 10; // Guid of the SourceTemplate in SourceTemplatesManager to instantiate
 		oneof properties {
 			LuminaireProperties luminaire_properties = 11; // To be filled if the source_guid corresponds to a SourceTemplate of type Luminaire
@@ -391,6 +390,7 @@ message Scene
 		string simulation_guid = 10; // Guid of the element to instantiate
 		repeated string sensor_paths = 11; // Sensors that this simulation will include (empty for no sensor, [""] for all sensors, "<sensor name>" for a specific sensor in the current scene, or "<scene name>/<sensor name>" for a specific sensor in a specific sub scene)
 		repeated string source_paths = 12; // Sources that this simulation will include (empty for no source, [""] for all sources, "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene)
+		repeated SourceGroup source_groups = 15; // Source groups that this simulation will include, all sources with a same group name will be added to the same layer when sensor layering is LayerTypeSource
 		GeoPaths geometries = 13; // Geometries that this simulation will include - Not yet functional (All geometries are included by default in each simulation)
 		oneof properties {
 			VirtualBSDFBenchProperties vbb_properties = 14; // To be filled if the simulation_guid corresponds to a SimulationTemplate of type VirtualBSDFBench
@@ -400,6 +400,11 @@ message Scene
 			repeated double axis_system = 1; // Axis system of measurement (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz), O will be the measurement position, Z will be the normal axis (theta angle reference) and X the orientation on the surface (phi angle reference). The coordinate system must be orthonormal.
 			double analysis_x_ratio = 2; // Ratio to reduce the analysis area following x, must be in range ]0., 100.]
 			double analysis_y_ratio = 3; // Ratio to reduce the analysis area following y, must be in range ]0., 100.]
+		}
+
+		message SourceGroup{
+			string name = 1; // Group name for the source
+			repeated string source_paths = 2; // Sources that belong to this group, selection can be done by "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene
 		}
 	}
 
