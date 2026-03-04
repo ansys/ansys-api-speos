@@ -21,7 +21,7 @@ message Face
 		repeated float data = 2; // Raw data for each mesh. Example for texture coordinates uv: (u1 v1 u2 v2 ...) with u1 and v1 the coordinates for the first vertex. Typically ranging from 0.0 to 1.0, where (0.0 0.0) is the bottom-left and (1.0 1.0) is the top-right of the texture.
 	}
 
-	repeated MeshData vertices_data = 20; // List of data applied to vertices (like texture coordinates uv).
+	repeated MeshData vertices_data = 20; // List of data applied to vertices (like texture coordinates uv). Each MeshData will be stored in a specific channel.
 	repeated MeshData facets_data = 21; // List of data applied to facets (like temperature) - Unsupported.
 }
 
