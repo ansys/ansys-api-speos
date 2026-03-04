@@ -43,7 +43,7 @@ message Scene
 					Cylindrical cylindrical = 4;
 				}
 
-				repeated double axis_system = 10; // Reference for the mapping operator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
+				repeated double axis_system = 10; // Reference for the mapping operator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). X corresponds to Projection direction. Y corresponds to Top direction.  The coordinate system must be orthonormal.
 				double u_offset = 11; // Shift on U direction (mm)
 				double v_offset = 12; // Shift on V direction (mm)
 				double u_scale_factor = 13; // Scale factor on U dimension
