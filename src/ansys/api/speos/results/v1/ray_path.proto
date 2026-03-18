@@ -1,4 +1,4 @@
-// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
 
 import "ansys/api/speos/common/v1/data.proto";
@@ -34,7 +34,7 @@ message RayPath {
 		StatusLast = 16;
 		StatusFirst = -7;
 		StatusDiracReflected = -6;
-		StatusReserved = -5;
+		StatusTIR = -5;
 		StatusGrinStep = -4;
 		StatusLambertianReflected = -3;
 		StatusGaussianReflected = -2;
