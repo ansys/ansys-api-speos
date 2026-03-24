@@ -31,6 +31,7 @@ message SensorTemplate {
 		Irradiance3D irradiance_3d = 9; // Sensor template of type irradiance 3D.
 		Observer observer = 10; // Sensor template of type observer.
 		Immersive immersive = 11; // Sensor template of type immersive.
+		EnergyDensity energy_density = 12; // Sensor template of type energy density.
 	}
 
 	// Spectral range to use for simulation.
@@ -314,6 +315,23 @@ message SensorTemplate {
 			bool right = 4;	// Excludes right face if true.
 			bool top = 5; // Excludes top face if true.
 			bool bottom = 6; // Excludes bottom face if true.
+		}
+	}
+
+	message EnergyDensity {
+		oneof sensor_mode {
+			ModePhotometric mode_photometric = 1; // Sensor mode : Photometric.
+			ModeRadiometric mode_radiometric = 2; //  Sensor mode : Radiometric.
+		}		
+		Dimensions3D dimensions_3d = 7; // Dimensions of the sensor.
+		
+		message Dimensions3D {
+			double x_size = 1; // Size along X direction (mm).
+			uint32 x_sampling = 2; // Number of pixels along X direction.
+			double y_size = 3; // Size along Y direction (mm).
+			uint32 y_sampling = 4; // Number of pixels along Y direction.
+			double z_size = 5; // Size along Y direction (mm).
+			uint32 z_sampling = 6; // Number of pixels along Y direction.
 		}
 	}
 }

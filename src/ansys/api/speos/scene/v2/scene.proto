@@ -319,7 +319,8 @@ message Scene
 				LayerTypeFace layer_type_face = 5; // Layer type : Face
 				LayerTypeSequence layer_type_sequence = 6; // Layer type : Sequence								
 			}
-		}
+		}		
+		
 		message LXPProperties {
 			uint32 nb_max_paths = 1; // The Maximum paths corresponds to the maximum number of rays the Light Expert file (*.lpf or *.lp3) can contain.
 		}
@@ -361,6 +362,15 @@ message Scene
 			}
 		}
 
+		message EnergyDensityProperties {
+			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
+			oneof layer_type {
+				LayerTypeNone layer_type_none = 2; // Layer type : None
+				LayerTypeSource layer_type_source = 3; // Layer type : Source
+				LayerTypeFace layer_type_face = 4; // Layer type : Face				
+			}			
+		}
+
 		string name = 1; // Unique identifier in the scene
 		string display_name = 4; // User name to be displayed
 		string description = 2;
@@ -376,6 +386,7 @@ message Scene
 			Irradiance3DProperties irradiance_3d_properties = 17; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Irradiance3D
 			ObserverProperties observer_properties = 18; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Observer
 			ImmersiveProperties immersive_properties = 19; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Immersive
+			EnergyDensityProperties energy_density_properties = 20; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::EnergyDensity
 		}
 		LXPProperties lxp_properties = 30; // To activate lxp feature, we must fill this field
 	}
