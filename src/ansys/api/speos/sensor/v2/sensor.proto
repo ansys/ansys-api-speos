@@ -1,0 +1,354 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.sensor.v2;
+
+
+service SensorTemplatesManager {
+	// Create a SensorTemplate
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a SensorTemplate
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a SensorTemplate
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a SensorTemplate
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all SensorTemplates in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// Sensor template with its basic characteristics.
+message SensorTemplate {
+	string name = 1; // SensorTemplate name.
+	string description = 2; // SensorTemplate description.
+	map<string, string> metadata = 3; // User defined metadata.
+	oneof sensor {
+		Camera camera = 4; // Sensor template of type camera.
+		Irradiance irradiance = 5; // Sensor template of type irradiance.
+		Radiance radiance = 6; // Sensor template of type radiance.
+		Intensity intensity = 7; // Sensor template of type intensity.
+		PolarIntensity polar_intensity = 8; // Sensor template of type polar intensity.
+		Irradiance3D irradiance_3d = 9; // Sensor template of type irradiance 3D.
+		Observer observer = 10; // Sensor template of type observer.
+		Immersive immersive = 11; // Sensor template of type immersive.
+	}
+
+	// Spectral range to use for simulation.
+	message WavelengthsRange {
+		double w_start = 1; // Defines the minimum wavelength. (nm)
+		double w_end = 2; // Defines the maximum wavelength. (nm)
+		uint32 w_sampling = 3; // Defines the number of wavelengths to be taken into account between the minimum and maximum wavelengths set. For ModeColorimetric, w_sampling makes sense only in inverse simulation.
+	}
+
+	message Camera {
+		oneof sensor_mode {
+			ModeGeometric mode_geometric = 1; // Sensor mode : Geometric
+			ModePhotometric mode_photometric = 2; // Sensor mode : Photometric
+        }
+
+		string distortion_file_uri = 3; // Optical aberration that deforms and bends straight lines. The distortion is expressed in a .OPTDistortion file.
+		optional double focal_length = 4; // Distance between the center of the optical system and the focus. (mm)
+		optional double imager_distance = 5; // Imager distance (mm), the imager is located at the focal point. The Imager distance has no impact on the result.
+		optional double f_number = 6; // F-number represents the aperture of the front lens.
+
+		uint32 horz_pixel = 7; // Defines the horizontal pixels number corresponding to the camera resolution.
+		uint32 vert_pixel = 8; // Defines the vertical pixels number corresponding to the camera resolution.
+		double width = 9; // Defines the sensor's width. (mm)
+		double height = 10; // Defines the sensor's height. (mm)
+
+		// Simplified version of the Camera Sensor definition parameters
+		message ModeGeometric {}
+
+		// Allows to set every Camera Sensor parameter, including the photometric definition parameters
+		message ModePhotometric {
+			double acquisition_integration = 1; // Acquisition integration. (s)
+			double acquisition_lag_time = 2; // Acquisition lag time. (s)
+
+			string transmittance_spectrum_guid = 3; // Amount of light of the source that passes through the lens and reaches the sensor. Spectrum guid in spectrum manager. Expected type is Library.
+
+			float gamma_correction = 4; // Compensation of the curve before the display on the screen.
+			PNGBits png_bits = 5; // Defines the number of bits per channel for the PNG output file.
+
+			oneof color_mode {
+				ModeColor mode_color = 6; // Color mode : Color
+				ModeMonochromatic mode_monochromatic = 7; // Color mode : Monochromatic
+			}
+
+			WavelengthsRange wavelengths_range = 8; // Spectral range to use for simulation.
+
+			enum PNGBits {
+				PNG_BITS_UNSPECIFIED = 0;
+				PNG_BITS_08 = 1; // 8 bits per channel.
+				PNG_BITS_10 = 2; // 10 bits per channel.
+				PNG_BITS_12 = 3; // 12 bits per channel.
+				PNG_BITS_16 = 4; // 16 bits per channel.
+			}
+
+			// Simulation results are available in color according to the White Balance mode.
+			message ModeColor {
+				string red_spectrum_guid = 1; // Red Spectrum guid in spectrum manager. Expected type is Library.
+				string green_spectrum_guid = 2; // Green Spectrum guid in spectrum manager. Expected type is Library.
+				string blue_spectrum_guid = 3; // Blue Spectrum guid in spectrum manager. Expected type is Library.
+
+				oneof white_balance_mode {
+					WhiteBalanceModeNone white_balance_mode_none = 4; // White balance mode : None.
+					WhiteBalanceModeGreyWorld white_balance_mode_grey_world = 5; // White balance mode : Grey world.
+					WhiteBalanceModeUser white_balance_mode_user = 6; // White balance mode : User.
+					WhiteBalanceModeDisplayPrimaries white_balance_mode_display_primaries = 7; // White balance mode : Display primaries.
+				}
+
+				// The spectral transmittance of the optical system and the spectral sensitivity for each channel are applied to the detected spectral image before the conversion in a three-channel result. This method is referred to as the basic conversion.
+				message WhiteBalanceModeNone {}
+				// The grey world assumption states that the content of the image is grey on average. This method converts spectral results in a three-channel result with the basic conversion. Then it computes and applies coefficients to the red, green and blue images to make sure their averages are equal.
+				message WhiteBalanceModeGreyWorld {}
+				// In addition to the basic treatment, it allows you to apply your own coefficients to the red, green, blue images.
+				message WhiteBalanceModeUser {
+					double red_gain = 1;
+					double green_gain = 2;
+					double blue_gain = 3;
+				}
+				// Spectral results are converted in a three-channel result. Then a post-treatment is realized to take into account the distortion induced by the display devices. With this method, displayed results are similar to what the camera really gets.
+				message WhiteBalanceModeDisplayPrimaries {
+					string red_display_spectrum_guid = 1; // Red display Spectrum guid in spectrum manager. Expected type is Library.
+					string green_display_spectrum_guid = 2; // Green display Spectrum guid in spectrum manager. Expected type is Library.
+					string blue_display_spectrum_guid = 3; // Blue display Spectrum guid in spectrum manager. Expected type is Library.
+				}
+			}
+
+			// Simulation results are available in grey scale.
+			message ModeMonochromatic {
+				string spectrum_guid = 1; // Spectrum guid in spectrum manager. Expected type is Library.
+			}
+		}
+	}
+
+	// The sensor considers the visible spectrum and gets the results.
+	message ModePhotometric {}
+	// Color results without any spectral data or layer separation.
+	message ModeColorimetric {
+		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
+	}
+	// The sensor considers the entire spectrum and gets the results.
+	message ModeRadiometric {}
+	// Color results and spectral data separated by wavelength.
+	message ModeSpectral {
+		WavelengthsRange wavelengths_range = 1; // Spectral range to use for simulation.
+	}
+
+	// Dimensions of the sensor
+	message Dimensions {
+		double x_start = 1; // Start distance from center along X direction (mm).
+		double x_end = 2; // End distance from center along X direction (mm).
+		uint32 x_sampling = 3; // Number of pixels along X direction.
+		double y_start = 4; // Start distance from center along Y direction (mm).
+		double y_end = 5; // End distance from center along Y direction (mm).
+		uint32 y_sampling = 6; // Number of pixels along Y direction.
+	}
+
+	message Irradiance {
+		oneof sensor_mode {
+			ModePhotometric mode_photometric = 1; // Sensor mode : Photometric.
+			ModeColorimetric mode_colorimetric = 2; //  Sensor mode : Colorimetric.
+			ModeRadiometric mode_radiometric = 3; //  Sensor mode : Radiometric.
+			ModeSpectral mode_spectral = 4; // Sensor mode : Spectral.
+		}
+		IntegrationType integration_type = 5; // Select how the light should be integrated into the sensor.
+		Dimensions dimensions = 6; // Dimensions of the sensor.
+
+		enum IntegrationType {
+			INTEGRATION_TYPE_UNSPECIFIED = 0;
+			INTEGRATION_TYPE_PLANAR = 1; // Integration type : Planar.
+			INTEGRATION_TYPE_RADIAL = 2; // Integration type : Radial.
+			INTEGRATION_TYPE_HEMISPHERICAL = 3; // Integration type : Hemispherical.
+			INTEGRATION_TYPE_CYLINDRICAL = 4; // Integration type : Cylindrical.
+			INTEGRATION_TYPE_SEMI_CYLINDRICAL = 5; // Integration type : Semi Cylindrical.
+		}
+	}
+
+	message Radiance {
+		oneof sensor_mode {
+			ModePhotometric mode_photometric = 1; // Sensor mode : Photometric.
+			ModeColorimetric mode_colorimetric = 2; //  Sensor mode : Colorimetric.
+			ModeRadiometric mode_radiometric = 3; //  Sensor mode : Radiometric.
+			ModeSpectral mode_spectral = 4; // Sensor mode : Spectral.
+		}		
+		double focal = 5; // Observer type : focal (mm).
+		double integration_angle = 6; // Integration angle (deg).
+		Dimensions dimensions = 7; // Dimensions of the sensor.
+	}
+
+	// Near field intensity or polar intensity sensor.
+	message NearField {
+		double cell_distance = 1; // Distance between the cell and the center of the intensity sensor (mm).
+		double cell_integration_angle = 2; // Integration angle of the cell (deg). Used with cell_distance to calculate the cell diameter.
+	}
+
+	// Angular range and sampling along two directions.
+	message AngularRange {
+		double x_start = 1; // Start angle along X direction (deg).
+		double x_end = 2; // End angle along X direction (deg).
+		uint32 x_sampling = 3; // Sampling along X direction.
+		double y_start = 4; // Start angle along Y direction (deg).
+		double y_end = 5; // End angle along Y direction (deg).
+		uint32 y_sampling = 6; // Sampling along Y direction.
+	}
+
+	message Intensity { // Cartesian intensity sensor, generating a XMP result.
+		oneof sensor_mode {
+			ModePhotometric mode_photometric = 1; // Sensor mode: Photometric.
+			ModeColorimetric mode_colorimetric = 2; // Sensor mode: Colorimetric.
+			ModeRadiometric mode_radiometric = 3; // Sensor mode: Radiometric.
+			ModeSpectral mode_spectral = 4; // Sensor mode: Spectral.
+		}
+		oneof orientation {
+			OrientationXAsMeridian orientation_x_as_meridian = 5; // Orientation mode: X As Meridian, Y as Parallel.
+			OrientationXAsParallel orientation_x_as_parallel = 6; // Orientation mode: X As Parallel, Y as Meridian.
+			OrientationConoscopic orientation_conoscopic = 7; // Orientation mode: Conoscopic.
+		}
+		
+		NearField near_field = 8; // Activates Near field. When not set, near field is disabled for the sensor.
+		ViewingDirection viewing_direction = 9; // Intensity result viewing direction.
+
+		// The sensor considers X direction as meridian and Y direction as parallel.
+		message OrientationXAsMeridian {
+			AngularRange dimensions = 1; // Dimensions of non conoscopic sensor.
+		}
+		// The sensor considers X direction as parallel and Y direction as meridian.
+		message OrientationXAsParallel {
+			AngularRange dimensions = 1; // Dimensions of non conoscopic sensor.
+		}
+		// The sensor considers conoscopic orientation.
+		message OrientationConoscopic {
+			Dimensions dimensions = 1; // Dimensions of the conoscopic intensity sensor.
+
+			// Dimensions of the conoscopic intensity sensor.
+			message Dimensions {
+				double theta_max = 1; // Maximum theta angle (deg).	
+				uint32 sampling = 2; // Number of pixels along Theta.	
+			}
+		}
+
+		enum ViewingDirection {
+			VIEWING_DIRECTION_UNSPECIFIED = 0;
+			VIEWING_DIRECTION_FROM_SOURCE_LOOKING_AT_SENSOR = 1; // Intensity result viewing direction: from source looking at sensor.
+			VIEWING_DIRECTION_FROM_SENSOR_LOOKING_AT_SOURCE = 2; // Intensity result viewing direction: from sensor looking at source.
+		}
+	}
+
+	message PolarIntensity{
+		Format result_format = 1; // Format of the polar intensity result file.
+		oneof sampling {
+			Dimensions dimensions = 2; // Horizontal and vertical samplings. Dimensions are fixed by the format or the adaptive sampling file.
+			string adaptive_sampling_uri = 3; // Path to the adaptive sampling file.
+		}
+		oneof field {
+			FarField far_field = 4; // Far field, only used when near field is disabled for the sensor. It permits to set the integration angle.
+			NearField near_field = 5; // Near field parameters: cell distance and diameter. Integration angle needs to be calculated from these parameters.
+		}
+
+		enum Format {
+			FORMAT_UNSPECIFIED = 0;
+			FORMAT_IESNA_A = 1; // The polar intensity sensor generates an Iesna A type file.
+			FORMAT_IESNA_B = 2; // The polar intensity sensor generates an Iesna B type file.
+			FORMAT_IESNA_C = 3; // The polar intensity sensor generates an Iesna C type file.
+			FORMAT_EULUMDAT = 4; // The polar intensity sensor generates an Eulumdat file.
+		}
+
+		// Dimensions of the conoscopic intensity sensor.
+		message Dimensions {	
+			int32 horizontal_sampling = 1; // Number of horizontal samples of the intensity file (IESNA or EULUMDAT).
+			int32 vertical_sampling = 2; // Number of vertical samples of the intensity file (IESNA or EULUMDAT).
+		}
+
+		message FarField {
+			double integration_angle = 1; // Integration angle (deg).
+		}		
+	}	
+
+	message Irradiance3D {
+		oneof sensor_mode {
+			ModePhotometric mode_photometric = 1; // Sensor mode : Photometric.
+			ModeRadiometric mode_radiometric = 2; //  Sensor mode : Radiometric.
+			ModeColorimetric mode_colorimetric = 3; //  Sensor mode : Colorimetric. In this specific case, w_sampling of WavelengthsRange is useless.
+		}
+		IntegrationType integration_type = 4; // Select how the light should be integrated into the sensor.
+		optional bool reflection = 5;  // Reflection is taken into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
+		optional bool transmission = 6; // Transmission is taken into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
+		optional bool absorption = 7; // Absorption is taken into account for the integrating faces of the sensor. Irrelevant for ModeColorimetric as well as INTEGRATION_TYPE_RADIAL.
+
+		enum IntegrationType {
+			INTEGRATION_TYPE_UNSPECIFIED = 0;
+			INTEGRATION_TYPE_PLANAR = 1; // Integration type : Planar.
+			INTEGRATION_TYPE_RADIAL = 2; // Integration type : Radial.
+		}
+	}
+
+	message Stereo
+	{
+		double interocular_distance = 1; // Distance between viewpoints (mm). To use interocular_distance, make sure that front direction is horizontal and top direction is vertical.
+	}
+
+	message Observer{
+		double focal = 1; // Distance between the sensor radiance plan and the observer point. The larger the focal, the closer to the object. (mm)
+		double integration_angle = 2; // Integration angle (deg) for direct simulations.
+		WavelengthsRange wavelengths_range = 3; // Spectral range to use for simulation.
+		Dimensions dimensions = 4; // Dimensions of the sensor.
+		Stereo stereo = 5; // Activates stereo. When not set, stereo is disabled for the sensor.
+
+		double distance = 6; // Radius of the sphere on which the sensors will be placed. (mm)
+		AngularRange sensors_locations = 7; // Locations of the sensors on the sphere. X corresponds to Horizontal direction. Y corresponds to Vertical direction.
+	}
+
+	message Immersive {
+		uint32 sampling = 1; // Sampling (horizontal and vertical number of pixels) for a face.
+		Stereo stereo = 2; // Activates stereo. When not set, stereo is disabled for the sensor.
+		double integration_angle = 3; // Integration angle (deg) for direct simulations.
+		WavelengthsRange wavelengths_range = 4; // Spectral range to use for simulation.
+		ExcludeFaces exclude_faces = 5; // Possibility to exclude some faces.
+
+		message ExcludeFaces
+		{
+			bool front = 1;	// Excludes front face if true.
+			bool back = 2; // Excludes back face if true.
+			bool left = 3; // Excludes left face if true.
+			bool right = 4;	// Excludes right face if true.
+			bool top = 5; // Excludes top face if true.
+			bool bottom = 6; // Excludes bottom face if true.
+		}
+	}
+}
+
+// Request to create a SensorTemplate in SensorTemplatesManager.
+message Create_Request {
+	SensorTemplate sensor_template = 1; // SensorTemplate containing its basic characteristics.
+	optional string guid = 2; // Optional field to specify the guid used in the database. If not set, a unique guid will be automatically generated for this SensorTemplate and sent into the Create_Response message.
+}
+message Create_Response {
+	string guid = 1; // Guid of the SensorTemplate created in SensorTemplatesManager.
+}
+// Request to read a SensorTemplate in SensorTemplatesManager.
+message Read_Request {
+	string guid = 1; // Guid of the SensorTemplate to be read.
+}
+message Read_Response {
+	SensorTemplate sensor_template = 1; // SensorTemplate corresponding to the guid given in Read_Request.
+}
+// Request to update a SensorTemplate in SensorTemplatesManager.
+message Update_Request {
+	string guid = 1; // Guid of the SensorTemplate to be updated.
+	SensorTemplate sensor_template = 2; // SensorTemplate that will be used for the update.
+}
+message Update_Response {
+}
+// Request to delete a SensorTemplate in SensorTemplatesManager.
+message Delete_Request {
+	string guid = 1; // Guid of the SensorTemplate to be deleted.
+}
+message Delete_Response {}
+
+message List_Request {
+}
+message List_Response {
+	repeated string guids = 1; // Guids of the SensorTemplates in SensorTemplatesManager.
+}
+
