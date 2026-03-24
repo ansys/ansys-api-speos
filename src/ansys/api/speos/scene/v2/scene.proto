@@ -394,8 +394,8 @@ message Scene
 		GeoPaths geometries = 13; // Geometries that this simulation will include - (All geometries are included by default in each simulation)
 		oneof properties {
 			VirtualBSDFBenchProperties vbb_properties = 14; // To be filled if the simulation_guid corresponds to a SimulationTemplate of type VirtualBSDFBench
-			DirectMCSimulationProperties direct_mc_simulation_properties = 15;
-			InverseMCSimulationProperties inverse_mc_simulation_properties = 16;
+			DirectMCSimulationProperties direct_mc_simulation_properties = 16;
+			InverseMCSimulationProperties inverse_mc_simulation_properties = 17;
 		}
 
 		message VirtualBSDFBenchProperties{
