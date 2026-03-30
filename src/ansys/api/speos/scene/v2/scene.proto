@@ -361,6 +361,15 @@ message Scene
 				LayerTypeSource layer_type_source = 3; // Layer type : Source.
 			}
 		}
+		message HumanEyeProperties {
+			repeated double eye_point = 1; // Position of the observer (Ox Oy Oz).
+			repeated double top_direction = 2; // Top direction of the observer (Vx Vy Vz). The top_direction must be orthogonal to "eye_point - target_point" direction.
+			repeated double target_point = 3; // Position of the target point (Ox Oy Oz).
+			oneof layer_type {
+				LayerTypeNone layer_type_none = 4; // Layer type : None.
+				LayerTypeSource layer_type_source = 5; // Layer type : Source.
+			}
+		}
 
 		message EnergyDensityProperties {
 			repeated double axis_system = 1; // Position of the sensor (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). If the coordinate system is not orthonormal, it will be automatically orthonormalized
@@ -387,6 +396,7 @@ message Scene
 			ObserverProperties observer_properties = 18; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Observer
 			ImmersiveProperties immersive_properties = 19; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::Immersive
 			EnergyDensityProperties energy_density_properties = 20; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::EnergyDensity
+			HumanEyeProperties human_eye_properties = 21; // To be filled if the sensor_guid corresponds to a SensorTemplate of type SensorTemplate::HumanEye
 		}
 		LXPProperties lxp_properties = 30; // To activate lxp feature, we must fill this field
 	}

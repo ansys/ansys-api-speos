@@ -32,6 +32,7 @@ message SensorTemplate {
 		Observer observer = 10; // Sensor template of type observer.
 		Immersive immersive = 11; // Sensor template of type immersive.
 		EnergyDensity energy_density = 12; // Sensor template of type energy density.
+		HumanEye human_eye = 13; // Sensor template of type human eye.
 	}
 
 	// Spectral range to use for simulation.
@@ -333,6 +334,17 @@ message SensorTemplate {
 			double z_size = 5; // Size along Y direction (mm).
 			uint32 z_sampling = 6; // Number of pixels along Y direction.
 		}
+	}
+
+	message HumanEye
+	{
+		oneof sensor_mode {
+			ModeColorimetric mode_colorimetric = 1; // Sensor mode : Colorimetric. WavelengthsRange expected is w_start=360 nm, w_end=830 nm.
+			ModeSpectral mode_spectral = 2; // Sensor mode : Spectral. WavelengthsRange expected is w_start=360 nm, w_end=830 nm.
+		}
+	
+		double pupil_diameter = 3; // Diameter of the pupil. (mm)
+		AngularRange dimensions = 4; // Dimensions of the sensor.
 	}
 }
 
