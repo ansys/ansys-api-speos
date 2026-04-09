@@ -14,6 +14,9 @@ service MapActions {
 
 	// Split a Speos360 file into a list of XMP files. [Unsupported]
 	rpc SplitSpeos360IntoXMPs(SplitSpeos360IntoXMPs_Request) returns (SplitSpeos360IntoXMPs_Response) {}
+
+	// Export XMP to PNG
+	rpc ExportXMPToImage(ExportXMPToImage_Request) returns (ExportXMPToImage_Response) {}	
 }
 
 message MergeXMPsToXMPOrSpeos360_Request {
@@ -37,4 +40,11 @@ message SplitSpeos360IntoXMPs_Request {
 }
 message SplitSpeos360IntoXMPs_Response {
 	repeated string splitted_map_uri = 1; // List of uris to XMP files.
+}
+
+message ExportXMPToImage_Request {
+	string xmp_file_uri = 1; // Uri of the XMP file to export to PNG image. (Local path or guid from FileTransferService).
+	string image_file_uri = 2; // Uri of the image exported. (Local path or guid from FileTransferService). If pointing to folder or empty filename reserved from FileTransferService, filename will be the one of the XMP file and the guid provided will point to the generated file. If extension is not PNG, ".png" will be added at the end of filename.
+}
+message ExportXMPToImage_Response {
 }
