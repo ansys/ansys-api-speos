@@ -110,7 +110,7 @@ message Scene
 				// Define the intensity distribution as normal to the selected emissive surface and its orientation on the emissive surface.
 				message NormalToUVMap {}
 
-				GeoPaths exit_geometries = 1; // Exit Geometries that will use this surface source
+				GeoPaths exit_geometries = 1; // Exit Geometries used by the Surface source
 				// Orientation of the source intensity distribution
 				oneof orientation {
 					AxisSystem axis_system = 2; // Orientation (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
