@@ -469,7 +469,7 @@ message Scene
 		PatternOperation pattern_operation = 3; // Operation to apply with the 3D
 		Pattern3D pattern = 4; // 3D texture pattern definition
 		double global_scale = 5; // Global scale factor applied to the 3D texture pattern
-		string mapping_3d_uri = 6; // Guid of the 3D mapping to use for this 3D texture (.OPT3DMapping)
+		string mapping_3d_file_uri = 6; // Uri of the 3D mapping to use for this 3D texture (.OPT3DMapping). Path or guid from FileTransferService.
 	}
 
 	string name = 1;
