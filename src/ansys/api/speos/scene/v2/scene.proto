@@ -466,7 +466,7 @@ message Scene
 
 		repeated double axis_system = 1; // Anchor of the 3D texture pattern (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). The coordinate system must be orthonormal.
 		string support_body_geo_path = 2; // Geo path of the body supporting the 3D texture
-		PatternOperation pattern_operation = 3; // Operation to apply with the 3D
+		PatternOperation pattern_operation = 3; // Operation that will be applied to the support body according to the pattern.
 		Pattern3D pattern = 4; // 3D texture pattern definition
 		double global_scale = 5; // Global scale factor applied to the 3D texture pattern
 		string mapping_3d_file_uri = 6; // Uri of the 3D mapping to use for this 3D texture (.OPT3DMapping). Path or guid from FileTransferService.
