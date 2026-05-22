@@ -114,4 +114,38 @@ message List_Response {
 
 // Actions available on a SOPTemplate
 service SOPTemplateActions {
+	// Compute the BSDF (Bi-directional Scattering Distribution Function) for a given SOPTemplate and given impact definitions (angles, wavelength, etc.)
+	rpc EvaluateBSDF(EvaluateBSDF_Request) returns (EvaluateBSDF_Response) {}
+
+}
+
+// Definition of the impact for which the BSDF will be evaluated
+message ImpactDefinition {
+	double theta_in = 1; // Incidence angle in degree for the incoming ray. If not set, the default value will be 0 degree (normal incidence).
+	double phi_in = 2; // Anisotropic angle in degree for the incoming ray. If not set, the default value will be 0 degree (normal incidence).
+	double wavelength = 3; // Wavelength in nm for which for the incoming ray.
+	double theta_out = 4; // Outgoing angles in degree for which the metrics will be computed. If not set, the default values will be from 0 to 180 degree with a step of 1 degree.
+	double phi_out = 5; // Outgoing anisotropic angles in degree for the outgoing ray. If not set, the default values will be from 0 to 180 degree with a step of 1 degree.
+}
+
+// Request to evaluate the BSDF for a given SOPTemplate and given impact definitions (angles, wavelength, etc.)
+message EvaluateBSDF_Request {
+	string sop_guid = 1; // Guid of the SOPTemplate to evaluate
+	string vop_before_guid = 2; // Guid of the ambient VOP before interaction
+	string vop_after_guid = 3; // Guid of the VOP after interaction with the surface
+	
+	repeated ImpactDefinition impacts = 4;
+}
+
+// Response containing the BSDF (Bi-directional Scattering Distribution Function) for a given SOPTemplate and given impact definitions (angles, wavelength, etc.)
+message EvaluateBSDF_Response {
+
+	// BSDF evaluation result for a given impact definition
+	message EvaluationResult {
+		ImpactDefinition inputs = 1; // Definition of the metric (angles, wavelength, etc.)
+		double bsdf_value = 2; // Value of the BSDF for the given definition, expected to be in the range [0, 1] for energy conservation reasons.
+	}
+
+	// List of BSDF evaluation results for the given impact definitions in EvaluateBSDF_Request
+	repeated EvaluationResult eval_results = 1;
 }
