@@ -116,6 +116,8 @@ message List_Response {
 service SOPTemplateActions {
 	// Compute the BSDF (Bi-directional Scattering Distribution Function) for a given SOPTemplate and given impact definitions (angles, wavelength, etc.)
 	rpc EvaluateBSDF(EvaluateBSDF_Request) returns (EvaluateBSDF_Response) {}
+	// Compute the BSDF along a 2D slice by sweeping one variable over a range while keeping the others fixed
+	rpc EvaluateBSDFSlice(EvaluateBSDFSlice_Request) returns (EvaluateBSDFSlice_Response) {}
 
 }
 
@@ -148,4 +150,39 @@ message EvaluateBSDF_Response {
 
 	// List of BSDF evaluation results for the given impact definitions in EvaluateBSDF_Request
 	repeated EvaluationResult eval_results = 1;
+}
+
+// Variable to sweep for slice evaluation
+enum SweepVariable {
+	SWEEP_VARIABLE_UNSPECIFIED = 0;
+	SWEEP_VARIABLE_THETA_IN = 1;
+	SWEEP_VARIABLE_PHI_IN = 2;
+	SWEEP_VARIABLE_THETA_OUT = 3;
+	SWEEP_VARIABLE_PHI_OUT = 4;
+	SWEEP_VARIABLE_WAVELENGTH = 5;
+}
+
+// Request to evaluate the BSDF along a 2D slice by sweeping one variable
+message EvaluateBSDFSlice_Request {
+	string sop_guid = 1; // Guid of the SOPTemplate to evaluate
+	string vop_before_guid = 2; // Guid of the ambient VOP before interaction
+	string vop_after_guid = 3; // Guid of the VOP after interaction with the surface
+
+	// Fixed values for all impact variables
+	ImpactDefinition fixed_values = 4;
+
+	// Which variable to sweep
+	SweepVariable sweep_variable = 5;
+	// Start of the sweep range (in degrees or nm depending on variable)
+	double sweep_start = 6;
+	// End of the sweep range (in degrees or nm depending on variable)
+	double sweep_end = 7;
+	// Number of equispaced samples in [sweep_start, sweep_end]
+	uint32 num_samples = 8;
+}
+
+// Response for BSDF slice evaluation - reuses the same EvaluationResult structure
+message EvaluateBSDFSlice_Response {
+	// List of BSDF evaluation results, one per sample along the swept variable
+	repeated EvaluateBSDF_Response.EvaluationResult eval_results = 1;
 }
