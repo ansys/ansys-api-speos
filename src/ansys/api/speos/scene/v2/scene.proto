@@ -550,7 +550,7 @@ service SceneActions {
 
 // Request to LoadFile service
 message LoadFile_Request {
-	string guid = 1; // Guid of a ScenesManager element to update
+	string guid = 1; // Guid of a ScenesManager element to update. To force the creation of SensorTemplate v1 instead of v2, this metadata needs to be added to the Scene's metadata: ("ForceSensorTemplateV1", "").
     string file_uri = 2; // File uri (path or guid from FileTransferService)
 	string password = 3; // Password needed to open the speos lightbox file (only necessary if user protects the speos light box with a password)
 }
