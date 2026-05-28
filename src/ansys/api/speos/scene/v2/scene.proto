@@ -474,7 +474,7 @@ message Scene
 
 	message FastTransmissionGathering
 	{
-		GeoPaths geometries = 1; // Geometries that will be used for fast transmission gathering.
+		GeoPaths geometries = 1; // Geometries with Fast Transmission Gathering applied.
 	}
 
 	string name = 1;
@@ -492,7 +492,7 @@ message Scene
 	repeated SceneInstance scenes = 20; // Sub scenes
 	GroundPlane ground = 21; // Optional - Only usable when there is at least one Ambient Environment Source Template that has selected a HDR image file.
 	repeated Texture3D textures_3d = 22; // List of 3D textures applied on geometries of the scene
-	FastTransmissionGathering fast_transmission_gathering = 23; // Optional - To define geometries that will be used for fast transmission gathering. FTG can be (de)activated in SimulationTemplate.
+	FastTransmissionGathering fast_transmission_gathering = 23; // Optional - Fast Transmission Gathering (FTG) parameter. For the FTG to be considered, the FTG must be activated in the SimulationTemplate message with the fast_transmission_gathering boolean.
 }
 
 // Manager for Scenes
