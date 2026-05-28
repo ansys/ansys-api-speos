@@ -40,7 +40,7 @@ message DirectMCSimulationTemplate {
 	Weight weight = 4; // To activate Weight. The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
 	EnumColorimetricStandard colorimetric_standard = 5; // To define the Colorimetric Standard
 	bool dispersion = 6; // To activate the dispersion calculation. 
-	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
+	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface. 
 	string ambient_material_uri = 8; // To select an ambient material *.material  
 	Texture texture = 9; // To activate texture.
 }
