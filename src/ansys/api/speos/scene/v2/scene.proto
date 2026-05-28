@@ -412,7 +412,7 @@ message Scene
 		repeated string sensor_paths = 11; // Sensors that this simulation will include (empty for no sensor, [""] for all sensors, "<sensor name>" for a specific sensor in the current scene, or "<scene name>/<sensor name>" for a specific sensor in a specific sub scene)
 		repeated string source_paths = 12; // Sources that this simulation will include (empty for no source, [""] for all sources, "<source name>" for a specific source in the current scene, or "<scene name>/<source name>" for a specific source in a specific sub scene)
 		repeated SourceGroup source_groups = 15; // Source groups that this simulation will include, only sources which are in source_path can be added to a source group. All sources with in one source group will be grouped in one layer in the result, when sensor layering is LayerTypeSource.
-		GeoPaths geometries = 13; // Geometries that this simulation will include.
+		GeoPaths geometries = 13; // Geometries that this simulation will include - Not yet functional (All geometries are included by default in each simulation)
 		oneof properties {
 			VirtualBSDFBenchProperties vbb_properties = 14; // To be filled if the simulation_guid corresponds to a SimulationTemplate of type VirtualBSDFBench
 		}

@@ -40,7 +40,7 @@ message DirectMCSimulationTemplate {
 	Weight weight = 4; // To activate Weight. The Weight represents the ray energy. In real life, a ray looses some energy (power) when it interacts with an object.
 	EnumColorimetricStandard colorimetric_standard = 5; // To define the Colorimetric Standard
 	bool dispersion = 6; // To activate the dispersion calculation. 
-	bool fast_transmission_gathering = 7; // Deprecated - FTG is activated via the usage of fast_transmission_gathering in Scene message. Can be deactivated by clearing fast_transmission_gathering in Scene or deactivate_ftg in Job.
+	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
 	string ambient_material_uri = 8; // To select an ambient material *.material  
 	Texture texture = 9; // To activate texture.
 }
@@ -55,7 +55,7 @@ message InverseMCSimulationTemplate {
 	uint32 number_of_gathering_rays_per_source = 8; // This number pilots the number of shadow rays to target at each source.
 	uint32 maximum_gathering_error = 9; // Deprecated - Better use maximum_gathering_error_percentage.
 	double maximum_gathering_error_percentage = 12; // This value defines the level below which a source can be neglected. 0, the default value means that no approximation will be done. 
-	bool fast_transmission_gathering = 10; // Deprecated - FTG is activated via the usage of fast_transmission_gathering in Scene message. Can be deactivated by clearing fast_transmission_gathering in Scene or deactivate_ftg in Job.
+	bool fast_transmission_gathering = 10; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
 	string ambient_material_uri = 11; // To select an ambient material *.material
 	Texture texture = 13; // To activate texture.
 }
