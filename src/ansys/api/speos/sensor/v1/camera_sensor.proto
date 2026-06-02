@@ -65,7 +65,7 @@ message SensorCameraModePhotometric {
 		SensorCameraColorModeMonochromatic color_mode_monochromatic = 7; // Color mode : Monochromatic
 	}
 
-	optional bool consider_diffraction_effects = 10; // To consider diffraction effects, in case the distortion file contains diffraction data (available from Distortion File in version 4. Not all Distortion File in version 4 contain diffraction data).
+	optional bool consider_diffraction_effects = 10; // To consider diffraction effects, in case the distortion file contains diffraction data (available only with the *.OPTDistortion Binary Files. Not all *.OPTDistortion Binary Files contain diffraction data).
 
 	WavelengthsRange wavelengths_range = 12; // Spectral range to use for simulation.
 }
