@@ -385,7 +385,7 @@ message Scene
 		string description = 2;
 		map<string, string> metadata = 3; // User defined metadata
 		string sensor_guid = 10; // Guid of the SensorTemplate in SensorTemplatesManager to instantiate
-		string result_file_name = 11; // Result file name without extention. Result files of the sensor will be based on this name.
+		string result_file_name = 11; // Result file name without extension. Result files of the sensor will be based on this name.
 		oneof properties {
 			CameraProperties camera_properties = 12; // To be filled if the sensor_guid corresponds to a SensorTemplate of type CameraSensorTemplate
 			IrradianceProperties irradiance_properties = 13; // To be filled if the sensor_guid corresponds to a SensorTemplate of type IrradianceSensorTemplate
@@ -451,7 +451,7 @@ message Scene
 	{
 		enum PatternOperation {
 			PATTERN_OPERATION_UNDEFINED = 0; // Undefined pattern operation
-			PATTERN_OPERATION_REMOVE = 1; // Substract the pattern from the support body
+			PATTERN_OPERATION_REMOVE = 1; // Subtract the pattern from the support body
 			PATTERN_OPERATION_ADD_ON_SAME_MATERIAL = 2; // Add the pattern on the support body and keep its material
 			PATTERN_OPERATION_ADD_ON_DIFFERENT_MATERIAL = 3; // Add the pattern on the support body and use the pattern's material
 			PATTERN_OPERATION_ADD_IN = 4; // Add the pattern into the support body and use the pattern's material
