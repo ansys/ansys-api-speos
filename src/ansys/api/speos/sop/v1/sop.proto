@@ -118,11 +118,10 @@ service SOPTemplateActions {
 	rpc EvaluateBSDF(EvaluateBSDF_Request) returns (EvaluateBSDF_Response) {}
 	// Compute the BSDF along a 2D slice by sweeping one variable over a range while keeping the others fixed
 	rpc EvaluateBSDFSlice(EvaluateBSDFSlice_Request) returns (EvaluateBSDFSlice_Response) {}
-	// Compute the global reflectance, transmittance and absorbance (RTA) of a given SOP for a given wavelength
-	rpc EvaluateGlobalRTA(EvaluateGlobalRTA_Request) returns (EvaluateRTA_Response) {}
-	// Compute the directional reflectance, transmittance and absorbance (RTA) of a given SOP for given impact definitions (angles, wavelength, etc.)
-	rpc EvaluateDirectionalRTA(EvaluateDirectionalRTA_Request) returns (EvaluateDirectionalRTA_Response) {}
-
+	// Evaluate all available metrics using kernel default parameters
+	rpc EvaluateAllMetrics(EvaluateAllMetrics_Request) returns (EvaluateMetrics_Response) {}
+	// Evaluate a custom selection of metrics with optional per-metric parameters
+	rpc EvaluateMetrics(EvaluateMetrics_Request) returns (EvaluateMetrics_Response) {}
 }
 
 // Definition of the impact for which the BSDF will be evaluated
@@ -191,44 +190,64 @@ message EvaluateBSDFSlice_Response {
 	repeated EvaluateBSDF_Response.EvaluationResult eval_results = 1;
 }
 
-// request to evaluate the global reflectance, transmittance and absorbance (RTA) of a given SOP
-message EvaluateGlobalRTA_Request {
-	string sop_guid = 1; // Guid of the SOPTemplate to evaluate
+// Request to evaluate all available metrics with kernel default parameters
+message EvaluateAllMetrics_Request {
+	string sop_guid = 1;        // Guid of the SOPTemplate to evaluate
 	string vop_before_guid = 2; // Guid of the ambient VOP before interaction
-	string vop_after_guid = 3; // Guid of the VOP after interaction with the surface
-	// Definition of the impact for which the RTA will be evaluated
-	repeated double wavelength = 4; 
-	}
-
-message EvaluateRTA_Response {
-	// RTA evaluation result for a given impact definition
-	message GlobalEvaluationResult {
-		double wavelength = 1; // Wavelength in nm for which the RTA will be evaluated
-		double reflectance = 2; // Global reflectance value, expected to be in the range [0, 1] for energy conservation
-		double transmittance = 3; // Global transmittance value, expected to be in the range [0, 1] for energy conservation
-		double absorbance = 4; // Global absorbance value, expected to be in the range [0, 1] for energy conservation can be < 0 due to numerical approximation.
-	}
-
-	repeated GlobalEvaluationResult global_eval_results = 1; // Global RTA evaluation results for the given wavelengths in EvaluateRTA_Request
-	
+	string vop_after_guid = 3;  // Guid of the VOP after interaction with the surface
 }
 
-message EvaluateDirectionalRTA_Request {
-	string sop_guid = 1; // Guid of the SOPTemplate to evaluate
-	string vop_before_guid = 2; // Guid of the ambient VOP before interaction
-	string vop_after_guid = 3; // Guid of the VOP after interaction with the surface
-	// Definition of the impact for which the directional RTA will be evaluated
-	repeated ImpactDefinition impacts = 4;
+// Parameters for the global RTA metric
+message GlobalRTAConfig {
+	repeated double wavelengths = 1; // Wavelengths in nm; if empty, kernel defaults are used
 }
 
-message EvaluateDirectionalRTA_Response {
-	// Directional RTA evaluation result for a given impact definition
-	message DirectionalEvaluationResult {
-		ImpactDefinition inputs = 1; // Definition of the metric (angles, wavelength, etc.)
-		double reflectance = 2; // Directional reflectance value, expected to be in the range [0, 1] for energy conservation
-		double transmittance = 3; // Directional transmittance value, expected to be in the range [0, 1] for energy conservation
-		double absorbance = 4; // Directional absorbance value, expected to be in the range [0, 1] for energy conservation can be < 0 due to numerical approximation.
+// Parameters for the directional RTA metric
+message DirectionalRTAConfig {
+	repeated ImpactDefinition impacts = 1; // Impact definitions to evaluate; if empty, kernel defaults are used
+}
+
+// Configuration for custom metrics evaluation.
+// Each field is optional: if the message field is set, that metric is evaluated with the given parameters; if absent, it is skipped.
+// To add a new metric: add a NewMetricConfig field here and a NewMetricResult field in EvaluateMetrics_Response.
+message MetricsConfig {
+	GlobalRTAConfig global_rta = 1;           // If set, evaluate global RTA
+	DirectionalRTAConfig directional_rta = 2; // If set, evaluate directional RTA
+}
+
+// Request to evaluate a custom selection of metrics with optional per-metric parameters
+message EvaluateMetrics_Request {
+	string sop_guid = 1;        // Guid of the SOPTemplate to evaluate
+	string vop_before_guid = 2; // Guid of the ambient VOP before interaction
+	string vop_after_guid = 3;  // Guid of the VOP after interaction with the surface
+	MetricsConfig config = 4;   // Metrics to evaluate and their parameters
+}
+
+// Global RTA evaluation results
+message GlobalRTAResult {
+	message Sample {
+		double wavelength = 1;    // Wavelength in nm
+		double reflectance = 2;   // Global reflectance, in the range [0, 1]
+		double transmittance = 3; // Global transmittance, in the range [0, 1]
+		double absorbance = 4;    // Global absorbance, in the range [0, 1]; can be < 0 due to numerical approximation
 	}
-	repeated DirectionalEvaluationResult directional_eval_results = 1; // Directional RTA evaluation results for the given impact definitions in EvaluateDirectionalRTA_Request
-	
+	repeated Sample samples = 1;
+}
+
+// Directional RTA evaluation results
+message DirectionalRTAResult {
+	message Sample {
+		ImpactDefinition inputs = 1; // Impact definition for this sample
+		double reflectance = 2;      // Directional reflectance, in the range [0, 1]
+		double transmittance = 3;    // Directional transmittance, in the range [0, 1]
+		double absorbance = 4;       // Directional absorbance, in the range [0, 1]; can be < 0 due to numerical approximation
+	}
+	repeated Sample samples = 1;
+}
+
+// Unified response for EvaluateAllMetrics and EvaluateMetrics.
+// Fields are populated only for metrics that were requested (or all fields for EvaluateAllMetrics).
+message EvaluateMetrics_Response {
+	GlobalRTAResult global_rta = 1;           // Global RTA results; absent if not evaluated
+	DirectionalRTAResult directional_rta = 2; // Directional RTA results; absent if not evaluated
 }
