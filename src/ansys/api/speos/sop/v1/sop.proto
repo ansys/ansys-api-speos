@@ -213,7 +213,7 @@ message BSDFSlicesResult {
 			double bsdf_value = 2;			 // BSDF value for this sample
 		}
 		ImpactDefinition inputs = 1;		// Fixed impact definition for this slice (excluding swept variable)
-		repeated Sample samples = 1;		// Samples along the swept variable
+		repeated Sample samples = 2;		// Samples along the swept variable
 	}
 	repeated Slice slices = 1;				// Results for each slice evaluated
 }
