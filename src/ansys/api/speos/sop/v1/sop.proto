@@ -42,8 +42,8 @@ message SOPTemplate {
 
 		message Image {
 			string bitmap_file_uri = 1; // Bitmap
-			bool repeat_along_u = 2; // Activate/deactivate the repeatability of the texture image on U axe.
-			bool repeat_along_v = 3; // Activate/deactivate the repeatability of the texture image on V axe.
+			bool repeat_along_u = 2; // Activate/deactivate the repeatability of the texture image on U axis.
+			bool repeat_along_v = 3; // Activate/deactivate the repeatability of the texture image on V axis.
 		}
 
 		message NormalMap {
@@ -52,8 +52,8 @@ message SOPTemplate {
 				FromNormalMap from_normal_map = 2;
 			}
 			float roughness = 5;
-			bool repeat_along_u = 6; // Activate/deactivate the repeatability of the texture normal map on U axe.
-			bool repeat_along_v = 7; // Activate/deactivate the repeatability of the texture normal map on V axe.
+			bool repeat_along_u = 6; // Activate/deactivate the repeatability of the texture normal map on U axis.
+			bool repeat_along_v = 7; // Activate/deactivate the repeatability of the texture normal map on V axis.
 
 			message FromImage {
 				string bitmap_file_uri = 1; // Bitmap used to build normal map.
@@ -141,7 +141,7 @@ enum SweepVariable {
 // Request to evaluate the BSDF along a 2D slice by sweeping one variable
 message BSDFSlicesConfig {
 
-	message SliceConfig{
+	message SliceConfig {
 	// Fixed values for all impact variables (the chosen variable will be swept along the range defined below)
 	ImpactDefinition fixed_values = 1;
 	// Which variable to sweep
@@ -207,7 +207,7 @@ message DirectionalRTAResult {
 
 // BSDF slice evaluation results
 message BSDFSlicesResult {
-	message Slice{
+	message Slice {
 		message Sample {
 			double swept_variable_value = 1; // Value of the swept variable for this sample
 			double bsdf_value = 2;			 // BSDF value for this sample
@@ -219,7 +219,7 @@ message BSDFSlicesResult {
 }
 
 
-// Unified response for EvaluateAllMetrics and EvaluateMetrics.
+// Response for EvaluateMetrics
 // Fields are populated only for metrics that were requested (or all fields for EvaluateAllMetrics).
 message EvaluateMetrics_Response {
 	GlobalRTAResult global_rta = 1;           // Global RTA results; absent if not evaluated
