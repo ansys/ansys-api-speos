@@ -123,7 +123,7 @@ service SOPTemplateActions {
 message ImpactDefinition {
 	double theta_in = 1; // Incidence angle in degree for the incoming ray. If not set, the default value will be 0 degree (normal incidence).
 	double phi_in = 2; // Anisotropic angle in degree for the incoming ray. If not set, the default value will be 0 degree.
-	double wavelength = 3; // Wavelength in nm for which for the incoming ray. If not set, the default value will be 550 nm.
+	double wavelength = 3; // Wavelength in nm for the incoming ray. If not set, the default value will be 550 nm.
 	double theta_out = 4; // Outgoing angles in degree for which the metrics will be computed. If not set, the default value will be 0 degree.
 	double phi_out = 5; // Outgoing anisotropic angles in degree for the outgoing ray. If not set, the default value will be 0 degree.
 }
@@ -153,7 +153,7 @@ message BSDFSlicesConfig {
 	// Number of equispaced samples in [sweep_start, sweep_end]
 	uint32 num_samples = 5;}
 
-	repeated SliceConfig = 1; // List of slices to evaluate. If empty, use default config.
+	repeated SliceConfig slices = 1; // List of slices to evaluate. If empty, use default config.
 }
 
 // Parameters for the global RTA metric
@@ -172,7 +172,7 @@ message DirectionalRTAConfig {
 message MetricsConfig {
 	GlobalRTAConfig global_rta = 1;           // If set, evaluate global RTA
 	DirectionalRTAConfig directional_rta = 2; // If set, evaluate directional RTA
-	BSDFSlicesConfig bsdf_slice = 3;           // If set, evaluate BSDF slices
+	BSDFSlicesConfig bsdf_slices = 3;           // If set, evaluate BSDF slices
 }
 
 // Request to evaluate a custom selection of metrics with optional per-metric parameters
@@ -180,7 +180,7 @@ message EvaluateMetrics_Request {
 	string sop_guid = 1;        // Guid of the SOPTemplate to evaluate
 	string vop_before_guid = 2; // Guid of the ambient VOP before interaction
 	string vop_after_guid = 3;  // Guid of the VOP after interaction with the surface
-	MetricsConfig config = 4;   // Metrics to evaluate and their parameters. If not set evaluate all metrics using default config
+	MetricsConfig config = 4;   // Metrics to evaluate and their parameters. If not set, evaluate all metrics using default configuration.
 }
 
 // Global RTA evaluation results
@@ -212,7 +212,7 @@ message BSDFSlicesResult {
 			double swept_variable_value = 1; // Value of the swept variable for this sample
 			double bsdf_value = 2;			 // BSDF value for this sample
 		}
-		ImpactDefinition inputs = 1;		// Impact definition for this slice (fixed values)
+		ImpactDefinition inputs = 1;		// Fixed impact definition for this slice (excluding swept variable)
 		repeated Sample samples = 1;		// Samples along the swept variable
 	}
 	repeated Slice slices = 1;				// Results for each slice evaluated
