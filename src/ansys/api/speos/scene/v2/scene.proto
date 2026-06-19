@@ -557,11 +557,13 @@ service SceneActions {
 // Request to LoadFile service
 message LoadFile_Request {
 	string guid = 1; // Guid of a ScenesManager element to update
-    string file_uri = 2; // File uri (path or guid from FileTransferService)
+	string file_uri = 2; // File uri (path or guid from FileTransferService)
 	string password = 3; // Password needed to open the speos lightbox file (only necessary if user protects the speos light box with a password)
+	bool retrieve_job_properties = 5; // Optional - If set to true, the job properties will be retrieved and sent back in the LoadFile_Response. If not set or false, those data can't be retrieved.
 }
 // Response to LoadFile service
 message LoadFile_Response {
+	string job_guid = 1; // This job guid can be used to retrieve stop conditions and other information (like timeline start time, or automatic save frequency). Only set if retrieve_job_properties is set to true in the LoadFile_Request.
 }
 
 // Request to SaveFile service.
