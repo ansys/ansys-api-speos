@@ -140,18 +140,18 @@ enum SweepVariable {
 
 // Request to evaluate the BSDF along a 2D slice by sweeping one variable
 message BSDFSlicesConfig {
-
 	message SliceConfig {
-	// Fixed values for all impact variables (the chosen variable will be swept along the range defined below)
-	ImpactDefinition fixed_values = 1;
-	// Which variable to sweep
-	SweepVariable sweep_variable = 2;
-	// Start of the sweep range (in degrees or nm depending on variable)
-	double sweep_start = 3;
-	// End of the sweep range (in degrees or nm depending on variable)
-	double sweep_end = 4;
-	// Number of equispaced samples in [sweep_start, sweep_end]
-	uint32 num_samples = 5;}
+		// Fixed values for all impact variables (the chosen variable will be swept along the range defined below)
+		ImpactDefinition fixed_values = 1;
+		// Which variable to sweep
+		SweepVariable sweep_variable = 2;
+		// Start of the sweep range (in degrees or nm depending on variable)
+		double sweep_start = 3;
+		// End of the sweep range (in degrees or nm depending on variable)
+		double sweep_end = 4;
+		// Number of equispaced samples in [sweep_start, sweep_end]
+		uint32 num_samples = 5;
+	}
 
 	repeated SliceConfig slices = 1; // List of slices to evaluate. If empty, use default config.
 }
@@ -213,7 +213,8 @@ message BSDFSlicesResult {
 			double bsdf_value = 2;			 // BSDF value for this sample
 		}
 		ImpactDefinition inputs = 1;		// Fixed impact definition for this slice (excluding swept variable)
-		repeated Sample samples = 2;		// Samples along the swept variable
+		SweepVariable swept_variable = 2;			// Variable that was swept for this slice
+		repeated Sample samples = 3;		// Samples along the swept variable
 	}
 	repeated Slice slices = 1;				// Results for each slice evaluated
 }
