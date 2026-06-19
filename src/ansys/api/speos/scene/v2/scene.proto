@@ -472,6 +472,11 @@ message Scene
 		string mapping_3d_file_uri = 6; // Uri of the 3D mapping to use for this 3D texture (.OPT3DMapping). Path or guid from FileTransferService.
 	}
 
+	message FastTransmissionGathering
+	{
+		GeoPaths geometries = 1; // Geometries with Fast Transmission Gathering applied.
+	}
+
 	string name = 1;
 	string description = 2;
 	map<string, string> metadata = 3; // User defined metadata
@@ -487,6 +492,7 @@ message Scene
 	repeated SceneInstance scenes = 20; // Sub scenes
 	GroundPlane ground = 21; // Optional - Only usable when there is at least one Ambient Environment Source Template that has selected a HDR image file.
 	repeated Texture3D textures_3d = 22; // List of 3D textures applied on geometries of the scene
+	FastTransmissionGathering fast_transmission_gathering = 23; // Optional - Fast Transmission Gathering (FTG) parameter. For the FTG to be considered, the FTG must be activated in the SimulationTemplate message with the fast_transmission_gathering boolean.
 }
 
 // Manager for Scenes
