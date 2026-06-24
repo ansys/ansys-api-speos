@@ -546,7 +546,7 @@ message List_Response {
 
 // Actions available on a Scene
 service SceneActions {
-	// Load .speos, .SPEOSLightBox file
+	// Load .speos, .SPEOSLightBox, .gltf/.glb (version greater than or equal to 2) file
 	rpc LoadFile(LoadFile_Request) returns (LoadFile_Response) {} 
 	// Save .SPEOSLightBox file.
 	rpc SaveFile(SaveFile_Request) returns (SaveFile_Response) {} 
