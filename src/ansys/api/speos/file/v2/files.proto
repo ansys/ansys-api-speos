@@ -1,0 +1,123 @@
+// (c) 2025 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package ansys.api.speos.file.v2;
+
+// Informations on a specific file
+message FileInfo
+{
+	string name = 1;
+	string description = 2;
+	map<string, string> metadata = 4; // User defined metadata
+	repeated string dependencies = 5; // Dependencies on other files
+
+	string path = 10; // Path of the file in server [read-only]
+	google.protobuf.Timestamp creation_date = 11; // Date of latest upload [read-only]
+	string creation_date_str = 12; // Date of latest upload [read-only]
+	uint64 size = 13; // Size of the file (octets) [read-only]
+	string sha512 = 14; // SHA512 hash file of the file [read-only]
+}
+
+//////////
+// CRUD //
+//////////
+// Manages all input and output files stored in server filesystem
+service FilesManager {
+	// Create an empty file
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Read a file
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Update a file
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Delete a file
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// List all files in manager
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// Request to create a file
+message Create_Request {}
+// Response to create a file
+message Create_Response {
+	string guid = 1; // Guid of the created file
+	FileInfo info = 2; // Information about the created file
+}
+
+// Request to read a file
+message Read_Request {
+	string guid = 1; // Guid of the file to be read
+}
+// Response to read a file
+message Read_Response {
+	FileInfo info = 1; // file corresponding to the guid
+}
+
+// Request to update a file
+message Update_Request {
+	string guid = 1; // Guid of the file to be updated
+	FileInfo info = 2; // New file that will be used for the update
+}
+// Response to update a file
+message Update_Response {
+}
+
+// Request to delete a file
+message Delete_Request {
+	string guid = 1; // Guid of the file to be deleted
+}
+// Response to delete a file
+message Delete_Response {}
+
+// Request to list all files
+message List_Request {}
+// Response to list all files
+message List_Response {
+	repeated string guids = 1; // Guids of all files
+}
+
+/////////////
+// ACTIONS //
+/////////////
+// Actions available on a file
+service FileActions {
+	// Upload a file
+	rpc Upload(stream Upload_Request) returns (Upload_Response) {}
+	// Download a file
+	rpc Download(Download_Request) returns (stream Download_Response) {}
+	// Check file
+	rpc Check(Check_Request) returns (Check_Response) {}
+}
+
+// Request to upload a file
+message Upload_Request {
+	string guid = 1; // File guid where to store the chunk
+	string file_name = 2; // Original file name
+	bytes binary = 3; // Binary blob of the file
+}
+// Response to upload a file
+message Upload_Response {
+	FileInfo info = 1; // Information about the filesystem item created
+}
+
+// Request to download a file
+message Download_Request {
+	string guid = 1; // File guid to download
+}
+// Response to download a file
+message Download_Response {
+	bytes binary = 1; // Binary blob of the file
+}
+
+// Request to check of file consistency
+message Check_Request {
+	repeated string guid = 1; // File guids to check
+}
+// Response to check of file consistency
+message Check_Response {
+	message ErrorList {
+		repeated string error = 1; // Error message
+	}
+	map<string, ErrorList> errors = 1; // Map of errors associated to guids
+}
