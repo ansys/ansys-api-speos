@@ -1,5 +1,6 @@
 // (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
 syntax = "proto3";
+import "ansys/api/speos/job/v2/job.proto";
 import "ansys/api/speos/results/v1/ray_path.proto";
 
 package ansys.api.speos.scene.v2;
