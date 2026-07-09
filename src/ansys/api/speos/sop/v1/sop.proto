@@ -189,7 +189,7 @@ message GlobalRTAResult {
 		double wavelength = 1;    // Wavelength in nm
 		double reflectance = 2;   // Global reflectance, in the range [0, 1]
 		double transmittance = 3; // Global transmittance, in the range [0, 1]
-		double absorbance = 4;    // Global absorbance, in the range [0, 1]; can be < 0 due to numerical approximation
+		double absorbance = 4;    // Global absorbance, in the range [0, 1]
 	}
 	repeated Sample samples = 1;
 }
@@ -200,7 +200,7 @@ message DirectionalRTAResult {
 		ImpactDefinition inputs = 1; // Impact definition for this sample
 		double reflectance = 2;      // Directional reflectance, in the range [0, 1]
 		double transmittance = 3;    // Directional transmittance, in the range [0, 1]
-		double absorbance = 4;       // Directional absorbance, in the range [0, 1]; can be < 0 due to numerical approximation
+		double absorbance = 4;       // Directional absorbance, in the range [0, 1]
 	}
 	repeated Sample samples = 1;
 }
@@ -221,7 +221,7 @@ message BSDFSlicesResult {
 
 
 // Response for EvaluateMetrics
-// Fields are populated only for metrics that were requested (or all fields for EvaluateAllMetrics).
+// Fields are populated only for metrics that were requested (or all fields for default configuration).
 message EvaluateMetrics_Response {
 	GlobalRTAResult global_rta = 1;           // Global RTA results; absent if not evaluated
 	DirectionalRTAResult directional_rta = 2; // Directional RTA results; absent if not evaluated
