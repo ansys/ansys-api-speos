@@ -1,0 +1,67 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+
+syntax = "proto3";
+
+package ansys.api.speos.experimental.results.v1;
+
+
+message Colorimetric {
+	message Chromaticity {
+		repeated float data = 1; // The colorimetric data in XYZ format.
+	}
+}
+
+message Monitor {
+	oneof monitor_type {
+		Standard standard = 1; // Standard monitor
+	}
+
+	message Standard {
+		float white_luminance = 1; // White channel luminance in cd/m2
+		GammaCorrection gamma_correction = 2; // Gamma correction settings
+		CustomParameters custom_parameters = 3; // Custom standard parameters
+
+		message CustomParameters {
+			Colorimetric.Chromaticity red = 1;
+			Colorimetric.Chromaticity green = 2;
+			Colorimetric.Chromaticity blue = 3;
+			Colorimetric.Chromaticity white = 4;
+		}
+
+		message GammaCorrection {
+			oneof gamma_type {
+				Fitted fitted = 1; // Fitted gamma correction
+				SMPTE_2084 smpte_2084 = 2; // SMPTE 2084 gamma correction
+				Custom custom = 3; // Custom gamma correction
+			}
+			message Fitted {
+				Parameters red = 1; // Red channel gamma correction
+				Parameters green = 2; // Green channel gamma correction
+				Parameters blue = 3; // Blue channel gamma correction
+
+				message Parameters {
+					float gamma = 1; // Gamma correction value
+					float gain = 2; // Gain value
+					float transition = 3; // Transition value
+				}
+			}
+
+			message SMPTE_2084 {}
+
+			message Custom {
+				repeated Channel channels = 1;
+
+				message Channel {
+					Parameters red = 1; // Red channel gamma correction
+					Parameters green = 2; // Green channel gamma correction
+					Parameters blue = 3; // Blue channel gamma correction
+
+					message Parameters {
+						float luminance_level = 1; // Luminance level for the custom gamma correction curve
+						float digital_level = 2; // Digital level for the custom gamma correction curve
+					}
+				}
+			}
+		}
+	 }
+}

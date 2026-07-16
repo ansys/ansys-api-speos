@@ -1,0 +1,197 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+
+syntax = "proto3";
+
+import "ansys/api/speos/experimental/results/v1/monitor.proto";
+
+package ansys.api.speos.experimental.results.v1;
+
+//////////////
+// MESSAGES //
+//////////////
+
+message ResultOptions {
+	string name = 1;
+	optional string comment = 2;
+	map<string, string> metadata = 3; // User defined metadata
+	RefinementOptions refinement_options = 4; // Result refinement options (layers, wavelengths, etc...)
+	DisplayOptions display_options = 5; // Result display options (color scale, rulers, primary and secondary grids, etc...)
+
+	message RefinementOptions {
+		enum UnitType {
+		  UNIT_TYPE_UNKNOWN = 0;
+		  UNIT_TYPE_PHOTOMETRIC = 1;
+		  UNIT_TYPE_RADIOMETRIC = 2;
+		}
+
+		oneof layer_mode {
+			ModeVLC mode_vlc = 1; // The Virtual Lighting Controller is active. Fill in the lighting_controller field to define the VLC parameters
+			ModeAllLayers mode_all_layers = 2; // All layers are taken into account
+			ModeOneLayer mode_one_layer = 3; // Only one layer is taken into account
+		}		
+		LightingController lighting_controller = 4; // Virtual Lighting Controller. Used only when the VLC is active
+		optional int32 selected_wavelength_index = 5; // Index of the selected wavelength for spectral separation only: -1 for all wavelengths, 0 for first wavelength, 1 for second wavelength, ...
+		optional UnitType unit_type = 6; // The values are displayed in photometric or radiometric units (for spectral maps only)
+		
+		message ModeVLC {} // No further data
+		
+		message ModeAllLayers {} // No further data
+
+		message ModeOneLayer {
+			oneof one_layer {
+				uint32 layer_index = 1; // 0 for first layer, 1 for second layer, ...
+				string layer_name = 2; // layer_name must exist and be unique in at least one VLC configuration
+			}
+		}
+		
+		// Virtual Lighting Controller
+		message LightingController {
+			optional uint32 selected_config = 1; // Index of current VLC configuration: 0 for first configuration, 1 for second configuration, ...
+			repeated Configuration configurations = 2; // Available VLC configurations
+
+			// VLC configuration
+			message Configuration {
+				string name = 1;
+				oneof layer_identification {
+					LayerByIndex layer_by_index = 2; // A layer is identified by index: layer_by_index must contain all the layers in the correct order
+					LayerByName layer_by_name = 3; // A layer is identified by name: layer_by_name may not contain all the layers, but the name of each layer must exist and be unique
+				}
+
+				// VLC layer settings
+				message Layer {
+					optional string name = 1; // Mandatory when the layer is identified by name. Ignored when the layer is identified by index
+					optional bool is_active = 2; // True if the layer is taken into account
+					optional double ratio = 3; // Ratio applied to the layer: 1 means 100%
+					optional string new_spectrum_guid = 4; // Guid of the new light source spectrum
+				}
+				
+				message LayerByIndex {
+					repeated Layer layers = 1; // VLC layer settings
+				}
+
+				message LayerByName {
+					repeated Layer layers = 1; // VLC layer settings
+				}
+			}
+		}
+	}
+
+	message DisplayOptions {
+		ColorScale color_scale = 1; // Color management for displaying results
+		ansys.api.speos.experimental.results.v1.Monitor monitor = 2; // Monitor settings for displaying results
+
+		message ColorScale {
+			oneof color_mode {
+				TrueColor true_color = 1; // The result is displayed with true colors
+				FalseColor false_color = 2; // The result is displayed with false colors
+			}
+			oneof scale_mode {
+				ScaleModeDefault scale_mode_default = 3; // The scale or maximum value are filled with default values
+				ScaleModeAutofillFromRegulation scale_mode_autofill_from_regulation = 4; // The scale or maximum value are filled with regulation limits (non conoscopic intensity map only)
+				ScaleModeWhitePointLuminance scale_mode_white_point_luminance = 5; // The maximum is the White Point Luminance value of the Preferences (TrueColor mode only)
+				ScaleModeCustom scale_mode_custom = 6; // The user fills levels of scale or maximum
+			}
+			optional bool logarithmic = 7; // To make the scale logarithmic (not available if ScaleModeAutofillFromRegulation or ScaleModeCustom)
+			optional bytes palette_colors = 8; // RGB24 colors, from max to min. For output and "Cold to warm" palette only: repeated color indicates location of 0 on value scale
+			optional bool iso_curve = 9; // To display the contour lines on the iso levels
+
+			message TrueColor {} // No further data
+
+			message FalseColor {
+				IsoLevelsScale iso_levels_scale = 1; // Switch to iso levels rendering mode
+
+				message IsoLevelsScale {
+					optional bool colored_iso_curve = 1; // To display colored contour lines (iso_curve only)
+				}
+			}
+
+			message ScaleModeDefault {} // No further data
+
+			message ScaleModeAutofillFromRegulation {} // No further data
+
+			message ScaleModeWhitePointLuminance {} // No further data
+
+			message ScaleModeCustom {
+				double max = 2; // Maximum value expressed in the result storage unit
+				repeated double scale_levels = 3; // Values must be expressed as ratios in descending order and will be applied according to the maximum
+			}
+		}
+	}
+}
+
+//////////
+// CRUD //
+//////////
+
+// Manager for result options templates
+service ResultOptionsManager {
+	// Creates a result options template
+	rpc Create(OptionsCreate_Request) returns (OptionsCreate_Response) {}
+	// Reads a result options template
+	rpc Read(OptionsRead_Request) returns (OptionsRead_Response) {}
+	// Updates a result options template
+	rpc Update(OptionsUpdate_Request) returns (OptionsUpdate_Response) {}
+	// Deletes a result options template
+	rpc Delete(OptionsDelete_Request) returns (OptionsDelete_Response) {}
+	// Lists all result options templates
+	rpc List(OptionsList_Request) returns (OptionsList_Response) {}
+}
+
+// To create a result options template in ResultOptionsManager
+message OptionsCreate_Request {
+	ResultOptions result_options = 1; // Result options template definition
+}
+message OptionsCreate_Response {
+	string guid = 1; // Guid of the result options template created
+}
+
+// To read a result options template in ResultOptionsManager
+message OptionsRead_Request {
+	string guid = 1; // Guid of the result options template to read
+}
+message OptionsRead_Response {
+	ResultOptions result_options = 1; // Result options template definition corresponding to the guid given in OptionsRead_Request
+}
+
+// To update a result options template in ResultOptionsManager
+message OptionsUpdate_Request {
+	string guid = 1; // Guid of the result options template to update
+	ResultOptions result_options = 2; // New result options template definition
+}
+message OptionsUpdate_Response {}
+
+// To delete a result options template in ResultOptionsManager
+message OptionsDelete_Request {
+	string guid = 1; // Guid of the result options template to delete
+}
+message OptionsDelete_Response {}
+
+// To get the guids of all the result options templates in ResultOptionsManager
+message OptionsList_Request {}
+message OptionsList_Response {
+	repeated string guids = 1; // Guids of the result options templates
+}
+
+/////////////
+// ACTIONS //
+/////////////
+
+// Actions available for result options template
+service ResultOptionsActions {
+	// Updates a result options template from an XML template
+	rpc UpdateFromXML(OptionsUpdateFromXML_Request) returns (OptionsUpdateFromXML_Response) {}
+	// Updates a result options template from a result
+	rpc UpdateFromResult(UpdateFromResult_Request) returns (UpdateFromResult_Response) {}
+}
+
+message OptionsUpdateFromXML_Request {
+	string guid = 1; // Guid of the result options template to update
+    string xml_uri = 2; // Uniform Resource Identifier of the XML file to read
+}
+message OptionsUpdateFromXML_Response {}
+
+message UpdateFromResult_Request {
+	string guid = 1; // Guid of the result options template to update
+    string result_uri = 2; // Uniform Resource Identifier of the result file to read
+}
+message UpdateFromResult_Response {}

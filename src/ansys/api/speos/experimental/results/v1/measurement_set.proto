@@ -1,0 +1,357 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+
+syntax = "proto3";
+
+import "ansys/api/speos/common/v1/data.proto";
+
+package ansys.api.speos.experimental.results.v1;
+
+//////////////
+// MESSAGES //
+//////////////
+
+// Measurement set
+message MeasurementSet {
+	message Measure {
+		enum Magnitude {
+			MAGNITUDE_UNSPECIFIED = 0;		// Default magnitude of the map (illuminance, luminance, intensity, ...)
+			MAGNITUDE_X_COLOR_XYY = 1;		// xyY
+			MAGNITUDE_Y_COLOR_XYY = 2;		// xyY
+			MAGNITUDE_U_COLOR = 3;			// uvY
+			MAGNITUDE_V_COLOR = 4;			// uvY
+			MAGNITUDE_U_PRIME_COLOR = 5;	// u'v'Y
+			MAGNITUDE_V_PRIME_COLOR = 6;	// u'v'Y
+			MAGNITUDE_U_STAR_COLOR = 7;		// L*u*v*
+			MAGNITUDE_V_STAR_COLOR = 8;		// L*u*v*
+			MAGNITUDE_A_STAR_COLOR = 9;		// L*a*b*
+			MAGNITUDE_B_STAR_COLOR = 10;	// L*a*b*
+			MAGNITUDE_C_STAR_COLOR = 11;	// L*C*h
+			MAGNITUDE_H_COLOR = 12;			// L*C*h
+			MAGNITUDE_X_COLOR = 13;			// XYZ
+			MAGNITUDE_Y_COLOR = 14;			// XYZ
+			MAGNITUDE_Z_COLOR = 15;			// XYZ
+			MAGNITUDE_L_STAR_COLOR = 16;	// L*u*v*
+			MAGNITUDE_DIMENSION = 17;		// Dimension
+			MAGNITUDE_GLARE = 18;			// Glare
+		}
+
+		enum Type {
+			TYPE_UNKNOWN = 0; // Do not use
+			TYPE_MAX = 1;
+			TYPE_MAX_X = 2;
+			TYPE_MAX_Y = 3;
+			TYPE_MIN = 4;
+			TYPE_MIN_X = 5;
+			TYPE_MIN_Y = 6;
+			TYPE_AVERAGE = 7;
+			TYPE_FLUX = 8;
+			TYPE_BARYCENTRE_X = 9;
+			TYPE_BARYCENTRE_Y = 10;
+			TYPE_SIGMA = 11;
+			TYPE_SIGMA_X = 12;
+			TYPE_SIGMA_Y = 13;
+			TYPE_CONTRAST = 14;
+			TYPE_RMS_CONTRAST = 15;
+			TYPE_EYE_IRRADIANCE = 16;
+			TYPE_RANGE = 17;
+			//TYPE_TYPENONE = 18; useless in this context
+			TYPE_RANGE_X = 19;
+			TYPE_RANGE_Y = 20;
+			TYPE_AREA = 21;
+			TYPE_UGR117 = 22;
+			TYPE_MAX_Z = 23;
+			TYPE_MIN_Z = 24;
+			TYPE_BARYCENTRE_Z = 25;
+			TYPE_SIGMA_Z = 26;
+			TYPE_RANGE_Z = 27;
+		}
+
+		// Evaluation of the measurement (ignored in a request)
+		message MeasureEvaluation {
+			ansys.api.speos.common.v1.DataDoubles value = 1; // Calculated result of the measure
+			bool threshold_sensitive = 2; // Indicates whether the value is different with or without thresholds
+			ansys.api.speos.common.v1.DataDoubles standard_deviation = 3; //  Optional - Standard deviation may not be available
+		}
+				
+		// Rule associated with this measure
+		message Rule {
+			// Defining and comparing limits
+			message Constraint {
+				// Evaluation and comparison of one limit (ignored in a request)
+				message LimitEvaluation {
+					double value = 1; // Value of the limit
+					bool respected = 2; // Indicates whether the measurement result complies with the limit value
+					float percentage = 3; // (<measurement result> / <limit value>) * 100
+				}
+
+				optional string name = 1; // Regulation or specification or ...
+				optional string formula_min = 2; // Formula for calculating the min limit, if any
+				optional string formula_max = 3; // Formula for calculating the max limit, if any
+				oneof result_min {
+					LimitEvaluation evaluation_min = 4; // Evaluation of the min part of the constraint (ignored in a request)
+					string warning_min = 5; // Indicates that something has prevented the limit from being evaluated (output only)
+				}
+				oneof result_max {
+					LimitEvaluation evaluation_max = 6; // Evaluation of the max part of the constraint (ignored in a request)
+					string warning_max = 7; // Indicates that something has prevented the limit from being evaluated (output only)
+				}
+				optional float confidence_level = 8; // Confidence level may not be available (ignored in a request)	
+			}
+
+			enum RuleStatus {
+				RULE_STATUS_UNKNOWN = 0; // Something has prevented the rule from being evaluated
+				RULE_STATUS_FAILED = 1; // A limit has not been respected
+				RULE_STATUS_PASSED = 2; // All defined limits have been respected
+			}
+
+			string name = 1;
+			repeated Constraint constraints = 2; // Defining and comparing limits
+			optional RuleStatus status = 3; // 3 possible status (ignored in a request)
+		}
+
+		Magnitude magnitude = 1;
+		string magnitude_display_name = 2; // Output only
+		bool cut_off_sharpness = 3; // Indicates whether the operator's sharp cut-off gradient is applied (only available for intensity magnitude)
+		Type type = 4; // Maximum, minimum, average, etc...
+		string type_display_name = 5; // Output only
+		oneof measurement_result {
+			MeasureEvaluation evaluation = 6; // Evaluation of the measurement (ignored in a request)
+			string warning = 7; // Indicates incompatibility between measure definition and context (output only)
+		}
+		optional Rule rule = 8; // Rule associated with this measure, if any
+	}
+
+	// Rule not associated with a measure
+	message GlobalRule {
+		optional string name = 1;
+		optional string formula = 2; // Formula for calculating the global rule, if any
+		oneof global_rule_evaluation {
+			bool boolean_value = 3; // The formula is a boolean expression whose result is "false" or "true" (ignored in a request)
+			double numerical_value = 4; // The formula is an arithmetic expression and the value of the global rule is numerical (ignored in a request)
+			string warning = 5; // Indicates that something has prevented the global rule from being evaluated (output only)
+		}
+	}
+
+	// Common shape for XMP and XM3 areas
+	// Values must be expressed in the axis storage unit
+	message ShapePolyline {
+		repeated double vertices = 1; // x0, y0, x1, y1, x2, y2, ..., xi, yi
+		uint32 sampling = 2;
+	}
+
+	// Measurement set for an XMP result
+	message XMPMeasurementSet {
+		// Area or global rule for an XMP result
+		message XMPAreaOrGlobalRule {
+			// Area and its measures for an XMP result
+			// The definition of a measurement area must be expressed in the axis storage unit
+			message XMPAreaAndMeasures {
+				message XMPShapeRectangle {
+					repeated double rect = 1; // center x, center y, width, height
+				}
+
+				message XMPShapeEllipse {
+					repeated double ellipse = 1; // center x, center y, radius x, radius y
+				}
+
+				message XMPShapePolygon {
+					repeated double vertices = 1; // x0, y0, x1, y1, x2, y2, ..., xi, yi
+				}
+
+				message ShapeHorizontal {
+					double y = 1;
+					uint32 sampling = 2;
+				}
+
+				message ShapeVertical {
+					double x = 1;
+					uint32 sampling = 2;
+				}
+
+				message XMPShapeUserLine {
+					repeated double bounding_rect = 1; // (x1, y1, x2, y2) or (theta1, phi1, theta2, phi2)
+					uint32 sampling = 2;
+				}
+
+				message XMPShapePoint {
+					repeated double point = 1; // (x, y) or (theta, phi)
+				}
+
+				message ShapeCorona {
+					repeated double corona = 1; // theta start, theta end, phi start, phi end
+				}
+
+				message ShapeRadial {
+					double phi = 1;
+					uint32 sampling = 2;
+				}
+
+				message ShapeOrthoradial {
+					double theta = 1;
+					uint32 sampling = 2;
+				}
+
+				string name = 1; // Area name
+				string description = 27;
+				map<string, string> metadata = 28; // User defined metadata
+				oneof shape { // Area shape
+					XMPShapeRectangle shape_rectangle = 2;
+					XMPShapeEllipse shape_ellipse = 3;
+					XMPShapePolygon shape_polygon = 4;
+					ShapeHorizontal shape_horizontal = 5;
+					ShapeVertical shape_vertical = 6;
+					XMPShapeUserLine shape_userline = 7;
+					XMPShapePoint shape_point = 8;
+					ShapePolyline shape_polyline = 9;
+					ShapeCorona shape_corona = 10;
+					ShapeRadial shape_radial = 11;
+					ShapeOrthoradial shape_orthoradial = 12;
+				}
+				optional double iso_level = 13; // Required for measuring range. Value must be expressed in the result storage unit
+				optional double threshold_min = 14; // Value must be expressed in the result storage unit
+				optional double threshold_max = 15; // Value must be expressed in the result storage unit
+				optional string warning = 16; // Where applicable, indicates incompatibility between area definition and context (output only)
+				repeated Measure measures = 17; // List of measures
+			}
+
+			oneof xmp_area_or_global_rule {
+				XMPAreaAndMeasures xmp_area_and_measures = 1; // Area and its measures for an XMP result
+				GlobalRule global_rule = 2; // Rule not associated with a measure
+			}
+		}
+
+		repeated XMPAreaOrGlobalRule xmp_areas_and_global_rules = 1; // List of areas and global rules for an XMP result
+	}
+
+	// Measurement set for an XM3 result
+	message XM3MeasurementSet {
+		// Area or global rule for an XM3 result
+		message XM3AreaOrGlobalRule {
+			// Area and its measures for an XM3 result
+			// The definition of a measurement area must be expressed in the axis storage unit
+			message XM3AreaAndMeasures {
+				message XM3ShapeRectangle {
+					repeated double size = 1; // width, height
+					uint32 sampling = 2;
+				}
+
+				message XM3ShapeEllipse {
+					repeated double radii = 1; // radius x, radius y
+					uint32 sampling = 2;
+				}
+
+				message XM3ShapePolygon {
+					repeated double vertices = 1; // x0, y0, x1, y1, x2, y2, ..., xi, yi
+					uint32 sampling = 2;
+				}
+
+				message XM3ShapeUserLine {
+					double width = 1; // line segment width
+					uint32 sampling = 2;
+				}
+
+				message XM3ShapePoint {} // No further data
+
+				string name = 1; // Area name
+				string description = 2;
+				map<string, string> metadata = 3; // User defined metadata
+				repeated float manipulator_axis_system = 4; // Position of the manipulator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+				oneof shape { // Area shape
+					XM3ShapeRectangle shape_rectangle = 5;
+					XM3ShapeEllipse shape_ellipse = 6;
+					XM3ShapePolygon shape_polygon = 7;
+					XM3ShapeUserLine shape_userline = 8;
+					XM3ShapePoint shape_point = 9;
+					ShapePolyline shape_polyline = 10;
+				}
+				optional double threshold_min = 11; // Value must be expressed in the result storage unit
+				optional double threshold_max = 12; // Value must be expressed in the result storage unit
+				optional string warning = 13; // Where applicable, indicates incompatibility between area definition and context (output only)
+				repeated Measure measures = 14; // List of measures
+			}
+
+			oneof xm3_area_or_global_rule {
+				XM3AreaAndMeasures xm3_area_and_measures = 1; // Area and its measures for an XM3 result
+				GlobalRule global_rule = 2; // Rule not associated with a measure
+			}
+		}
+		repeated XM3AreaOrGlobalRule xm3_areas_and_global_rules = 1; // List of areas and global rules for an XM3 result
+	}
+
+	optional string name = 1;
+	optional string description = 2;
+	map<string, string> metadata = 5; // User defined metadata
+	oneof typed_measurement_set {
+		XMPMeasurementSet xmp_measurement_set = 3; // Measurement set for an XMP result
+		XM3MeasurementSet xm3_measurement_set = 4; // Measurement set for an XM3 result
+	}
+}
+
+//////////
+// CRUD //
+//////////
+
+// Manager for sets of measures
+service MeasurementSetsManager {
+	// Creates a set of measures
+	rpc Create(Create_Request) returns (Create_Response) {}
+	// Reads a set of measures
+	rpc Read(Read_Request) returns (Read_Response) {}
+	// Updates a set of measures
+	rpc Update(Update_Request) returns (Update_Response) {}
+	// Deletes a set of measures
+	rpc Delete(Delete_Request) returns (Delete_Response) {}
+	// Lists all sets of measures
+	rpc List(List_Request) returns (List_Response) {}
+}
+
+// To create a measurement set in MeasurementSetsManager
+message Create_Request {
+	MeasurementSet measurement_set = 1; // Measurement set definition
+}
+message Create_Response {
+	string guid = 1; // Guid of the measurement set created in MeasurementSetsManager
+}
+
+// To read a measurement set in MeasurementSetsManager
+message Read_Request {
+	string guid = 1; // Guid of the measurement set to read
+}
+message Read_Response {
+	MeasurementSet measurement_set = 1; // Measurement set definition corresponding to the guid given in Read_Request
+}
+
+// To update a measurement set in MeasurementSetsManager
+message Update_Request {
+	string guid = 1; // Guid of the measurement set to update
+	MeasurementSet measurement_set = 2; // New Measurement set definition
+}
+message Update_Response {}
+
+// To delete a measurement set in MeasurementSetsManager
+message Delete_Request {
+	string guid = 1; // Guid of the measurement set to delete
+}
+message Delete_Response {}
+
+// To get the guids of all the measurement sets in MeasurementSetsManager
+message List_Request {}
+message List_Response {
+	repeated string guids = 1; // Guids of the measurement sets
+}
+
+/////////////
+// ACTIONS //
+/////////////
+
+// Actions available on a measurement set
+service MeasurementSetActions {
+	// Updates a set of measures from an XML template
+	rpc UpdateFromXML(UpdateFromXML_Request) returns (UpdateFromXML_Response) {}
+}
+
+message UpdateFromXML_Request {
+	string guid = 1; // Guid of the measurement set to update
+    string xml_uri = 2; // Uniform Resource Identifier of the XML file to read
+}
+message UpdateFromXML_Response {}
