@@ -119,111 +119,83 @@ service SOPTemplateActions {
 	rpc EvaluateMetrics(EvaluateMetrics_Request) returns (EvaluateMetrics_Response) {}
 }
 
-// Definition of the impact for which the BSDF will be evaluated
 message ImpactDefinition {
-	double theta_in = 1; // Incidence angle in degree for the incoming ray. If not set, the default value will be 0 degree (normal incidence).
-	double phi_in = 2; // Anisotropic angle in degree for the incoming ray. If not set, the default value will be 0 degree.
-	double wavelength = 3; // Wavelength in nm for the incoming ray. If not set, the default value will be 550 nm.
-	double theta_out = 4; // Outgoing angles in degree for which the metrics will be computed. If not set, the default value will be 0 degree.
-	double phi_out = 5; // Outgoing anisotropic angles in degree for the outgoing ray. If not set, the default value will be 0 degree.
+	double theta_in = 1; // Incidence angle (degrees, default: 0)
+	double phi_in = 2; // Anisotropic angle (degrees, default: 0)
+	double wavelength = 3; // Wavelength (nm, default: 550)
+	double theta_out = 4; // Outgoing angle (degrees, default: 0)
+	double phi_out = 5; // Outgoing anisotropic angle (degrees, default: 0)
 }
 
-// Variable to sweep for slice evaluation
-enum SweepVariable {
-	SWEEP_VARIABLE_UNSPECIFIED = 0;
-	SWEEP_VARIABLE_THETA_IN = 1;
-	SWEEP_VARIABLE_PHI_IN = 2;
-	SWEEP_VARIABLE_THETA_OUT = 3;
-	SWEEP_VARIABLE_PHI_OUT = 4;
-	SWEEP_VARIABLE_WAVELENGTH = 5;
-}
-
-// Request to evaluate the BSDF along a 2D slice by sweeping one variable
 message BSDFSlicesConfig {
 	message SliceConfig {
-		// Fixed values for all impact variables (the chosen variable will be swept along the range defined below)
-		ImpactDefinition fixed_values = 1;
-		// Which variable to sweep
-		SweepVariable sweep_variable = 2;
-		// Start of the sweep range (in degrees or nm depending on variable)
-		double sweep_start = 3;
-		// End of the sweep range (in degrees or nm depending on variable)
-		double sweep_end = 4;
-		// Number of equispaced samples in [sweep_start, sweep_end]
-		uint32 num_samples = 5;
+		ImpactDefinition fixed_values = 1; // Fixed impact values
+		string sweep_variable = 2; // Variable to sweep: "theta_in", "phi_in", "theta_out", "phi_out", "wavelength"
+		double sweep_start = 3; // Sweep start (degrees or nm)
+		double sweep_end = 4; // Sweep end (degrees or nm)
+		uint32 num_samples = 5; // Number of samples
 	}
 
-	repeated SliceConfig slices = 1; // List of slices to evaluate. If empty, use default config.
+	repeated SliceConfig slices = 1; // List of slices to evaluate
 }
 
-// Parameters for the global RTA metric
 message GlobalRTAConfig {
-	repeated double wavelengths = 1; // Wavelengths in nm; if empty, kernel defaults are used
+	repeated double wavelengths = 1; // Wavelengths (nm)
 }
 
-// Parameters for the directional RTA metric
 message DirectionalRTAConfig {
-	repeated ImpactDefinition impacts = 1; // Impact definitions to evaluate; if empty, kernel defaults are used
+	repeated ImpactDefinition impacts = 1; // Impact definitions to evaluate
 }
 
-// Configuration for custom metrics evaluation.
-// Each field is optional: if the message field is set, that metric is evaluated with the given parameters; if absent, it is skipped.
-// To add a new metric: add a NewMetricConfig field here and a NewMetricResult field in EvaluateMetrics_Response.
 message MetricsConfig {
-	GlobalRTAConfig global_rta = 1;           // If set, evaluate global RTA
-	DirectionalRTAConfig directional_rta = 2; // If set, evaluate directional RTA
-	BSDFSlicesConfig bsdf_slices = 3;           // If set, evaluate BSDF slices
+	GlobalRTAConfig global_rta = 1; // Evaluate global RTA
+	DirectionalRTAConfig directional_rta = 2; // Evaluate directional RTA
+	BSDFSlicesConfig bsdf_slices = 3; // Evaluate BSDF slices
 }
 
-// Request to evaluate a custom selection of metrics with optional per-metric parameters
 message EvaluateMetrics_Request {
-	string sop_guid = 1;        // Guid of the SOPTemplate to evaluate
-	string vop_before_guid = 2; // Guid of the ambient VOP before interaction
-	string vop_after_guid = 3;  // Guid of the VOP after interaction with the surface
-	MetricsConfig config = 4;   // Metrics to evaluate and their parameters. If not set, evaluate all metrics using default configuration.
+	string sop_guid = 1; // SOPTemplate guid
+	string vop_before_guid = 2; // VOP before surface interaction
+	string vop_after_guid = 3; // VOP after surface interaction
+	MetricsConfig config = 4; // Metrics to evaluate (optional)
 }
 
-// Global RTA evaluation results
 message GlobalRTAResult {
 	message Sample {
-		double wavelength = 1;    // Wavelength in nm
-		double reflectance = 2;   // Global reflectance, in the range [0, 1]
-		double transmittance = 3; // Global transmittance, in the range [0, 1]
-		double absorbance = 4;    // Global absorbance, in the range [0, 1]
+		double wavelength = 1; // Wavelength (nm)
+		double reflectance = 2; // Reflectance [0,1]
+		double transmittance = 3; // Transmittance [0,1]
+		double absorbance = 4; // Absorbance [0,1]
 	}
 	repeated Sample samples = 1;
 }
 
-// Directional RTA evaluation results
 message DirectionalRTAResult {
 	message Sample {
-		ImpactDefinition inputs = 1; // Impact definition for this sample
-		double reflectance = 2;      // Directional reflectance, in the range [0, 1]
-		double transmittance = 3;    // Directional transmittance, in the range [0, 1]
-		double absorbance = 4;       // Directional absorbance, in the range [0, 1]
+		ImpactDefinition inputs = 1; // Impact definition
+		double reflectance = 2; // Reflectance [0,1]
+		double transmittance = 3; // Transmittance [0,1]
+		double absorbance = 4; // Absorbance [0,1]
 	}
 	repeated Sample samples = 1;
 }
 
-// BSDF slice evaluation results
 message BSDFSlicesResult {
 	message Slice {
 		message Sample {
-			double swept_variable_value = 1; // Value of the swept variable for this sample
-			double bsdf_value = 2;			 // BSDF value for this sample
+			double swept_variable_value = 1; // Swept variable value
+			double bsdf_value = 2; // BSDF value
 		}
-		ImpactDefinition inputs = 1;		// Fixed impact definition for this slice (excluding swept variable)
-		SweepVariable swept_variable = 2;			// Variable that was swept for this slice
-		repeated Sample samples = 3;		// Samples along the swept variable
+		ImpactDefinition inputs = 1; // Fixed impact values
+		string swept_variable = 2; // Variable that was swept
+		repeated Sample samples = 3; // Samples along swept variable
 	}
-	repeated Slice slices = 1;				// Results for each slice evaluated
+	repeated Slice slices = 1; // Evaluated slices
 }
 
 
-// Response for EvaluateMetrics
-// Fields are populated only for metrics that were requested (or all fields for default configuration).
 message EvaluateMetrics_Response {
-	GlobalRTAResult global_rta = 1;           // Global RTA results; absent if not evaluated
-	DirectionalRTAResult directional_rta = 2; // Directional RTA results; absent if not evaluated
-	BSDFSlicesResult bsdf_slices = 3;		  // BSDF slice results; absent if not evaluated
+	GlobalRTAResult global_rta = 1; // Global RTA results
+	DirectionalRTAResult directional_rta = 2; // Directional RTA results
+	BSDFSlicesResult bsdf_slices = 3; // BSDF slice results
 }
