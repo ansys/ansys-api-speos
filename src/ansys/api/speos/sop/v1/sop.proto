@@ -122,9 +122,9 @@ service SOPTemplateActions {
 message ImpactDefinition {
 	double theta_in = 1; // Incidence angle (degrees, default: 0)
 	double phi_in = 2; // Anisotropic angle (degrees, default: 0)
-	double wavelength = 3; // Wavelength (nm, default: 550)
-	double theta_out = 4; // Outgoing angle (degrees, default: 0)
-	double phi_out = 5; // Outgoing anisotropic angle (degrees, default: 0)
+	double theta_out = 3; // Outgoing angle (degrees, default: 0)
+	double phi_out = 4; // Outgoing anisotropic angle (degrees, default: 0)
+	optional double wavelength = 5; // Wavelength (nm, default: 550)
 }
 
 message BSDFSlicesConfig {
