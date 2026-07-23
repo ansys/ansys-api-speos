@@ -363,9 +363,8 @@ message Scene
 			}
 		}
 		message HumanEyeProperties {
-			repeated double eye_point = 1; // Position of the observer (Ox Oy Oz).
-			repeated double top_direction = 2; // Top direction of the observer (Vx Vy Vz). The top_direction must be orthogonal to "eye_point - target_point" direction.
-			repeated double target_point = 3; // Position of the target point (Ox Oy Oz).
+			repeated double axis_system = 1; // (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz). O corresponds to the observer (eye point), Y corresponds to the top direction, Z corresponds to the sight direction. The coordinate system must be orthonormal.
+			double focal = 2; // Focal length (mm).
 			oneof layer_type {
 				LayerTypeNone layer_type_none = 4; // Layer type : None.
 				LayerTypeSource layer_type_source = 5; // Layer type : Source.
