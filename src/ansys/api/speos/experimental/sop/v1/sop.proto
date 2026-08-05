@@ -1,0 +1,92 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.experimental.sop.v1;
+
+// Actions available on a SOPTemplate
+service SOPTemplateActions {
+
+	// Evaluate a custom selection of metrics with optional per-metric parameters. If config is not provided, all metrics are evaluated with default parameters.
+	rpc EvaluateMetrics(EvaluateMetrics_Request) returns (EvaluateMetrics_Response) {}
+}
+
+message ImpactDefinition {
+	double theta_in = 1; // Incidence angle (degrees, default: 0)
+	double phi_in = 2; // Anisotropic angle (degrees, default: 0)
+	double theta_out = 3; // Outgoing angle (degrees, default: 0)
+	double phi_out = 4; // Outgoing anisotropic angle (degrees, default: 0)
+	optional double wavelength = 5; // Wavelength (nm, default: 550)
+}
+
+message BSDFSlicesConfig {
+	message SliceConfig {
+		ImpactDefinition fixed_values = 1; // Fixed impact values
+		string sweep_variable = 2; // Variable to sweep: "theta_in", "phi_in", "theta_out", "phi_out", "wavelength"
+		double sweep_start = 3; // Sweep start (degrees or nm)
+		double sweep_end = 4; // Sweep end (degrees or nm)
+		uint32 num_samples = 5; // Number of samples
+	}
+
+	repeated SliceConfig slices = 1; // List of slices to evaluate
+}
+
+message GlobalRTAConfig {
+	repeated double wavelengths = 1; // Wavelengths (nm)
+}
+
+message DirectionalRTAConfig {
+	repeated ImpactDefinition impacts = 1; // Impact definitions to evaluate
+}
+
+message MetricsConfig {
+	GlobalRTAConfig global_rta = 1; // Evaluate global RTA
+	DirectionalRTAConfig directional_rta = 2; // Evaluate directional RTA
+	BSDFSlicesConfig bsdf_slices = 3; // Evaluate BSDF slices
+}
+
+message EvaluateMetrics_Request {
+	string sop_guid = 1; // SOPTemplate guid
+	string vop_before_guid = 2; // VOP before surface interaction
+	string vop_after_guid = 3; // VOP after surface interaction
+	MetricsConfig config = 4; // Metrics to evaluate (optional)
+}
+
+message GlobalRTAResult {
+	message Sample {
+		double wavelength = 1; // Wavelength (nm)
+		double reflectance = 2; // Reflectance [0,1]
+		double transmittance = 3; // Transmittance [0,1]
+		double absorbance = 4; // Absorbance [0,1]
+	}
+	repeated Sample samples = 1;
+}
+
+message DirectionalRTAResult {
+	message Sample {
+		ImpactDefinition inputs = 1; // Impact definition
+		double reflectance = 2; // Reflectance [0,1]
+		double transmittance = 3; // Transmittance [0,1]
+		double absorbance = 4; // Absorbance [0,1]
+	}
+	repeated Sample samples = 1;
+}
+
+message BSDFSlicesResult {
+	message Slice {
+		message Sample {
+			double swept_variable_value = 1; // Swept variable value
+			double bsdf_value = 2; // BSDF value
+		}
+		ImpactDefinition inputs = 1; // Fixed impact values
+		string swept_variable = 2; // Variable that was swept
+		repeated Sample samples = 3; // Samples along swept variable
+	}
+	repeated Slice slices = 1; // Evaluated slices
+}
+
+
+message EvaluateMetrics_Response {
+	GlobalRTAResult global_rta = 1; // Global RTA results
+	DirectionalRTAResult directional_rta = 2; // Directional RTA results
+	BSDFSlicesResult bsdf_slices = 3; // BSDF slice results
+}
