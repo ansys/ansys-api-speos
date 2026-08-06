@@ -36,7 +36,7 @@ message MeasurementSet {
 		}
 
 		enum Type {
-			TYPE_UNKNOWN = 0; // Do not use
+			TYPE_UNSPECIFIED = 0; // Do not use
 			TYPE_MAX = 1;
 			TYPE_MAX_X = 2;
 			TYPE_MAX_Y = 3;
@@ -45,8 +45,8 @@ message MeasurementSet {
 			TYPE_MIN_Y = 6;
 			TYPE_AVERAGE = 7;
 			TYPE_FLUX = 8;
-			TYPE_BARYCENTRE_X = 9;
-			TYPE_BARYCENTRE_Y = 10;
+			TYPE_BARYCENTER_X = 9;
+			TYPE_BARYCENTER_Y = 10;
 			TYPE_SIGMA = 11;
 			TYPE_SIGMA_X = 12;
 			TYPE_SIGMA_Y = 13;
@@ -54,14 +54,14 @@ message MeasurementSet {
 			TYPE_RMS_CONTRAST = 15;
 			TYPE_EYE_IRRADIANCE = 16;
 			TYPE_RANGE = 17;
-			//TYPE_TYPENONE = 18; useless in this context
+			//TYPE_NONE = 18; useless in this context
 			TYPE_RANGE_X = 19;
 			TYPE_RANGE_Y = 20;
 			TYPE_AREA = 21;
 			TYPE_UGR117 = 22;
 			TYPE_MAX_Z = 23;
 			TYPE_MIN_Z = 24;
-			TYPE_BARYCENTRE_Z = 25;
+			TYPE_BARYCENTER_Z = 25;
 			TYPE_SIGMA_Z = 26;
 			TYPE_RANGE_Z = 27;
 		}
@@ -70,7 +70,7 @@ message MeasurementSet {
 		message MeasureEvaluation {
 			ansys.api.speos.common.v1.DataDoubles value = 1; // Calculated result of the measure
 			bool threshold_sensitive = 2; // Indicates whether the value is different with or without thresholds
-			ansys.api.speos.common.v1.DataDoubles standard_deviation = 3; //  Optional - Standard deviation may not be available
+			ansys.api.speos.common.v1.DataDoubles standard_deviation = 3; // Optional - Standard deviation may not be available
 		}
 				
 		// Rule associated with this measure

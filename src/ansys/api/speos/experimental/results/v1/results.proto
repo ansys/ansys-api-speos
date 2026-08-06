@@ -22,7 +22,7 @@ service ResultActions {
 	// Obtains the evaluation of all measures applied to a result, taking into account the map options and the definition of areas provided
 	rpc GetAllMeasures(GetAllMeasures_Request) returns (GetAllMeasures_Response) {}
 
-	// Unload a result from memory. For performance issue, it is better to unload a result once it is no more needed.
+	// Unload a result from memory. For performance issues, it is better to unload a result once it is no longer needed.
 	rpc UnloadResult(UnloadResult_Request) returns (UnloadResult_Response) {}
 }
 
@@ -49,7 +49,7 @@ message Result {
 		// Layer properties
 		message LayerProperties{
 			SeparationType separation_type = 1;	// The type of the layers
-			bool virtual_light_controler_allowed = 2; // The virtual light controler is allowed
+			bool virtual_light_controller_allowed = 2; // The virtual light controller is allowed
 			bool ratio_or_power_control = 3; // The ratio or power adjustment is available
 
 			enum SeparationType{
@@ -160,7 +160,7 @@ message AreasSetting {
 	message XmpAreas {
 		message XMPArea {
 			enum ColorSpace {
-				COLOR_SPACE_UNKNOWN = 0;
+				COLOR_SPACE_UNSPECIFIED = 0;
 				COLOR_SPACE_XYY = 1; // xyY color space
 				COLOR_SPACE_UVY = 2; // uvY color space
 				COLOR_SPACE_UV_PRIME_Y = 3; // u'v'Y color space

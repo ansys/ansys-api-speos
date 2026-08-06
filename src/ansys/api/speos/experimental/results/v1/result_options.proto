@@ -95,7 +95,28 @@ message ResultOptions {
 			optional bytes palette_colors = 8; // RGB24 colors, from max to min. For output and "Cold to warm" palette only: repeated color indicates location of 0 on value scale
 			optional bool iso_curve = 9; // To display the contour lines on the iso levels
 
-			message TrueColor {} // No further data
+			message TrueColor {
+				GamutMappingStrategy gamut_mapping_strategy = 1; // The gamut mapping strategy applied to the colors when the values are out of the color scale range
+				HumanVision human_vision = 2; // The result is displayed with a color scale based on human vision (only for spectral maps)
+
+				message HumanVision {
+					AdaptationMode adaptation_mode = 1; // The adaptation mode applied to the color scale
+					bool glare_vos_1984 = 2; // To apply the glare effect based on the Vos 1984 model (only for spectral maps in True Color mode; this effect impacts the results because it modifies the pixels)
+
+					enum AdaptationMode {
+						ADAPTATION_MODE_UNSPECIFIED = 0;
+						ADAPTATION_MODE_LOCAL = 1; // The scale is adapted to the local environment luminance
+						ADAPTATION_MODE_DYNAMIC = 2; // The scale is adapted to the luminance range of the result
+					}
+				}
+
+				enum GamutMappingStrategy {
+					GAMUT_MAPPING_STRATEGY_UNSPECIFIED = 0;
+					GAMUT_MAPPING_STRATEGY_GAMUT_CLIPPING = 1;
+					GAMUT_MAPPING_STRATEGY_MAINTAIN_LIGHTNESS_AND_HUE = 2;
+					GAMUT_MAPPING_STRATEGY_MAINTAIN_LIGHTNESS = 3;
+				}
+			}
 
 			message FalseColor {
 				IsoLevelsScale iso_levels_scale = 1; // Switch to iso levels rendering mode
@@ -112,7 +133,7 @@ message ResultOptions {
 			message ScaleModeWhitePointLuminance {} // No further data
 
 			message ScaleModeCustom {
-				double max = 2; // Maximum value expressed in the result storage unit
+				double maximum = 2; // Maximum value expressed in the result storage unit
 				repeated double scale_levels = 3; // Values must be expressed as ratios in descending order and will be applied according to the maximum
 			}
 		}
