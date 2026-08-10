@@ -1,0 +1,52 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+syntax = "proto3";
+
+package ansys.api.speos.bsdf.v1.ParametricBSDF;
+
+import "google/protobuf/empty.proto";
+
+service ParametricBsdfService
+{
+	// serialization for native parametric BSDF JSON files
+	rpc Load(FileName) returns (google.protobuf.Empty) {}
+	rpc Save(FileName) returns (google.protobuf.Empty) {}
+
+	// to and from ParametricBsdfData
+	rpc Import(ParametricBsdfData) returns (google.protobuf.Empty) {}
+	rpc Export(google.protobuf.Empty) returns (ParametricBsdfData) {}
+}
+
+message ParametricBsdfData
+{
+	message ScalarParameter
+	{
+		string name  = 1; // parameter identifier, e.g. "roughness"
+		double value = 2; // scalar value
+	}
+
+	message SpectralParameter
+	{
+		string name  = 1; // parameter identifier, e.g. "refractive_index"
+		message WavelengthValuePair
+		{
+			double wavelength = 1; // spectral wavelength, e.g. 400
+			double value      = 2; // spectral value, e.g. 1.5
+		}
+		repeated WavelengthValuePair wavelength_value_pairs = 2; // ordered list of wavelength-value pairs	
+	}
+
+	message ParameterSet
+	{
+		repeated ScalarParameter scalar_parameters = 1; // ordered list of scalar model parameters
+		repeated SpectralParameter spectral_parameters = 2; // ordered list of spectral model parameters
+	}
+
+	int32 version = 1; // version of the parametric BSDF data format.
+	string model_name = 2; // registry key, e.g. "GGXParametricBSDF"
+	ParameterSet parameters = 3; // model parameters
+}
+
+message FileName
+{
+	string file_name = 1;
+}
