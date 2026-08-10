@@ -76,6 +76,8 @@ message SensorTemplate {
 				ModeMonochromatic mode_monochromatic = 7; // Color mode : Monochromatic
 			}
 
+			optional bool consider_diffraction_effects = 9; // To consider diffraction effects, in case the distortion file contains diffraction data (available only with the *.OPTDistortion Binary Files. Not all *.OPTDistortion Binary Files contain diffraction data).
+
 			WavelengthsRange wavelengths_range = 8; // Spectral range to use for simulation.
 
 			enum PNGBits {
