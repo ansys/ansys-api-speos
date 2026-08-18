@@ -164,7 +164,7 @@ def _chunks_to_file(chunks, download_location):
     file = None
     for chunk in chunks:
         if first_chunk and chunk.file_name != "":
-            file_path = os.path.join(download_location, chunk.file_name)
+            file_path = os.path.join(download_location, os.path.basename(chunk.file_name))
             file = open(file_path, "wb")
             first_chunk = False
         
