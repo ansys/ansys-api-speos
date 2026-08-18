@@ -10,6 +10,7 @@ service SOPTemplateActions {
 	rpc EvaluateMetrics(EvaluateMetrics_Request) returns (EvaluateMetrics_Response) {}
 }
 
+// Impact definition for a single evaluation of a metric, used for DirectionalRTA and BSDF slices.
 message ImpactDefinition {
 	double theta_in = 1; // Incidence angle (degrees, default: 0)
 	double phi_in = 2; // Anisotropic angle (degrees, default: 0)
@@ -18,6 +19,8 @@ message ImpactDefinition {
 	optional double wavelength = 5; // Wavelength (nm, default: 550)
 }
 
+// Configuration for evaluating BSDF slices, each slice is defined by a fixed impact value and a variable to sweep.
+// The swept variable initial value from the impact definition is ignored.
 message BSDFSlicesConfig {
 	message SliceConfig {
 		ImpactDefinition fixed_values = 1; // Fixed impact values
@@ -30,20 +33,30 @@ message BSDFSlicesConfig {
 	repeated SliceConfig slices = 1; // List of slices to evaluate
 }
 
+// Configuration for evaluating global RTA (Reflectance, Transmittance, Absorbance), which is evaluated at a set of wavelengths.
+// It's the quadruple integral of the BSDF over all incoming and outgoing directions, weighted by the cosine of the incidence angle.
 message GlobalRTAConfig {
 	repeated double wavelengths = 1; // Wavelengths (nm)
 }
 
+
+// Configuration for evaluating directional RTA (Reflectance, Transmittance, Absorbance), which is evaluated at a set of impact definitions.
+// It's the integral over the outgoing directions of the BSDF for a given incoming direction, weighted by the cosine of the incidence angle.
 message DirectionalRTAConfig {
 	repeated ImpactDefinition impacts = 1; // Impact definitions to evaluate
 }
 
+// Configuration for evaluating metrics, which can include global RTA, directional RTA, and BSDF slices.
+// Each config is optional, if not provided, the metric will not be evaluated.
 message MetricsConfig {
 	GlobalRTAConfig global_rta = 1; // Evaluate global RTA
 	DirectionalRTAConfig directional_rta = 2; // Evaluate directional RTA
 	BSDFSlicesConfig bsdf_slices = 3; // Evaluate BSDF slices
 }
 
+
+// Request message for evaluating metrics on a SOP, providing the VOPs before and after surface interaction,
+// and an optional configuration for which metrics to evaluate. If no configuration is provided, all metrics will be evaluated with default parameters.
 message EvaluateMetrics_Request {
 	string sop_guid = 1; // SOPTemplate guid
 	string vop_before_guid = 2; // VOP before surface interaction
