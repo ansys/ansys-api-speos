@@ -352,6 +352,6 @@ service MeasurementSetActions {
 
 message UpdateFromXML_Request {
 	string guid = 1; // Guid of the measurement set to update
-    string xml_uri = 2; // Uniform Resource Identifier of the XML file to read
+	string xml_uri = 2; // Uniform Resource Identifier of the XML file to read
 }
 message UpdateFromXML_Response {}

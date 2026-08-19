@@ -207,12 +207,12 @@ service ResultOptionsActions {
 
 message OptionsUpdateFromXML_Request {
 	string guid = 1; // Guid of the result options template to update
-    string xml_uri = 2; // Uniform Resource Identifier of the XML file to read
+	string xml_uri = 2; // Uniform Resource Identifier of the XML file to read
 }
 message OptionsUpdateFromXML_Response {}
 
 message UpdateFromResult_Request {
 	string guid = 1; // Guid of the result options template to update
-    string result_uri = 2; // Uniform Resource Identifier of the result file to read
+	string result_uri = 2; // Uniform Resource Identifier of the result file to read
 }
 message UpdateFromResult_Response {}
