@@ -202,7 +202,7 @@ service ResultOptionsActions {
 	// Updates a result options template from an XML template
 	rpc UpdateFromXML(OptionsUpdateFromXML_Request) returns (OptionsUpdateFromXML_Response) {}
 	// Updates a result options template from a result
-	rpc UpdateFromResult(UpdateFromResult_Request) returns (UpdateFromResult_Response) {}
+	rpc UpdateFromResult(OptionsUpdateFromResult_Request) returns (OptionsUpdateFromResult_Response) {}
 }
 
 message OptionsUpdateFromXML_Request {
@@ -211,8 +211,8 @@ message OptionsUpdateFromXML_Request {
 }
 message OptionsUpdateFromXML_Response {}
 
-message UpdateFromResult_Request {
+message OptionsUpdateFromResult_Request {
 	string guid = 1; // Guid of the result options template to update
 	string result_uri = 2; // Uniform Resource Identifier of the result file to read
 }
-message UpdateFromResult_Response {}
+message OptionsUpdateFromResult_Response {}
