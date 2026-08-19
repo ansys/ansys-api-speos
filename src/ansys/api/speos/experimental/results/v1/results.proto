@@ -165,13 +165,13 @@ message AreasSetting {
 
 			string name = 1; // Area name
 			oneof shape { // Area shape
-				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.XMPShapeRectangle shape_rectangle = 4;
-				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.XMPShapeEllipse shape_ellipse = 5;
-				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.XMPShapePolygon shape_polygon = 6;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeRectangle shape_rectangle = 4;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeEllipse shape_ellipse = 5;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapePolygon shape_polygon = 6;
 				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeHorizontal shape_horizontal = 7;
 				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeVertical shape_vertical = 8;
-				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.XMPShapeUserLine shape_userline = 9;
-				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.XMPShapePoint shape_point = 10;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeUserLine shape_userline = 9;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapePoint shape_point = 10;
 				MeasurementSet.ShapePolyline shape_polyline = 11;
 				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeCorona shape_corona = 12;
 				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeRadial shape_radial = 13;
@@ -193,11 +193,11 @@ message AreasSetting {
 			string name = 1; // Area name
 			repeated float axis_system = 4; // Position of the area before projection along -Z onto geometry (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 			oneof shape { // Area shape
-				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.XM3ShapeRectangle shape_rectangle = 5;
-				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.XM3ShapeEllipse shape_ellipse = 6;
-				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.XM3ShapePolygon shape_polygon = 7;
-				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.XM3ShapeUserLine shape_userline = 8;
-				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.XM3ShapePoint shape_point = 9;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapeRectangle shape_rectangle = 5;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapeEllipse shape_ellipse = 6;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapePolygon shape_polygon = 7;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapeUserLine shape_userline = 8;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapePoint shape_point = 9;
 				MeasurementSet.ShapePolyline shape_polyline = 10;
 			}
 			// All magnitudes are calculated systematically

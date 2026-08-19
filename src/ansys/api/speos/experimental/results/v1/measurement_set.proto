@@ -146,15 +146,15 @@ message MeasurementSet {
 			// Area and its measures for an XMP result
 			// The definition of a measurement area must be expressed in the axis storage unit
 			message XMPAreaAndMeasures {
-				message XMPShapeRectangle {
+				message ShapeRectangle {
 					repeated double rect = 1; // center x, center y, width, height
 				}
 
-				message XMPShapeEllipse {
+				message ShapeEllipse {
 					repeated double ellipse = 1; // center x, center y, radius x, radius y
 				}
 
-				message XMPShapePolygon {
+				message ShapePolygon {
 					repeated double vertices = 1; // x0, y0, x1, y1, x2, y2, ..., xi, yi
 				}
 
@@ -168,12 +168,12 @@ message MeasurementSet {
 					uint32 sampling = 2;
 				}
 
-				message XMPShapeUserLine {
+				message ShapeUserLine {
 					repeated double bounding_rect = 1; // (x1, y1, x2, y2) or (theta1, phi1, theta2, phi2)
 					uint32 sampling = 2;
 				}
 
-				message XMPShapePoint {
+				message ShapePoint {
 					repeated double point = 1; // (x, y) or (theta, phi)
 				}
 
@@ -195,13 +195,13 @@ message MeasurementSet {
 				string description = 27;
 				map<string, string> metadata = 28; // User defined metadata
 				oneof shape { // Area shape
-					XMPShapeRectangle shape_rectangle = 2;
-					XMPShapeEllipse shape_ellipse = 3;
-					XMPShapePolygon shape_polygon = 4;
+					ShapeRectangle shape_rectangle = 2;
+					ShapeEllipse shape_ellipse = 3;
+					ShapePolygon shape_polygon = 4;
 					ShapeHorizontal shape_horizontal = 5;
 					ShapeVertical shape_vertical = 6;
-					XMPShapeUserLine shape_userline = 7;
-					XMPShapePoint shape_point = 8;
+					ShapeUserLine shape_userline = 7;
+					ShapePoint shape_point = 8;
 					ShapePolyline shape_polyline = 9;
 					ShapeCorona shape_corona = 10;
 					ShapeRadial shape_radial = 11;
@@ -230,38 +230,38 @@ message MeasurementSet {
 			// Area and its measures for an XM3 result
 			// The definition of a measurement area must be expressed in the axis storage unit
 			message XM3AreaAndMeasures {
-				message XM3ShapeRectangle {
+				message ShapeRectangle {
 					repeated double size = 1; // width, height
 					uint32 sampling = 2;
 				}
 
-				message XM3ShapeEllipse {
+				message ShapeEllipse {
 					repeated double radii = 1; // radius x, radius y
 					uint32 sampling = 2;
 				}
 
-				message XM3ShapePolygon {
+				message ShapePolygon {
 					repeated double vertices = 1; // x0, y0, x1, y1, x2, y2, ..., xi, yi
 					uint32 sampling = 2;
 				}
 
-				message XM3ShapeUserLine {
+				message ShapeUserLine {
 					double width = 1; // line segment width
 					uint32 sampling = 2;
 				}
 
-				message XM3ShapePoint {} // No further data
+				message ShapePoint {} // No further data
 
 				string name = 1; // Area name
 				string description = 2;
 				map<string, string> metadata = 3; // User defined metadata
 				repeated float manipulator_axis_system = 4; // Position of the manipulator (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
 				oneof shape { // Area shape
-					XM3ShapeRectangle shape_rectangle = 5;
-					XM3ShapeEllipse shape_ellipse = 6;
-					XM3ShapePolygon shape_polygon = 7;
-					XM3ShapeUserLine shape_userline = 8;
-					XM3ShapePoint shape_point = 9;
+					ShapeRectangle shape_rectangle = 5;
+					ShapeEllipse shape_ellipse = 6;
+					ShapePolygon shape_polygon = 7;
+					ShapeUserLine shape_userline = 8;
+					ShapePoint shape_point = 9;
 					ShapePolyline shape_polyline = 10;
 				}
 				optional double threshold_min = 11; // Value must be expressed in the result storage unit
