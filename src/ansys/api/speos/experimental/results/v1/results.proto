@@ -42,9 +42,9 @@ message Result {
 		string name = 1; // SensorTemplate name
 		string description = 2; // SensorTemplate description
 		map<string, string> metadata = 3; // User defined metadata
-		LayerProperties layerProperties = 4;
+		LayerProperties layer_properties = 4;
 		ansys.api.speos.common.v1.DataDoubles wavelengths = 5; // The wavelengths layers. (nm) for spectral separation only.
-		OptionDependentData optionDependentData = 6; // Values that depend on the options provided as input
+		OptionDependentData option_dependent_data = 6; // Values that depend on the options provided as input
 
 		// Layer properties
 		message LayerProperties{
@@ -71,13 +71,6 @@ message Result {
 				string name = 1; // The name of the layer
 				optional ansys.api.speos.common.v1.DataDoubles power = 2; // The power of the layer
 			}
-		}
-
-		// The geometry of the sensor. It's a temporary solution. Delete when the EyeSensor will be implemented.
-		message Geometry {
-			repeated double bounding_box = 1;		// (Xmin, Xmax, Ymin, Ymax).
-			repeated uint32 pixels_number = 2;		// The pixels number x, y.
-			repeated double axis_system = 3;		// Position of the sensor (Ox, Oy, Oz, Xx, Xy, Xz, Yx, Yy, Yz, Zx, Zy, Zz).
 		}
 	}
 	
