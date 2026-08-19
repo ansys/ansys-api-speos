@@ -39,8 +39,8 @@ message GetMapValues_Request {
 message Result {
 	message Common {
 		// Result information
-		string name = 1; // SensorTemplate name
-		string description = 2; // SensorTemplate description
+		string name = 1; // Result name
+		string description = 2; // Result description
 		map<string, string> metadata = 3; // User defined metadata
 		LayerProperties layer_properties = 4;
 		ansys.api.speos.common.v1.DataDoubles wavelengths = 5; // The wavelengths layers. (nm) for spectral separation only.
