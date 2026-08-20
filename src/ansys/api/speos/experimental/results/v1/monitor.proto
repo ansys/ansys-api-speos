@@ -4,14 +4,13 @@ syntax = "proto3";
 
 package ansys.api.speos.experimental.results.v1;
 
-
-message Colorimetric {
-	message Chromaticity {
-		repeated float data = 1; // The colorimetric data in XYZ format.
-	}
-}
-
 message Monitor {
+	message Colorimetric {
+		message Chromaticity {
+			repeated float data = 1; // The colorimetric data in XYZ format.
+		}
+	}
+
 	oneof monitor_type {
 		Standard standard = 1; // Standard monitor
 	}
