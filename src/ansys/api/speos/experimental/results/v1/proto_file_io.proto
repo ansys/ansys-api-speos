@@ -6,8 +6,8 @@ package ansys.api.speos.experimental.results.v1;
 
 // Service to import/export results configurations to help template application
 service ProtoFileIoActions {
-	rpc Import(Import_Request) returns (Import_Response); // Loads a file and materializes the corresponding resources on the server.
-	rpc Export(Export_Request) returns (Export_Response); // Serializes existing resources to a file on the server-accessible storage.
+	rpc Import(Import_Request) returns (Import_Response) {} // Loads a file and materializes the corresponding resources on the server.
+	rpc Export(Export_Request) returns (Export_Response) {} // Serializes existing resources to a file on the server-accessible storage.
 }
 
 message Import_Request {
