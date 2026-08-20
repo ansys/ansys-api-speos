@@ -150,7 +150,7 @@ message GetMeasurementValues_Response {
 
 // Definition of areas (which takes precedence over the result)
 message AreasSetting {
-	message XmpAreas {
+	message XMPAreas {
 		message XMPArea {
 			enum ColorSpace {
 				COLOR_SPACE_UNSPECIFIED = 0;
@@ -188,7 +188,7 @@ message AreasSetting {
 		repeated XMPArea xmp_areas = 1; // Areas for XMP result
 	}
 
-	message Xm3Areas {
+	message XM3Areas {
 		message XM3Area {
 			string name = 1; // Area name
 			repeated float axis_system = 4; // Position of the area before projection along -Z onto geometry (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
@@ -209,8 +209,8 @@ message AreasSetting {
 	}
 
 	oneof typed_areas {
-		XmpAreas areas_2d = 1; // Areas for 2D result
-		Xm3Areas areas_3d = 2; // Areas for 3D result
+		XMPAreas areas_2d = 1; // Areas for 2D result
+		XM3Areas areas_3d = 2; // Areas for 3D result
 	}
 }
 
