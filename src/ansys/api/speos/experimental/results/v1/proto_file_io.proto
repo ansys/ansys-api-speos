@@ -1,0 +1,29 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+
+syntax = "proto3";
+
+package ansys.api.speos.experimental.results.v1;
+
+// Service to import/export results configurations to help template application
+service ProtoFileIoActions {
+	rpc Import(Import_Request) returns (Import_Response) {} // Loads a file and materializes the corresponding resources on the server.
+	rpc Export(Export_Request) returns (Export_Response) {} // Serializes existing resources to a file on the server-accessible storage.
+}
+
+message Import_Request {
+	string file_uri = 1; // URI of the source file to import
+}
+
+message Import_Response {
+	string result_options_guid = 1;  // GUID of the ResultOptions resource created by the import.
+	string measurement_set_guid = 2; // GUID of the MeasurementSet resource created by the import.
+}
+
+message Export_Request {
+	string file_uri = 1;	// Destination URI where the file must be written.
+	string result_options_guid = 2; // GUID of the ResultOptions resource to serialize.
+	string measurement_set_guid = 3; // GUID of the MeasurementSet resource to serialize.
+}
+
+message Export_Response {
+}
