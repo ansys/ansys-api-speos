@@ -1,0 +1,231 @@
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+
+syntax = "proto3";
+
+import "ansys/api/speos/common/v1/data.proto";
+import "ansys/api/speos/experimental/results/v1/measurement_set.proto";
+
+import "ansys/api/speos/sensor/v2/sensor.proto";
+
+import "ansys/api/speos/scene/v2/scene.proto";
+
+package ansys.api.speos.experimental.results.v1;
+
+// Actions available with an XMP or XM3 result
+service ResultActions {
+	// Get the map values based on the result and the map options settings
+	rpc GetMapValues(GetMapValues_Request) returns (stream MapChunk) {}
+	
+	// Obtains values of measurement applied to a result, taking into account any map options and any measurement definitions supplied.
+	rpc GetMeasurementValues(GetMeasurementValues_Request) returns (GetMeasurementValues_Response) {}
+
+	// Obtains the evaluation of all measures applied to a result, taking into account the map options and the definition of areas provided
+	rpc GetAllMeasures(GetAllMeasures_Request) returns (GetAllMeasures_Response) {}
+
+	// Unload a result from memory. For performance issues, it is better to unload a result once it is no longer needed.
+	rpc UnloadResult(UnloadResult_Request) returns (UnloadResult_Response) {}
+}
+
+message GetMapValues_Request {
+	string result_uri = 1; // Uniform Resource Identifier of the result
+	optional string map_options_guid = 2; // Guid of the map options to be applied - If not provided the map options of the result are applied
+
+	optional bool header = 3; // Boolean to get the header information in response stream.
+	optional bool display_data = 4; // Boolean to get the display_data (RGBA32 format) in response stream.
+	optional bool raw_data = 5; // Boolean to get the raw_data in response stream.
+	optional bool colorimetric_data = 6; // Boolean to get the colorimetric_data in response stream (only for map that contains such data).
+}
+
+message Result {
+	message Common {
+		// Result information
+		string name = 1; // Result name
+		string description = 2; // Result description
+		map<string, string> metadata = 3; // User defined metadata
+		LayerProperties layer_properties = 4;
+		ansys.api.speos.common.v1.DataDoubles wavelengths = 5; // The wavelengths layers. (nm) for spectral separation only.
+		OptionDependentData option_dependent_data = 6; // Values that depend on the options provided as input
+
+		// Layer properties
+		message LayerProperties{
+			SeparationType separation_type = 1;	// The type of the layers
+			bool virtual_light_controller_allowed = 2; // The virtual light controller is allowed
+			bool ratio_or_power_control = 3; // The ratio or power adjustment is available
+
+			enum SeparationType{
+				SEPARATION_TYPE_UNSPECIFIED = 0;
+				SEPARATION_TYPE_SOURCE = 1;
+				SEPARATION_TYPE_FACE = 2;
+				SEPARATION_TYPE_SEQUENCE = 3;
+				SEPARATION_TYPE_POLARIZATION = 4; 
+				SEPARATION_TYPE_INCIDENCE_ANGLE = 5;
+			}
+		}
+
+		// Values that depend on the options provided as input
+		message OptionDependentData{
+			ansys.api.speos.common.v1.DataDoubles min_max = 1; // Min and max of the result
+			repeated Layer layers = 2; // Description of the layers
+	
+			message Layer {
+				string name = 1; // The name of the layer
+				optional ansys.api.speos.common.v1.DataDoubles power = 2; // The power of the layer
+			}
+		}
+	}
+	
+	// xmp
+	message Irradiance {
+		ansys.api.speos.sensor.v2.SensorTemplate.Irradiance s_template = 1; 
+		ansys.api.speos.scene.v2.Scene.SensorInstance.IrradianceProperties properties = 2;
+	}
+
+	message Intensity {
+		ansys.api.speos.sensor.v2.SensorTemplate.Intensity s_template = 1;
+		ansys.api.speos.scene.v2.Scene.SensorInstance.IntensityProperties properties = 2;
+	}
+	
+	message Radiance {
+		ansys.api.speos.sensor.v2.SensorTemplate.Radiance s_template = 1;
+		ansys.api.speos.scene.v2.Scene.SensorInstance.RadianceProperties properties = 2;
+	}
+	
+	message Eye {
+		ansys.api.speos.sensor.v2.SensorTemplate.HumanEye s_template = 1;
+		ansys.api.speos.scene.v2.Scene.SensorInstance.HumanEyeProperties properties = 2;
+	}
+	
+	message Camera {
+		ansys.api.speos.sensor.v2.SensorTemplate.Camera s_template = 1;
+		ansys.api.speos.scene.v2.Scene.SensorInstance.CameraProperties properties = 2;
+	}
+	
+	message PhysicalCamera {
+		Irradiance irradiance = 1;
+	}
+}
+
+message MapChunk {
+		oneof data {
+			Header header = 1;
+			DisplayData display_data = 2; // The display data corresponding to the map options given in request.
+			RawData raw_data = 3; // The raw data corresponding to the map options given in request.
+			ColorimetricData colorimetric_data = 4; // The colorimetric_data (XYZ format), only for map that contains such data.
+		}
+
+		message Header {
+			Result.Common common = 1;
+			oneof specific_data {
+				Result.Irradiance irradiance = 2;
+				Result.Intensity intensity = 3;
+				Result.Radiance radiance = 4;
+				Result.Eye eye = 5;
+				Result.Camera camera = 6;
+				Result.PhysicalCamera physical_camera = 7;
+			}
+		}
+
+		// The display data corresponding to the map options given in request.
+		message DisplayData {
+			ansys.api.speos.common.v1.DataBytes data = 1; // The bitmap in RGBA32 format.
+		}
+		// The raw data corresponding to the map options given in request.
+		message RawData {
+			ansys.api.speos.common.v1.DataDoubles data = 1;
+		}
+		// The colorimetric_data (XYZ format), only for map that contains such data.
+		message ColorimetricData {
+			ansys.api.speos.common.v1.DataFloats data = 1; // The colorimetric data in XYZ format.
+		}
+}
+
+message GetMeasurementValues_Request {
+	string result_uri = 1; // Uniform Resource Identifier of the result
+	optional string map_options_guid = 2; // Guid of the map options to be applied - If not provided the map options of the result are applied
+	optional string measurement_set_guid = 3; // Guid of the measurement set to be applied - If not provided the measurement set of the result is applied
+}
+message GetMeasurementValues_Response {
+	MeasurementSet measurement_set = 1; // Measurement set values
+}
+
+// Definition of areas (which takes precedence over the result)
+message AreasSetting {
+	message XMPAreas {
+		message XMPArea {
+			enum ColorSpace {
+				COLOR_SPACE_UNSPECIFIED = 0;
+				COLOR_SPACE_XYY = 1; // xyY color space
+				COLOR_SPACE_UVY = 2; // uvY color space
+				COLOR_SPACE_UV_PRIME_Y = 3; // u'v'Y color space
+				COLOR_SPACE_LUV = 4; // L*u*v* color space
+				COLOR_SPACE_LAB = 5; // L*a*b* color space
+				COLOR_SPACE_LCH = 6; // L*C*h color space
+				COLOR_SPACE_XYZ = 7; // XYZ color space
+			}
+
+			string name = 1; // Area name
+			oneof shape { // Area shape
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeRectangle shape_rectangle = 4;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeEllipse shape_ellipse = 5;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapePolygon shape_polygon = 6;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeHorizontal shape_horizontal = 7;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeVertical shape_vertical = 8;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeUserLine shape_userline = 9;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapePoint shape_point = 10;
+				MeasurementSet.ShapePolyline shape_polyline = 11;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeCorona shape_corona = 12;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeRadial shape_radial = 13;
+				MeasurementSet.XMPMeasurementSet.XMPAreaOrGlobalRule.XMPAreaAndMeasures.ShapeOrthoradial shape_orthoradial = 14;
+			}
+			ColorSpace color_space = 15; // Optional
+			// The other magnitudes are calculated systematically
+			// Where applicable, the cut_off_sharpness operator is systematically added to the combinations to be calculated
+			optional double iso_level = 16; // Required for measuring range. Value must be expressed in the result storage unit
+			optional double threshold_min = 17; // Value must be expressed in the result storage unit
+			optional double threshold_max = 18; // Value must be expressed in the result storage unit
+		}
+
+		repeated XMPArea xmp_areas = 1; // Areas for XMP result
+	}
+
+	message XM3Areas {
+		message XM3Area {
+			string name = 1; // Area name
+			repeated float axis_system = 4; // Position of the area before projection along -Z onto geometry (Ox Oy Oz Xx Xy Xz Yx Yy Yz Zx Zy Zz)
+			oneof shape { // Area shape
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapeRectangle shape_rectangle = 5;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapeEllipse shape_ellipse = 6;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapePolygon shape_polygon = 7;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapeUserLine shape_userline = 8;
+				MeasurementSet.XM3MeasurementSet.XM3AreaOrGlobalRule.XM3AreaAndMeasures.ShapePoint shape_point = 9;
+				MeasurementSet.ShapePolyline shape_polyline = 10;
+			}
+			// All magnitudes are calculated systematically
+			optional double threshold_min = 11; // Value must be expressed in the result storage unit
+			optional double threshold_max = 12; // Value must be expressed in the result storage unit
+		}
+
+		repeated XM3Area xm3_areas = 1; // Areas for XM3 result
+	}
+
+	oneof typed_areas {
+		XMPAreas areas_2d = 1; // Areas for 2D result
+		XM3Areas areas_3d = 2; // Areas for 3D result
+	}
+}
+
+message GetAllMeasures_Request {
+	string result_uri = 1; // Uniform Resource Identifier of the result
+	optional string map_options_guid = 2; // Guid of the map options (which take precedence over those in the result)
+	AreasSetting areas_setting = 3; // Definition of areas (which takes precedence over the result)
+	optional bool dry_run = 4; // If true, measures are listed but not evaluated
+}
+
+message GetAllMeasures_Response {
+	MeasurementSet measurement_set = 1; // Values of all available measurements corresponding to the input data
+}
+
+message UnloadResult_Request {
+	string result_uri = 1; // Uniform Resource Identifier of the result to unload
+}
+message UnloadResult_Response {}
