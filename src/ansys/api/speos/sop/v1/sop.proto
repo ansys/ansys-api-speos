@@ -42,8 +42,8 @@ message SOPTemplate {
 
 		message Image {
 			string bitmap_file_uri = 1; // Bitmap
-			bool repeat_along_u = 2; // Activate/deactivate the repeatability of the texture image on U axe.
-			bool repeat_along_v = 3; // Activate/deactivate the repeatability of the texture image on V axe.
+			bool repeat_along_u = 2; // Activate/deactivate the repeatability of the texture image on U axis.
+			bool repeat_along_v = 3; // Activate/deactivate the repeatability of the texture image on V axis.
 		}
 
 		message NormalMap {
@@ -52,8 +52,8 @@ message SOPTemplate {
 				FromNormalMap from_normal_map = 2;
 			}
 			float roughness = 5;
-			bool repeat_along_u = 6; // Activate/deactivate the repeatability of the texture normal map on U axe.
-			bool repeat_along_v = 7; // Activate/deactivate the repeatability of the texture normal map on V axe.
+			bool repeat_along_u = 6; // Activate/deactivate the repeatability of the texture normal map on U axis.
+			bool repeat_along_v = 7; // Activate/deactivate the repeatability of the texture normal map on V axis.
 
 			message FromImage {
 				string bitmap_file_uri = 1; // Bitmap used to build normal map.
@@ -110,8 +110,4 @@ message Delete_Response {}
 message List_Request {}
 message List_Response {
 	repeated string guids = 1; // Guids of the SOPTemplates in SOPTemplatesManager
-}
-
-// Actions available on a SOPTemplate
-service SOPTemplateActions {
 }
