@@ -1,10 +1,17 @@
 // (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
+
 syntax = "proto3";
 
 package ansys.api.speos.experimental.results.v1;
 
-// Service to import/export results configurations to help template application
+// Service to import/export results configurations to help template application.
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 service ProtoFileIoActions {
 	rpc Import(Import_Request) returns (Import_Response) {} // Loads a file and materializes the corresponding resources on the server.
 	rpc Export(Export_Request) returns (Export_Response) {} // Serializes existing resources to a file on the server-accessible storage.

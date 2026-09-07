@@ -1,5 +1,9 @@
 // (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
 
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
+
 syntax = "proto3";
 
 import "ansys/api/speos/experimental/results/v1/monitor.proto";
@@ -144,7 +148,10 @@ message ResultOptions {
 // CRUD //
 //////////
 
-// Manager for result options templates
+// Manager for result options templates.
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 service ResultOptionsManager {
 	// Creates a result options template
 	rpc Create(OptionsCreate_Request) returns (OptionsCreate_Response) {}
@@ -197,7 +204,10 @@ message OptionsList_Response {
 // ACTIONS //
 /////////////
 
-// Actions available for result options template
+// Actions available for result options template.
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 service ResultOptionsActions {
 	// Updates a result options template from an XML template
 	rpc UpdateFromXML(OptionsUpdateFromXML_Request) returns (OptionsUpdateFromXML_Response) {}
