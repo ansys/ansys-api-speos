@@ -1,9 +1,17 @@
 // (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
+
 syntax = "proto3";
 
 package ansys.api.speos.experimental.sop.v1;
 
-// Actions available on a SOPTemplate
+// Actions available on a SOPTemplate.
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 service SOPTemplateActions {
 
 	// Evaluate a custom selection of metrics with optional per-metric parameters. If config is not provided, all metrics are evaluated with default parameters.
