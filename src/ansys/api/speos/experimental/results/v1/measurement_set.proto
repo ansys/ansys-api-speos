@@ -1,4 +1,8 @@
-// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 
 syntax = "proto3";
 
@@ -291,7 +295,10 @@ message MeasurementSet {
 // CRUD //
 //////////
 
-// Manager for sets of measures
+// Manager for sets of measures.
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 service MeasurementSetsManager {
 	// Creates a set of measures
 	rpc Create(Create_Request) returns (Create_Response) {}
@@ -344,7 +351,10 @@ message List_Response {
 // ACTIONS //
 /////////////
 
-// Actions available on a measurement set
+// Actions available on a measurement set.
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 service MeasurementSetActions {
 	// Updates a set of measures from an XML template
 	rpc UpdateFromXML(UpdateFromXML_Request) returns (UpdateFromXML_Response) {}

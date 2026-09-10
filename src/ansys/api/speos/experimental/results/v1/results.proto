@@ -1,4 +1,8 @@
-// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited. ANSYS Confidential Information
+// (c) 2026 ANSYS, Inc. Unauthorized use, distribution, or duplication is prohibited.
+
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 
 syntax = "proto3";
 
@@ -11,7 +15,10 @@ import "ansys/api/speos/scene/v2/scene.proto";
 
 package ansys.api.speos.experimental.results.v1;
 
-// Actions available with an XMP or XM3 result
+// Actions available with an XMP or XM3 result.
+// Experimental Feature: This service is under active development. Bugs are expected, 
+// protobuf definitions may evolve, and breaking API changes may occur at any time. 
+// The current API should not be considered final and does not reflect the full functionality planned for Speos.
 service ResultActions {
 	// Get the map values based on the result and the map options settings
 	rpc GetMapValues(GetMapValues_Request) returns (stream MapChunk) {}
