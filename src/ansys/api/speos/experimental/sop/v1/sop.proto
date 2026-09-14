@@ -54,12 +54,23 @@ message DirectionalRTAConfig {
 	repeated ImpactDefinition impacts = 1; // Impact definitions to evaluate
 }
 
+// Configuration for evaluating reciprocity, which checks if the BSDF is reciprocal.
+// Reflection: BRDF : f(theta_in, phi_in, theta_out, phi_out) == f(theta_out, phi_out, theta_in, phi_in). Only reflection directions are sampled (theta_out < 90 degrees).
+// Transmission: BTDF : n_i^2*f(theta_in, phi_in, theta_out, phi_out) == n_o^2 * f(theta_out, phi_out, theta_in, phi_in). Only transmission directions are sampled (theta_out > 90 degrees).
+message ReciprocityConfig {
+	uint32 num_samples = 1; // Number of samples for reciprocity evaluation (default: 1000 when unset/0)
+	optional double wavelength = 2; // Wavelength in nm used for reciprocity evaluation (default: 550)
+	uint32 histogram_bins = 3; // Number of bins of the local error histogram over [0,1] (default: 20 when unset/0)
+	bool include_transmission = 4; // If true, also evaluate transmission reciprocity in addition to reflection (default: false)
+}
+
 // Configuration for evaluating metrics, which can include global RTA, directional RTA, and BSDF slices.
 // Each config is optional, if not provided, the metric will not be evaluated.
 message MetricsConfig {
 	GlobalRTAConfig global_rta = 1; // Evaluate global RTA
 	DirectionalRTAConfig directional_rta = 2; // Evaluate directional RTA
 	BSDFSlicesConfig bsdf_slices = 3; // Evaluate BSDF slices
+	ReciprocityConfig reciprocity = 4; // Evaluate reciprocity (reflection and, optionally, transmission)
 }
 
 
@@ -105,9 +116,24 @@ message BSDFSlicesResult {
 	repeated Slice slices = 1; // Evaluated slices
 }
 
+message ReciprocityResult {
+	// Histogram of the local reciprocity errors over [0,1]
+	message Histogram {
+		repeated double bin_edges = 1; // Bin edges, size = bins + 1
+		repeated uint32 counts = 2; // Number of samples per bin, size = bins
+	}
+	double global_error = 1; // E = sum(w*|a-b|) / sum(w*(a+b))
+	double median_error = 2; // Median local error (E50)
+	Histogram histogram = 3; // Local error distribution
+	uint32 sample_count = 4; // Number of valid evaluated couples
+	uint32 one_sided_zero_pair_count = 5; // Number of excluded pairs where one value is zero and the other non-zero
+	uint32 negligible_energy_pair_count = 6; // Number of excluded pairs where both values are below the negligible energy threshold
+}
 
 message EvaluateMetrics_Response {
 	GlobalRTAResult global_rta = 1; // Global RTA results
 	DirectionalRTAResult directional_rta = 2; // Directional RTA results
 	BSDFSlicesResult bsdf_slices = 3; // BSDF slice results
+	ReciprocityResult reciprocity_reflection = 4; // Reflection reciprocity results
+	ReciprocityResult reciprocity_transmission = 5; // Transmission reciprocity results
 }
