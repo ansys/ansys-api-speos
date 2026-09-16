@@ -62,6 +62,7 @@ message ReciprocityConfig {
 	optional double wavelength = 2; // Wavelength in nm used for reciprocity evaluation (default: 550)
 	uint32 histogram_bins = 3; // Number of bins of the local error histogram over [0,1] (default: 20 when unset/0)
 	bool include_transmission = 4; // If true, also evaluate transmission reciprocity in addition to reflection (default: false)
+	uint32 worst_pair_count = 5; // Number of highest-error pairs used for the worst-pair diagnostics (default: 50 when unset/0)
 }
 
 // Configuration for evaluating metrics, which can include global RTA, directional RTA, and BSDF slices.
@@ -122,12 +123,24 @@ message ReciprocityResult {
 		repeated double bin_edges = 1; // Bin edges, size = bins + 1
 		repeated uint32 counts = 2; // Number of samples per bin, size = bins
 	}
+	// Diagnostics comparing the worst-error pairs against the whole valid sample set: helps tell whether the
+	// largest errors sit on high-energy (physically significant) or low-energy (comparatively negligible)
+	// directions, and where angularly they are located.
+	message WorstPairDiagnostics {
+		double worst_to_mean_energy_ratio = 1; // (mean energy over worst pairs) / (mean energy over all valid pairs)
+		double mean_theta_in_deg = 2; // Mean theta_in over the worst pairs (degrees should be ~45)
+		double mean_theta_out_deg = 3; // Mean theta_out over the worst pairs (degrees should be ~45 if reflected <45 if refracted)
+		double mean_phi_deg = 4; // Mean phi over the worst pairs (degrees)
+		uint32 pair_count = 5; // Number of pairs actually used (min(worst_pair_count, sample_count))
+	}
 	double global_error = 1; // E = sum(w*|a-b|) / sum(w*(a+b))
 	double median_error = 2; // Median local error (E50)
 	Histogram histogram = 3; // Local error distribution
 	uint32 sample_count = 4; // Number of valid evaluated couples
 	uint32 one_sided_zero_pair_count = 5; // Number of excluded pairs where one value is zero and the other non-zero
 	uint32 negligible_energy_pair_count = 6; // Number of excluded pairs where both values are below the negligible energy threshold
+	double mean_ab_ratio = 7; // Mean of a/b (forward/reverse) over all valid pairs; should be close to 1 for a reciprocal BSDF
+	WorstPairDiagnostics worst_pairs = 8; // Diagnostics comparing the worst-error pairs to the whole valid sample set
 }
 
 message EvaluateMetrics_Response {
