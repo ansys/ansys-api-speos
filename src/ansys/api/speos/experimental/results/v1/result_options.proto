@@ -36,7 +36,10 @@ message ResultOptions {
 		LightingController lighting_controller = 4; // Virtual Lighting Controller. Used only when the VLC is active
 		optional int32 selected_wavelength_index = 5; // Index of the selected wavelength for spectral separation only: -1 for all wavelengths, 0 for first wavelength, 1 for second wavelength, ...
 		optional UnitType unit_type = 6; // The values are displayed in photometric or radiometric units (for spectral maps only)
-		
+		// The luminance of the white point used for colorimetry (for spectral maps only). By example: to normalize XYZ, to compute Lab values... If no value is set, the maximum of luminance of the map with the option mode_all_layers is used.
+		// This value is no used to dispay results
+		optional double white_reference_luminance = 7;
+
 		message ModeVLC {} // No further data
 		
 		message ModeAllLayers {} // No further data
