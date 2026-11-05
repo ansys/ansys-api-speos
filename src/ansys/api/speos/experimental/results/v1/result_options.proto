@@ -140,7 +140,7 @@ message ResultOptions {
 			message ScaleModeWhitePointLuminance {} // No further data
 
 			message ScaleModeCustom {
-				double maximum = 2; // Maximum value expressed in the result storage unit
+				double maximum = 2; // Maximum value expressed in the result storage unit. When this value is set, the same value must be set into the white_reference_luminance of refinement options
 				repeated double scale_levels = 3; // Values must be expressed as ratios in descending order and will be applied according to the maximum
 			}
 		}
