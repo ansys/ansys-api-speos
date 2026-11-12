@@ -150,6 +150,7 @@ message GetMeasurementValues_Request {
 	string result_uri = 1; // Uniform Resource Identifier of the result
 	optional string map_options_guid = 2; // Guid of the map options to be applied - If not provided the map options of the result are applied
 	optional string measurement_set_guid = 3; // Guid of the measurement set to be applied - If not provided the measurement set of the result is applied
+	bool enable_line_graphs = 4; // If true, line graphs are computed and returned in the response - XMP specific
 }
 message GetMeasurementValues_Response {
 	MeasurementSet measurement_set = 1; // Measurement set values
