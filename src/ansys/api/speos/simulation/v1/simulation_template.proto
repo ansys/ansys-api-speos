@@ -34,6 +34,26 @@ message Texture {
 	}
 }
 
+// Ray tracer used during propagation.
+// If the RayTracer message is not filled, the default ray tracer is kept.
+message RayTracer {
+	oneof precision {
+		Automatic automatic = 1; // The precision is chosen automatically depending on the scene.
+		SinglePrecision single_precision = 2; // Faster, less accurate ray tracer.
+		DoublePrecision double_precision = 3; // More accurate ray tracer.
+	}
+
+	message Automatic {
+	}
+
+	message SinglePrecision {
+	}
+
+	message DoublePrecision {
+		uint32 smart_engine = 1; // Smart Engine value (octree depth) used to optimize the ray tracer. Default value is 11.
+	}
+}
+
 message DirectMCSimulationTemplate {
 	double geom_distance_tolerance = 2; // Maximum distance in mm to consider two faces as tangent
 	int32 max_impact = 3; // To define a value to determine the maximum number of ray impacts during propagation. When a ray has interacted N times with the geometry, the propagation of the ray stops.
@@ -43,6 +63,7 @@ message DirectMCSimulationTemplate {
 	bool fast_transmission_gathering = 7; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface. 
 	string ambient_material_uri = 8; // To select an ambient material *.material  
 	Texture texture = 9; // To activate texture.
+	RayTracer ray_tracer = 10; // To define the ray tracer precision and Smart Engine.
 }
 
 message InverseMCSimulationTemplate {
@@ -58,6 +79,7 @@ message InverseMCSimulationTemplate {
 	bool fast_transmission_gathering = 10; // To accelerate the simulation by neglecting the light refraction that occurs when the light is being transmitted through a transparent surface.
 	string ambient_material_uri = 11; // To select an ambient material *.material
 	Texture texture = 13; // To activate texture.
+	RayTracer ray_tracer = 14; // To define the ray tracer precision and Smart Engine.
 }
 
 // Simulation template with its basic characteristics
@@ -79,6 +101,7 @@ message SimulationTemplate {
 		EnumColorimetricStandard colorimetric_standard = 4; // Default Colorimetric Standard
 		string ambient_material_uri = 5; // To define the environment in which the light will propagate (water, fog, smoke etc.). It is expressed in a .material file
 		Texture texture = 6; // To activate texture.
+		RayTracer ray_tracer = 7; // To define the ray tracer precision and Smart Engine.
 	}
 
 	// Virtual BSDF Bench
@@ -96,6 +119,7 @@ message SimulationTemplate {
 
 		ansys.api.speos.sensor.v1.WavelengthsRange wavelengths_range = 11; // 
 		Sensor sensor = 12; // Sensor definition
+		RayTracer ray_tracer = 13; // To define the ray tracer precision and Smart Engine.
 
 		message SourceSamplingUniformIsotropic{
 			uint32 theta_sampling = 1; // Number of samples created along the polar angle Theta (around the normal Z-axis) in the range [0,90] degrees, with a minimum value of 2 degrees. Each sample represents the position of the source on Theta.
