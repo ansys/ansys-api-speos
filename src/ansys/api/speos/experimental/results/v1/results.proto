@@ -190,7 +190,7 @@ message AreasSetting {
 			optional double iso_level = 16; // Required for measuring range. Value must be expressed in the result storage unit
 			optional double threshold_min = 17; // Value must be expressed in the result storage unit
 			optional double threshold_max = 18; // Value must be expressed in the result storage unit
-			bool enable_line_graphs = 19; // If true, line graphs are computed and returned in MeasurementSet's line_graphs field
+			bool enable_line_graphs = 19; // If true, line graphs are computed and returned in the MeasurementSet's line_graphs field
 		}
 
 		repeated XMPArea xmp_areas = 1; // Areas for XMP result

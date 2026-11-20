@@ -221,8 +221,8 @@ message MeasurementSet {
 				optional double threshold_max = 15; // Value must be expressed in the result storage unit
 				optional string warning = 16; // Where applicable, indicates incompatibility between area definition and context (output only)
 				repeated Measure measures = 17; // List of measures
-				bool enable_line_graphs = 18; // If true, line graphs are computed and returned in line_graphs field
-				repeated LineGraph line_graphs = 19; // List of graph 2D on area line (only available for ShapeHorizontal, ShapeVertical, ShapeUserLine, ShapePolyline, ShapeRadial, ShapeOrthoradial).
+				bool enable_line_graphs = 18; // If true, line graphs are computed and returned in the line_graphs field
+				repeated LineGraph line_graphs = 19; // List of 2D graphs along the area line (output only). Only available for ShapeHorizontal, ShapeVertical, ShapeUserLine, ShapePolyline, ShapeRadial, ShapeOrthoradial. If cut-off sharpness is available, then two LineGraphs are returned (the last one corresponds to the cut-off sharpness graph). If not, only one LineGraph is returned.
 			}
 
 			oneof xmp_area_or_global_rule {
