@@ -195,6 +195,11 @@ message MeasurementSet {
 					uint32 sampling = 2;
 				}
 
+				message LineGraph {
+					ansys.api.speos.common.v1.DataDoubles data_x = 1; // Abscissa data
+					ansys.api.speos.common.v1.DataDoubles data_y = 2; // Ordinate data
+				}
+
 				string name = 1; // Area name
 				string description = 27;
 				map<string, string> metadata = 28; // User defined metadata
@@ -216,6 +221,8 @@ message MeasurementSet {
 				optional double threshold_max = 15; // Value must be expressed in the result storage unit
 				optional string warning = 16; // Where applicable, indicates incompatibility between area definition and context (output only)
 				repeated Measure measures = 17; // List of measures
+				bool enable_line_graphs = 18; // If true, line graphs are computed and returned in the line_graphs field
+				repeated LineGraph line_graphs = 19; // List of 2D graphs along the area line (output only). Only available for ShapeHorizontal, ShapeVertical, ShapeUserLine, ShapePolyline, ShapeRadial, ShapeOrthoradial. If cut-off sharpness is available, then two LineGraphs are returned (the last one corresponds to the cut-off sharpness graph). If not, only one LineGraph is returned.
 			}
 
 			oneof xmp_area_or_global_rule {
