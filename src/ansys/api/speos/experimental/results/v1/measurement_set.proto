@@ -140,7 +140,7 @@ message MeasurementSet {
 	// Values must be expressed in the axis storage unit
 	message ShapePolyline {
 		repeated double vertices = 1; // x0, y0, x1, y1, x2, y2, ..., xi, yi
-		uint32 sampling = 2;
+		uint32 sampling = 2; // XM3 only (ignored for XMP results: the sampling is computed automatically)
 	}
 
 	// Measurement set for an XMP result
@@ -164,17 +164,14 @@ message MeasurementSet {
 
 				message ShapeHorizontal {
 					double y = 1;
-					uint32 sampling = 2;
 				}
 
 				message ShapeVertical {
 					double x = 1;
-					uint32 sampling = 2;
 				}
 
 				message ShapeUserLine {
 					repeated double bounding_rect = 1; // (x1, y1, x2, y2) or (theta1, phi1, theta2, phi2)
-					uint32 sampling = 2;
 				}
 
 				message ShapePoint {
@@ -187,12 +184,10 @@ message MeasurementSet {
 
 				message ShapeRadial {
 					double phi = 1;
-					uint32 sampling = 2;
 				}
 
 				message ShapeOrthoradial {
 					double theta = 1;
-					uint32 sampling = 2;
 				}
 
 				message LineGraph {
