@@ -182,8 +182,20 @@ message Scene
 			}
 
 			message ManualSun {
-				repeated double sun_direction = 1; // (X Y Z) direction to the sun
 				bool reverse_sun = 2;  // optional - if not set or false : normal is not reversed
+				oneof sun_definition {
+					SunDirection sun_direction = 3; // sets the sun with a direction
+					SunAngle sun_angle = 4; // sets the sun with azimuth and zenith angles
+				}
+
+				message SunDirection {
+					repeated double direction = 1; // (X Y Z) direction to the sun
+				}
+
+				message SunAngle {
+					double azimuth_angle = 1; // azimuth angle of the sun (in degrees), measured from the north direction
+					double zenith_angle = 2; // zenith angle of the sun (in degrees), measured from the zenith direction
+				}
 			}
 
 			message SunAxisSystem {
